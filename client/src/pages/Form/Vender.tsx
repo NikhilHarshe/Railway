@@ -8,11 +8,11 @@ import axios from 'axios';
 
 const FormLayout = () => {
 
-  // const baseUrl = "https://crease-railway.onrender.com";
-  const baseUrl = "http://localhost:3000";
+  const baseUrl = "https://railway-qbx4.onrender.com";
+  // const baseUrl = "http://localhost:3000";
   // const baseUrl = process.env.REACT_APP_API_BASE_URL;
   // const clientUrl = process.env.REACT_APP_CLIENT_BASE_URL;
-  const clientUrl = "http://crease-railway-8njx.vercel.app"
+  const clientUrl = "https://railway-kappa.vercel.app/"
 
   const [profilePic, setProfilePic] = useState("");
   const [aadharCard, setAadharCard] = useState("");
