@@ -150,9 +150,11 @@ export default function AddContractor() {
               <form >
                 <div className="p-6.5">
                   <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+
+                  {/* Contract allotting Agency */}
                     <div className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Contract allotting Agency <sup className=' text-red-600 text-lg'>*</sup>
+                        Contract allotting Agency <span className=' text-red-600 text-lg'>*</span>
                       </label>
                       <select
                         name="agency"
@@ -165,9 +167,11 @@ export default function AddContractor() {
                         <option value="IRCTC">IRCTC</option>
                       </select>
                     </div>
+
+                    {/* Type of Contract */}
                     <div className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Type of Contract
+                        Type of Contract <span className=' text-red-600 text-lg'>*</span>
                       </label>
                       <select
                         name="typeofcontract"
@@ -183,9 +187,11 @@ export default function AddContractor() {
                       </select>
                     </div>
                   </div>
+
+                  {/* Contract Period From */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Contract Period From
+                      Contract Period From <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     <input
                       type="date"
@@ -199,7 +205,7 @@ export default function AddContractor() {
                   {/* Contract Period To */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Contract Period To
+                      Contract Period To <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     <input
                       type="date"
@@ -213,7 +219,7 @@ export default function AddContractor() {
                   {/* License Fees Paid Upto Date  */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      License Fees Paid Upto Date
+                      License Fees Paid Upto Date <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     <input
                       type="date"
@@ -227,7 +233,7 @@ export default function AddContractor() {
                   {/* Licensee Name */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Licensee Name
+                      Licensee Name <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     <input
                       type="text"
@@ -242,7 +248,7 @@ export default function AddContractor() {
                   {/* Licensee AadharNo */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Licensee Aadhar No.
+                      Licensee Aadhar No. <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     <input
                       type="text"
@@ -260,7 +266,7 @@ export default function AddContractor() {
                   {/* Licensee Contact Details */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Licensee Contact Details
+                      Licensee Contact Details <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     <input
                       type="number"
@@ -276,7 +282,7 @@ export default function AddContractor() {
                   {/* Upload Authority Pic */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Upload Authority Pic
+                      Upload Authority Pic <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     <UploadButton
                       options={options}
@@ -295,7 +301,7 @@ export default function AddContractor() {
                   {/* Vendors Permitted */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Vendors Permitted
+                      Vendors Permitted <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     <input
                       type="number"
@@ -310,7 +316,7 @@ export default function AddContractor() {
                   {/* Is Station Service */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Is Station Service
+                      Is Station Service <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     <div className=' flex  gap-16'>
                       <div>
@@ -326,7 +332,7 @@ export default function AddContractor() {
 
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Station Name
+                      Station Name <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     {formData.StationNames.map((StationName, index) => (
                       <div key={index} className="mb-4 flex items-center">
@@ -364,7 +370,7 @@ export default function AddContractor() {
 
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Platforms Permitted
+                      Platforms Permitted <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     {formData.PFPermitted.map((PFPermitted, index) => (
                       <div key={index} className="mb-4 flex items-center">

@@ -1,12 +1,12 @@
-const Invigilator = require("../Schema/Vendor");
+const Vender = require("../Schema/Vendor");
 const Contractor = require("../Schema/Contractor")
 const bcrypt = require("bcryptjs");
 
-const InvigilatorLogin = async (req, res) => {
+const VenderLogin = async (req, res) => {
   const { email, password } = req.body;
   console.log(req.body)
   try {
-    const user = await Invigilator.findOne({ email });
+    const user = await Vender.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -29,25 +29,25 @@ const InvigilatorLogin = async (req, res) => {
   }
 };
 
-const fetchInvigilatorData = async (req, res) => {
+const fetchVenderData = async (req, res) => {
   try {
-    const invigilators = await Invigilator.find();
-    invigilators.forEach(element => {
+    const Venders = await Vender.find();
+    Venders.forEach(element => {
       let password = element.password;
     });
-    res.status(200).json(invigilators);
+    res.status(200).json(Venders);
   } catch (error) {
     console.error("Error fetching data:", error);
     res.status(500).json({ message: "Internal server error", error });
   }
 };
 
-const fetchInvigilatorDataByQRCode = async (req, res) => {
+const fetchVenderDataByQRCode = async (req, res) => {
   const { qrcode } = req.body;
   console.log("QR Code:", req.body);
 
   try {
-    const user = await Invigilator.findOne({ qrcode });
+    const user = await Vender.findOne({ qrcode });
 
     if (user) {
       res
@@ -81,7 +81,7 @@ const registerVendor = async (req, res) => {
 
   try {
     // Check if the vendor already exists
-    const existingUser = await Invigilator.findOne({ aadhar });
+    const existingUser = await Vender.findOne({ aadhar });
     if (existingUser) {
       return res.status(400).json({ success: false, message: "User already exists" });
     }
@@ -93,7 +93,7 @@ const registerVendor = async (req, res) => {
     }
 
     // Create a new vendor
-    const newVendor = new Invigilator({
+    const newVendor = new Vender({
       fname,
       dob,
       mobile,
@@ -124,12 +124,12 @@ const registerVendor = async (req, res) => {
 };
 
 
-const updateInvigilator = async (req, res) => {
+const updateVender = async (req, res) => {
   const { firstName, lastName, mobile, email, password } = req.body;
   console.log('hi')
   console.log(req.body)
   try {
-    const user = await Invigilator.findOne({ email });
+    const user = await Vender.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -149,13 +149,13 @@ const updateInvigilator = async (req, res) => {
   }
 };
 
-const deleteInvigilator = async (req, res) => {
+const deleteVender = async (req, res) => {
 
   const { email } = req.params;
   console.log(req.params);
   try {
 
-    const user = await Invigilator.findOneAndDelete({ email });
+    const user = await Vender.findOneAndDelete({ email });
 
     if (!user) {
 
@@ -170,10 +170,10 @@ const deleteInvigilator = async (req, res) => {
 
 
 module.exports = {
-  fetchInvigilatorData,
-  fetchInvigilatorDataByQRCode,
-  InvigilatorLogin,
+  fetchVenderData,
+  fetchVenderDataByQRCode,
+  VenderLogin,
   registerVendor,
-  updateInvigilator,
-  deleteInvigilator,
+  updateVender,
+  deleteVender,
 };

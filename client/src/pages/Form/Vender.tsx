@@ -2,7 +2,8 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import { UploadButton } from "@bytescale/upload-widget-react";
 import QRCode from 'qrcode.react';
 import { LiaCheckDoubleSolid } from "react-icons/lia";
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { useReactToPrint } from "react-to-print";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -85,6 +86,13 @@ const FormLayout = () => {
     }
   };
 
+  const componentPDF = useRef();
+
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current,
+    documentTitle: "Invoice",
+  });
+
   const options = {
     apiKey: "public_12a1yyQ4Dbt9UDABRk4Budpc2L8v",
     maxFileCount: 1
@@ -117,7 +125,7 @@ const FormLayout = () => {
                   {/* name */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Name
+                      Full Name <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     <input
                       type="text"
@@ -132,7 +140,7 @@ const FormLayout = () => {
                   {/* Date of Birth */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Date of Birth
+                      Date of Birth <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     <input
                       type="date"
@@ -149,7 +157,7 @@ const FormLayout = () => {
                   {/* Mobile Number */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Mobile Number
+                      Mobile Number <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     <input
                       type="number"
@@ -182,13 +190,10 @@ const FormLayout = () => {
 
                 </div>
 
-
-
-
                 {/* Upload Aadhar Pic */}
                 <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">
-                    Upload Aadhar Pic
+                    Upload Aadhar Pic <span className=' text-red-600 text-lg'>*</span>
                   </label>
                   <UploadButton
                     options={options}
@@ -204,11 +209,10 @@ const FormLayout = () => {
                   </UploadButton>
                 </div>
 
-
                 {/* Upload PoliceVarification Document */}
                 <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">
-                    Upload PoliceVarification Document
+                    Upload PoliceVarification Document <span className=' text-red-600 text-lg'>*</span>
                   </label>
                   <UploadButton
                     options={options}
@@ -227,7 +231,7 @@ const FormLayout = () => {
                 {/* Upload MadicalValidity Document */}
                 <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">
-                    Upload MadicalValidity Document
+                    Upload MadicalValidity Document <span className=' text-red-600 text-lg'>*</span>
                   </label>
                   <UploadButton
                     options={options}
@@ -245,7 +249,7 @@ const FormLayout = () => {
 
                 <div className="w-full xl:w-1/2">
                   <label className="mb-2.5 block text-black dark:text-white">
-                    Police Varification Date
+                    Police Varification Date <span className=' text-red-600 text-lg'>*</span>
                   </label>
                   <input
                     type="date"
@@ -259,7 +263,7 @@ const FormLayout = () => {
                 {/* Medical validity */}
                 <div className="w-full xl:w-1/2">
                   <label className="mb-2.5 block text-black dark:text-white">
-                    Medical validity
+                    Medical validity <span className=' text-red-600 text-lg'>*</span>
                   </label>
                   <input
                     type="date"
@@ -273,7 +277,7 @@ const FormLayout = () => {
                 {/* Validity of Authority */}
                 <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">
-                    Validity of Authority
+                    Validity of Authority <span className=' text-red-600 text-lg'>*</span>
                   </label>
                   <input
                     type="text"
@@ -288,7 +292,7 @@ const FormLayout = () => {
                 {/* Licensee AadharNo */}
                 <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">
-                    Licensee Aadhar No.
+                    Licensee Aadhar No. <span className=' text-red-600 text-lg'>*</span>
                   </label>
                   <input
                     type="text"
@@ -306,7 +310,7 @@ const FormLayout = () => {
                 {/* Upload Profile Pic */}
                 <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">
-                    Upload Profile Pic
+                    Upload Profile Pic <span className=' text-red-600 text-lg'>*</span>
                   </label>
                   <UploadButton
                     options={options}
@@ -327,8 +331,12 @@ const FormLayout = () => {
                   Generate Qr Code
                 </button>
                 {success && qrCodeValue && (
-                  <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                    <QRCode value={qrCodeValue} />
+                  <div>
+                    <div ref={componentPDF} style={{ textAlign: 'center', marginTop: '20px' }}>
+                      <QRCode value={qrCodeValue} />
+                    </div>
+
+                    <button onClick={generatePDF}>Download QR Code</button>
                   </div>
                 )}
                 <button onClick={handleSave} className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 mt-4">

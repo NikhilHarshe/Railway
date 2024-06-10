@@ -10,6 +10,13 @@ const model = new mongoose.Schema({
   Mobile: {
     type:Number,
   },
+  Email : {
+    type: String,
+  },
+  Password :{
+    type: String,
+  },
+
 });
 
 module.exports = mongoose.model("Admin", model);
