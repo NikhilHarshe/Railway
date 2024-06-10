@@ -3,10 +3,12 @@ const cors = require("cors");
 const connectDB = require("./Databse/databse");
 const app = express();
 const dotenv = require('dotenv');
+const cookieparser = require("cookie-parser");
 
 dotenv.config();
 const   PORT = process.env.PORT || 4000 
 app.use(express.json());
+app.use(cookieparser());
 
 app.use(
   cors({

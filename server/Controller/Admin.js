@@ -6,10 +6,11 @@ const jwt = require("jsonwebtoken")
 const auth = async (req, res, next) => {
     try {
         //extract token
-        // console.log("req.cookies.token ", req.cookies.Token);
-        // console.log("req.cookies.token 2 : ", req.body.Token);
+        // console.log("req.cookies.token ", req.cookies?.Token);
+        // console.log("req.cookies.token 2 : ", req.body?.Token);
         // console.log("req.cookies.token 3 : ", req.header("Authorization").replace("Bearer ", ""));
         const token = req.cookies.Token || req.body.Token || req.header("Authorization").replace("Bearer ", "");
+        // console.log("inside Function auth")
 
         //if token missing, then return responce
         // console.log("Token ", token);
@@ -47,6 +48,8 @@ const Login = async (req, res) => {
     try {
         const { Email, Password } = req.body;
 
+        console.log(req.body);
+
         if (!Email || !Password) {
             return res.status(400).json({
                 success: false,
@@ -54,7 +57,7 @@ const Login = async (req, res) => {
             })
         }
 
-        const user = Admin.findOne("Email");
+        const user = await Admin.findOne({Email});
         if (!user) {
             return res.status(404).json({
                 success: false,
@@ -137,6 +140,7 @@ const SignUp = async (req, res) => {
             Name,
             Mobile,
             Role,
+            Image: `https://api.dicebear.com/5.x/initials/svg?seed=${Name}`,
         })
 
         return res.status(200).json({
@@ -155,9 +159,41 @@ const SignUp = async (req, res) => {
     }
 }
 
+const Delete = async (req, res) => {
+    try{
+        const {_id} = req.user
+
+        console.log("req.user", req.user);
+
+        if(!_id) {
+            return res.status(401).json({
+                success: false,
+                message: "User not Valid"
+            })
+        }
+
+        const deletedUser = await Admin.findByIdAndDelete({_id});
+
+        return res.status(200).json({
+            success: true,
+            message: "User Deleted Successfuly",
+            user: deletedUser
+        })
+    }
+    catch(error) {
+        console.error(error)
+        return res.status(401).json({
+            success: true,
+            messgae: "Internal Server Error While Deleting User",
+        })
+
+    }
+}
+
 
 module.exports = {
     auth,
     Login,
     SignUp,
+    Delete,
 };

@@ -24,7 +24,10 @@ const model = new mongoose.Schema({
     type: String,
     enum: ["Admin", "SuperAdmin"],
     required: true,
-  }
+  },
+  Image: {
+    type: String
+},
 
 });
 
