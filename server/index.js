@@ -19,9 +19,11 @@ http: connectDB();
 const vendorRoutes = require("./Routes/VendorRoutes");
 const contractorRoutes = require("./Routes/ContractorRoutes");
 const sellerRoutes = require("./Routes/SellerRoutes");
+const AdminRoutes = require("./Routes/Admin");
 
 app.use("/vendor", vendorRoutes);
 app.use("/contractor/", contractorRoutes);
+app.use("/user", AdminRoutes);
 app.use("/seller", sellerRoutes);
 
 app.listen(PORT, () => {

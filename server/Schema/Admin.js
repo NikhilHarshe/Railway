@@ -3,19 +3,28 @@ const mongoose = require("mongoose");
 const model = new mongoose.Schema({
   Name: {
     type: String,
+    required: true,
   },
   Designation: {
     type: String,
+    required: true,
   },
   Mobile: {
-    type:Number,
+    type: Number,
   },
-  Email : {
+  Email: {
     type: String,
+    required: true,
   },
-  Password :{
+  Password: {
     type: String,
+    required: true,
   },
+  Role: {
+    type: String,
+    enum: ["Admin", "SuperAdmin"],
+    required: true,
+  }
 
 });
 

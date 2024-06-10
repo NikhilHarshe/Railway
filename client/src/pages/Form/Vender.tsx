@@ -1,19 +1,15 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useReactToPrint } from 'react-to-print';
+import axios from 'axios';
+import QRCode from 'qrcode.react';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { UploadButton } from "@bytescale/upload-widget-react";
-import QRCode from 'qrcode.react';
 import { LiaCheckDoubleSolid } from "react-icons/lia";
-import { useRef, useState } from 'react';
-import { useReactToPrint } from "react-to-print";
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 const FormLayout = () => {
-
   const baseUrl = "https://railway-qbx4.onrender.com";
-  // const baseUrl = "http://localhost:3000";
-  // const baseUrl = process.env.REACT_APP_API_BASE_URL;
-  // const clientUrl = process.env.REACT_APP_CLIENT_BASE_URL;
-  const clientUrl = "https://railway-kappa.vercel.app/"
+  const clientUrl = "https://railway-kappa.vercel.app/";
 
   const [profilePic, setProfilePic] = useState("");
   const [aadharCard, setAadharCard] = useState("");
@@ -44,8 +40,12 @@ const FormLayout = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   const generateQRCode = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let result = '';
     const charactersLength = characters.length;
@@ -56,7 +56,6 @@ const FormLayout = () => {
     const updatedFormData = { ...formData, qrcode: result };
 
     let result2 = clientUrl + `/#/venderDetails/${result}`;
-
 
     setQRCodeValue(result2);
     setGeneratedData(updatedFormData);
@@ -70,11 +69,11 @@ const FormLayout = () => {
   };
 
   const handleSave = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (Object.values(generatedData).some(value => value === '')) {
       console.log("generatedData : ", generatedData);
       alert('Any of the fields is empty');
-      return
+      return;
     } else {
       try {
         console.log('Submitting formData:', generatedData);
@@ -101,7 +100,7 @@ const FormLayout = () => {
   formData.profilePic = profilePic;
   formData.aadharCard = aadharCard;
   formData.madicalValidityDocument = madicalValidityDocument;
-  formData.policeVarificationDocument = policeVarificationDocument
+  formData.policeVarificationDocument = policeVarificationDocument;
 
   return (
     <DefaultLayout>
@@ -118,8 +117,8 @@ const FormLayout = () => {
                 Register Vendor
               </h3>
             </div>
-            <form style={{}} action="#">
-              <div className="p-6.5" >
+            <form onSubmit={handleSubmit} style={{}} action="#">
+              <div className="p-6.5">
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
 
                   {/* name */}
@@ -247,106 +246,152 @@ const FormLayout = () => {
                   </UploadButton>
                 </div>
 
-                <div className="w-full xl:w-1/2">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Police Varification Date <span className=' text-red-600 text-lg'>*</span>
-                  </label>
-                  <input
-                    type="date"
-                    name="policeVarificationDate"
-                    value={formData.policeVarificationDate}
-                    onChange={handleChange}
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
+                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                  {/* PoliceVarificationDate */}
+                  <div className="w-full xl:w-1/2">
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      PoliceVarification Date <span className=' text-red-600 text-lg'>*</span>
+                    </label>
+                    <input
+                      type="date"
+                      name="policeVarificationDate"  // Corrected name attribute
+                      value={formData.policeVarificationDate}
+                      onChange={handleChange}
+                      placeholder="Enter your PoliceVarification Date"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  {/* MadicalValidityDate */}
+                  <div className="w-full xl:w-1/2">
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      MedicalValidity Date <span className=' text-red-600 text-lg'>*</span>
+                    </label>
+                    <input
+                      type="date"
+                      name="medicalValidityDate"  // Corrected name attribute
+                      value={formData.medicalValidityDate}
+                      onChange={handleChange}
+                      placeholder="Enter your MedicalValidity Date"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
                 </div>
 
-                {/* Medical validity */}
-                <div className="w-full xl:w-1/2">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Medical validity <span className=' text-red-600 text-lg'>*</span>
-                  </label>
-                  <input
-                    type="date"
-                    name="medicalValidityDate"  // Corrected name attribute
-                    value={formData.medicalValidityDate}
-                    onChange={handleChange}
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-
-                {/* Validity of Authority */}
+                {/* validityAuthority */}
                 <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">
-                    Validity of Authority <span className=' text-red-600 text-lg'>*</span>
+                    ValidityAuthority <span className=' text-red-600 text-lg'>*</span>
                   </label>
                   <input
                     type="text"
-                    name="validityAuthority"
+                    name="validityAuthority"  // Corrected name attribute
                     value={formData.validityAuthority}
                     onChange={handleChange}
-                    placeholder="Enter validity Authority"
+                    placeholder="Enter your ValidityAuthority"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
 
-                {/* Licensee AadharNo */}
-                <div className="mb-4.5">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Licensee Aadhar No. <span className=' text-red-600 text-lg'>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="LicenseeAadharNo"
-                    value={formData.LicenseeAadharNo}
-                    onChange={handleChange}
-                    maxLength={12}
-                    minLength={12}
-                    pattern="[0-9]*"
-                    placeholder="Enter Licensee Name"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-
-                {/* Upload Profile Pic */}
-                <div className="mb-4.5">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Upload Profile Pic <span className=' text-red-600 text-lg'>*</span>
-                  </label>
-                  <UploadButton
-                    options={options}
-                    onComplete={(files) =>
-                      setProfilePic(files.map((x) => x.fileUrl).join("\n"))
-                    }
-                  >
-                    {({ onClick }) =>
-                      <button className={` border p-2 rounded ${profilePic ? ("border-green-700") : ("pt-3")}`} onClick={onClick}>
-                        {profilePic ? (<p className=' flex gap-2'>Uploaded <LiaCheckDoubleSolid className=' text-green-500 font-bold text-2xl' /></p>) : ("Upload a file...")}
-                      </button>
-                    }
-                  </UploadButton>
-                </div>
-
-
-                <button onClick={generateQRCode} className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
-                  Generate Qr Code
-                </button>
-                {success && qrCodeValue && (
-                  <div>
-                    <div ref={componentPDF} style={{ textAlign: 'center', marginTop: '20px' }}>
-                      <QRCode value={qrCodeValue} />
-                    </div>
-
-                    <button onClick={generatePDF}>Download QR Code</button>
+                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                  {/* LicenseeAadharNo */}
+                  <div className="w-full xl:w-1/2">
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      Licensee Aadhar No <span className=' text-red-600 text-lg'>*</span>
+                    </label>
+                    <input
+                      type="number"
+                      name="LicenseeAadharNo"  // Corrected name attribute
+                      value={formData.LicenseeAadharNo}
+                      onChange={handleChange}
+                      placeholder="Enter your Licensee Aadhar No"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
                   </div>
-                )}
-                <button onClick={handleSave} className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 mt-4">
-                  Save to Database
+                </div>
+
+                <button
+                  onClick={generateQRCode}
+                  className="inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10 mr-5"
+                >
+                  Generate QR Code
                 </button>
+
+                <button
+                  onClick={generatePDF}
+                  className="mt-4 inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10 mr-5"
+                >
+                  Generate PDF
+                </button>
+
+                <button
+                  onClick={handleSave}
+                  className="mt-4 inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10"
+                >
+                  Save
+                </button>
+
+                
               </div>
             </form>
           </div>
         </div>
-        <div className="flex flex-col gap-9"></div>
+
+        {success && (
+          <div ref={componentPDF} style={{ width: '100%' }} className='p-10 flex justify-center'>
+            <div className=" rounded-lg p-10 shadow-2xl border-2 " style={{ width: '100%', textAlign: 'center' }}>
+              <div className=' flex justify-center '>
+                <QRCode value={qrCodeValue} size={200} />
+              </div>
+              <p className=' pt-2'>Scan the QR code to see your information</p>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+                  <h2 className='font-bold pb-4'>Form Data</h2>
+                  <table className="table-auto">
+                    <tbody className=' border '>
+                      <tr className=' '>
+                        <td className="px-4 py-2 border">Full Name</td>
+                        <td className="px-4 py-2 border">{generatedData.fname}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 border">Date of Birth</td>
+                        <td className="px-4 py-2 border">{generatedData.dob}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 border">Mobile Number</td>
+                        <td className="px-4 py-2 border">{generatedData.mobile}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 border">Aadhar number</td>
+                        <td className="px-4 py-2 border">{generatedData.aadhar}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 border">Validity Authority</td>
+                        <td className="px-4 py-2 border">{generatedData.validityAuthority}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 border">Licensee Aadhar No</td>
+                        <td className="px-4 py-2 border">{generatedData.LicenseeAadharNo}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 border">Police Verification Date</td>
+                        <td className="px-4 py-2 border">{generatedData.policeVarificationDate}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 border">Medical Validity Date</td>
+                        <td className="px-4 py-2 border">{generatedData.medicalValidityDate}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 border">QR Code</td>
+                        <td className="px-4 py-2 border">{generatedData.qrcode}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </DefaultLayout>
   );
