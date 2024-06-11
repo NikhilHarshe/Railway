@@ -91,10 +91,10 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  const { email } = req.body;
-
+  const { id } = req.params; // Correctly read the parameter from req.params
+  console.log("Deleting user with ID:", id);
   try {
-    const user = await Invigilator.findOneAndDelete({ email });
+    const user = await Contractor.findByIdAndDelete(id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -105,6 +105,8 @@ const deleteUser = async (req, res) => {
     res.status(500).json({ message: "Internal server error", error });
   }
 };
+
+
 
 const saveQRCode = async (req, res) => {
   const { qrcode } = req.body;
@@ -129,30 +131,16 @@ const saveQRCode = async (req, res) => {
 };
 
 const fetchContractorDataByQRCode = async (req, res) => {
-  const { qrcode } = req.body;
-  console.log("QR Code:", req.body);
-
+  
   try {
-    const user = await Contractor.findOne({ qrcode });
-
-    if (user) {
-      // const userData = {
-      //   firstName: user.firstName,
-      //   lastName: user.lastName,
-      //   email: user.email,
-      //   designation: user.designation,
-      //   invigilator: user.invigilator,
-      //   profilePic: user.profilePic,
-      // };
-
-      res
-        .status(200)
-        .json({ user, message: "User data fetched successfully" });
+    const contractors = await Contractor.find({}).populate("vendors").exec();
+    if (contractors) {
+      res.status(200).json(contractors);
     } else {
-      res.status(404).json({ message: "User not found" });
+      res.status(404).json({ message: "No contractors found" });
     }
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error fetching contractor data:", error);
     res.status(500).json({ message: "Internal server error", error });
   }
 };

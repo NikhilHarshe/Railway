@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DefaultLayout from '../../layout/DefaultLayout';
-import QRCode from 'qrcode.react';
 import axios from 'axios';
 import { UploadButton } from '@bytescale/upload-widget-react';
 import { LiaCheckDoubleSolid } from 'react-icons/lia';
@@ -11,9 +10,8 @@ export default function AddContractor() {
   const clientUrl = "http://crease-railway-8njx.vercel.app";
 
   const [Authority, setAuthority] = useState("");
-
-  // const [success, setSuccess] = useState(false);
-  const [qrCodeValue, setQRCodeValue] = useState('error');
+  const [fieldInput,setFieldInput] = useState(false)
+  const [staticfieldInput,setStaticFieldInput] = useState(false)
   const [formData, setFormData] = useState({
     agency: '',
     typeofcontract: '',
@@ -33,14 +31,10 @@ export default function AddContractor() {
 
   const [generatedData, setGeneratedData] = useState(null);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
-
-
 
   const handleStationChange = (index, field, value) => {
     const updatedStationNames = [...formData.StationNames];
@@ -81,30 +75,6 @@ export default function AddContractor() {
     setFormData({ ...formData, PFPermitted: updatedPFPermitted });
   };
 
-
-
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  //   let result = '';
-  //   const charactersLength = characters.length;
-  //   for (let i = 0; i < 6; i++) {
-  //     const randomIndex = Math.floor(Math.random() * charactersLength);
-  //     result += characters.charAt(randomIndex);
-  //   }
-
-  //   const updatedFormData = { ...formData, qrcode: result };
-  //   let result2 = clientUrl + `/#/contractorDetails/${result}`;
-
-  //   setQRCodeValue(result2);
-  //   setGeneratedData(updatedFormData);
-  //   setSuccess(true);
-  // };
-
-  // setAuthority(Authority)
-
   const handleSave = async () => {
     try {
       setAuthority(Authority)
@@ -127,6 +97,29 @@ export default function AddContractor() {
   };
 
   formData.Authority = Authority;
+  useEffect(() => (
+    handleDynamicInput(),
+    handleStaticInput()
+  ),[formData.typeofcontract])
+
+  const handleDynamicInput = () => {
+    if (formData.typeofcontract === 'On board Catering' || formData.typeofcontract === 'On board Non–Catering') {
+      setFieldInput(true)
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        sectionname: [],
+        trainList:[]
+      }))
+      console.log('pppppppppppp',formData)
+    }
+  }
+
+  const handleStaticInput = () => {
+    // alert('hi')
+    if (formData.typeofcontract === 'Static Unit' || formData.typeofcontract === 'PF permit') {
+      setStaticFieldInput(true);
+    }
+  }
 
   return (
     <div>
@@ -180,14 +173,74 @@ export default function AddContractor() {
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
                         <option value="" disabled>Type of Contract</option>
-                        <option value="On board Catering">On board Catering</option>
-                        <option value="On board Non–Catering">On board Non–Catering</option>
-                        <option value="PF permit">PF permit</option>
-                        <option value="Static Unit">Static Unit</option>
+                        <option onClick={handleDynamicInput} value="On board Catering">On board Catering</option>
+                        <option onClick={handleDynamicInput} value="On board Non–Catering">On board Non–Catering</option>
+                        <option onClick={handleStaticInput} value="PF permit">PF permit</option>
+                        <option onClick={handleStaticInput} value="Static Unit">Static Unit</option>
                       </select>
                     </div>
                   </div>
-
+                  {
+                    fieldInput &&
+                    <div>
+                         <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Section Names <span className=' text-red-600 text-lg'>*</span>
+                      </label>
+                      <select
+                        name="sectionname"
+                        value={formData.sectionname}
+                        onChange={handleChange}
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      >
+                        <option value="" disabled>Type of Contract</option>
+                        <option  value="Nagpur to Betul">Nagpur to Betul</option>
+                        <option  value="Nagpur to Vardha">Nagpur to Vardha</option>
+                        <option value="Nagpur to Pune">Nagpur to Pune</option>
+                        <option value="Nagpur to Mumbai">Nagpur to Mumbai</option>
+                      </select>
+                    </div>
+                    
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        List of Trains <span className=' text-red-600 text-lg'>*</span>
+                      </label>
+                      <select
+                        name="trainList"
+                        value={formData.trainList}
+                        onChange={handleChange}
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      >
+                        <option value="" disabled>Type of Contract</option>
+                        <option  value="Gondwana">Gondwana</option>
+                            <option value="Grand-Trank">
+                              Grand-trank
+                        </option>
+                        <option value="Sampta Express">Sampta Express</option>
+                        <option value="Nagpur-Indore">Nagpur-Indore</option>
+                      </select>
+                    </div>
+                   </div>
+                  }
+                  {staticfieldInput &&
+                   <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Section Names <span className=' text-red-600 text-lg'>*</span>
+                      </label>
+                      <select
+                        name="typeofcontract"
+                        value={formData.typeofcontract}
+                        onChange={handleChange}
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      >
+                        <option value="" disabled>Station Names</option>
+                        <option  value="Nagpur to Betul">Nagpur to Betul</option>
+                        <option  value="Nagpur to Vardha">Nagpur to Vardha</option>
+                        <option value="Nagpur to Pune">Nagpur to Pune</option>
+                        <option value="Nagpur to Mumbai">Nagpur to Mumbai</option>
+                      </select>
+                    </div>
+                  }
                   {/* Contract Period From */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
@@ -343,13 +396,6 @@ export default function AddContractor() {
                           placeholder="Station Name"
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
-                        {/* <input
-                          type="text"
-                          value={requirement.description}
-                          onChange={(e) => handleStationChange(index, 'description', e.target.value)}
-                          placeholder="Description"
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        /> */}
                         <button
                           type="button"
                           onClick={() => removeStation(index)}
@@ -381,13 +427,7 @@ export default function AddContractor() {
                           placeholder="Platform Name"
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
-                        {/* <input
-                          type="text"
-                          value={requirement.description}
-                          onChange={(e) => handleStationChange(index, 'description', e.target.value)}
-                          placeholder="Description"
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        /> */}
+                        
                         <button
                           type="button"
                           onClick={() => removePFPermitted(index)}
@@ -405,10 +445,6 @@ export default function AddContractor() {
                       Add Platform
                     </button>
                   </div>
-
-                  {/* <button type="submit" className="mt-4 inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Generate QR Code
-                  </button> */}
                 </div>
               </form>
             </div>

@@ -14,7 +14,6 @@ import Login from './pages/Login'
 import PrivateRoutes from './components/PrivateRoutes';
 import AddContractor from './pages/Form/AddContractor';
 import AddSeller from './pages/Form/AddSeller';
-import EditInvigilator from './pages/Form/EditInvigilator';
 import TableTwo from './components/Tables/TableTwo';
 import Admin from './pages/Form/Admin';
 import ContractorDetails from './pages/Form/ContractorDetails'
@@ -83,15 +82,6 @@ function App() {
             <>
               <PageTitle title="Form Layout" />
               <FormLayout />
-            </>
-          }
-        />
-        <Route
-          path="/EditInvigilator"
-          element={
-            <>
-              <PageTitle title="Form Layout" />
-              <EditInvigilator />
             </>
           }
         />

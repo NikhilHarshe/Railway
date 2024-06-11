@@ -8,10 +8,10 @@ const {
   fetchContractorDataByQRCode,
 } = require("../Controller/ContractorController");
 
-router.post("/fetchcontractordata", fetchContractorDataByQRCode);
+router.get("/fetchcontractordata", fetchContractorDataByQRCode);
 router.post("/registercontractor", registerContractor);
 router.put("/update", updateUser);
-router.delete("/delete", deleteUser);
+router.delete("/delete/:id", deleteUser);
 router.post("/saveqrcode", saveQRCode);
 
 module.exports = router;
