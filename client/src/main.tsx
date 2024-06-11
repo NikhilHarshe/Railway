@@ -6,12 +6,20 @@ import './css/style.css';
 import './css/satoshi.css';
 import 'jsvectormap/dist/css/jsvectormap.css';
 import 'flatpickr/dist/flatpickr.min.css';
+import { Provider } from "react-redux";
 import { HashRouter } from 'react-router-dom';
+import {store} from "./redux/Store";
+import { Toaster } from "react-hot-toast";
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <HashRouter>
-    {/* <Router> */}
+
+  <Provider store={store}>
+    <HashRouter>
+      {/* <Router> */}
       <App />
-    {/* </Router> */}
-  </HashRouter>
+      <Toaster/>
+      {/* </Router> */}
+    </HashRouter>
+  </Provider>
+
 );

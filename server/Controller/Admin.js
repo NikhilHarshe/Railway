@@ -6,15 +6,18 @@ const jwt = require("jsonwebtoken")
 const auth = async (req, res, next) => {
     try {
         //extract token
+        // console.log("inside Function auth")
         // console.log("req.cookies.token ", req.cookies?.Token);
         // console.log("req.cookies.token 2 : ", req.body?.Token);
-        // console.log("req.cookies.token 3 : ", req.header("Authorization").replace("Bearer ", ""));
+        // console.log("req.cookies.token 3 : ", req?.headers.authorization.split(" ")[1]);
+        // const token = req.cookies.Token || req.body.Token || req?.headers.authorization?.split(" ")[1];
         const token = req.cookies.Token || req.body.Token || req.header("Authorization").replace("Bearer ", "");
-        // console.log("inside Function auth")
+        console.log("inside Function auth", token);
 
         //if token missing, then return responce
         // console.log("Token ", token);
         if (!token) {
+          
             return res.status(401).json({
                 success: false,
                 message: "Token is missing",
@@ -159,6 +162,38 @@ const SignUp = async (req, res) => {
     }
 }
 
+const getUserDetails = async (req, res) => {
+    try{
+
+        console.log("Funceiton call backend ");
+        const {_id} = req.user;
+
+        console.log("User id in getuserdetails : ",  _id);
+
+        const user = await Admin.findById({_id});
+
+        if(user){
+            return res.status(200).json({
+                success: true,
+                message: "User data Fetch Successful",
+                user,
+            })
+        }
+        
+        return res.status(401).json({
+            success: false,
+            message: "User not Fetch"
+        })
+    }
+    catch(error) {
+        console.log(error),
+        res.status(500).json({
+            success: false,
+            message: "Internal server Error",
+        })
+    }
+}
+
 const Delete = async (req, res) => {
     try{
         const {_id} = req.user
@@ -196,4 +231,5 @@ module.exports = {
     Login,
     SignUp,
     Delete,
+    getUserDetails,
 }; 

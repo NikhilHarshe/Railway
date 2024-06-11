@@ -1,12 +1,15 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import {setUser, setToken} from "../redux/slices/AuthSlice"
+import toast from 'react-hot-toast';
 
 
 
 export default function Login() {
 
-
+  const dispatch = useDispatch();
   const [formdata, setFormData] = useState({
     Email: '', Password: ''})
 
@@ -27,7 +30,11 @@ export default function Login() {
     const {Email, Password} = formdata;
     console.log("Form data : ", formdata);
     const user = await axios.post("http://localhost:3000/user/Login", {Email, Password});
-    console.log("user : ", user);
+    console.log("user : ", user?.data);
+    dispatch(setUser(user?.data?.user));
+    dispatch(setToken(user?.data.token));
+    localStorage.setItem("Token", JSON.stringify(user?.data.token))
+    toast.success("Log in Successful");
     navigate("/dashboard")
   }
 
