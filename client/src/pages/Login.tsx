@@ -1,20 +1,46 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+
+
+
 export default function Login() {
+
+
+  const [formdata, setFormData] = useState({
+    Email: '', Password: ''})
 
   let navigate = useNavigate()
 
-  const handleClick = () => {
-  navigate('/dashboard')
-}
+  function chengeHandler(event) {
+    setFormData(PrevData => {
+     return {
+      ...PrevData,
+      [event.target.name] : event.target.value
+     }
+
+    }) 
+  }
+
+  const submitHandler = async(e) => {
+    e.preventDefault();
+    const {Email, Password} = formdata;
+    console.log("Form data : ", formdata);
+    const user = await axios.post("http://localhost:3000/user/Login", {Email, Password});
+    console.log("user : ", user);
+    navigate("/dashboard")
+  }
 
   return (
     <div>
-      <form className="space-y-6 font-[sans-serif] max-w-lg mx-auto mt-[200px]">
+      <form onSubmit={submitHandler} className="space-y-6 font-[sans-serif] max-w-lg mx-auto mt-[200px]">
         <div className="relative flex items-center">
           <input
             type="email"
             placeholder="Enter Email"
+            name='Email'
+            onChange={chengeHandler}
+            value={formdata.Email}
             className="px-2 py-3 bg-white text-black w-full text-sm border-b-2 focus:border-blue-500 outline-none"
           />
           <svg
@@ -49,6 +75,9 @@ export default function Login() {
           <input
             type="password"
             placeholder="Enter Password"
+            name='Password'
+            value={formdata.Password}
+            onChange={chengeHandler}
             className="px-2 py-3 bg-white text-black w-full text-sm border-b-2 focus:border-blue-500 outline-none"
           />
           <svg
@@ -71,8 +100,8 @@ export default function Login() {
         </div>
 
         <button
-          onClick={()=>handleClick()}
-          type="button"
+          
+          type="submit"
           className="!mt-8 px-8 py-2.5 bg-blue-500 text-sm text-white hover:bg-blue-600 rounded-sm"
         >
           Submit
