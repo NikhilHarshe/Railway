@@ -5,8 +5,8 @@ import { UploadButton } from '@bytescale/upload-widget-react';
 import { LiaCheckDoubleSolid } from 'react-icons/lia';
 
 export default function AddContractor() {
-  // const baseUrl = "http://localhost:3000";
-  const baseUrl = "https://railway-qbx4.onrender.com";
+  const baseUrl = "http://localhost:3000";
+  // const baseUrl = "https://railway-qbx4.onrender.com";
   const clientUrl = "http://crease-railway-8njx.vercel.app";
 
   const [Authority, setAuthority] = useState("");
@@ -105,6 +105,7 @@ export default function AddContractor() {
   const handleDynamicInput = () => {
     if (formData.typeofcontract === 'On board Catering' || formData.typeofcontract === 'On board Non–Catering') {
       setFieldInput(true)
+      setStaticFieldInput(false)
       setFormData(prevFormData => ({
         ...prevFormData,
         sectionname: [],
@@ -118,7 +119,16 @@ export default function AddContractor() {
     // alert('hi')
     if (formData.typeofcontract === 'Static Unit' || formData.typeofcontract === 'PF permit') {
       setStaticFieldInput(true);
+      setFieldInput(false)
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        nameofstation: []
+      }))
     }
+  }
+
+  const handleTypeClick = () => {
+    console.log('lllllllllllllll',formData.typeofcontract)
   }
 
   return (
@@ -160,9 +170,7 @@ export default function AddContractor() {
                         <option value="IRCTC">IRCTC</option>
                       </select>
                     </div>
-
-                    {/* Type of Contract */}
-                    <div className="w-full xl:w-1/2">
+                    <div onClick={handleTypeClick} className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
                         Type of Contract <span className=' text-red-600 text-lg'>*</span>
                       </label>
@@ -225,7 +233,7 @@ export default function AddContractor() {
                   {staticfieldInput &&
                    <div className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Section Names <span className=' text-red-600 text-lg'>*</span>
+                        Names of Station<span className=' text-red-600 text-lg'>*</span>
                       </label>
                       <select
                         name="typeofcontract"

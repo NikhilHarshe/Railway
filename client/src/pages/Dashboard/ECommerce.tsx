@@ -16,7 +16,7 @@ const ECommerce: React.FC = () => {
   let navigate = useNavigate()
   const { user, Token } = useSelector((state) => state.auth)
 
-  // console.log("User in side dashbord ", user);
+  console.log("User in side dashbord ", user);
 
   const getUserData = async () => {
     try {

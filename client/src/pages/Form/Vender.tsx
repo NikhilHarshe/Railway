@@ -8,7 +8,8 @@ import { UploadButton } from "@bytescale/upload-widget-react";
 import { LiaCheckDoubleSolid } from "react-icons/lia";
 
 const FormLayout = () => {
-  const baseUrl = "https://railway-qbx4.onrender.com";
+  // const baseUrl = "https://railway-qbx4.onrender.com";
+  const baseUrl = "http://localhost:3000";
   const clientUrl = "https://railway-kappa.vercel.app/";
 
   const [profilePic, setProfilePic] = useState("");
@@ -29,7 +30,7 @@ const FormLayout = () => {
     medicalValidityDate: '',
     madicalValidityDocument: '',
     validityAuthority: '',
-    LicenseeAadharNo: '',
+    LicenseeId: '',
     qrcode: '',
   });
 
@@ -294,22 +295,38 @@ const FormLayout = () => {
                 </div>
 
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                  {/* LicenseeAadharNo */}
+                  {/* LicenseeId */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Licensee Aadhar No <span className=' text-red-600 text-lg'>*</span>
+                      Licensee Id <span className=' text-red-600 text-lg'>*</span>
                     </label>
                     <input
                       type="number"
-                      name="LicenseeAadharNo"  // Corrected name attribute
-                      value={formData.LicenseeAadharNo}
+                      name="LicenseeId"  // Corrected name attribute
+                      value={formData.LicenseeId}
                       onChange={handleChange}
                       placeholder="Enter your Licensee Aadhar No"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
                 </div>
-
+                    <div className="mb-4.5">
+                  <label className="mb-2.5 block text-black dark:text-white">
+                    Upload Profile Pic <span className=' text-red-600 text-lg'>*</span>
+                  </label>
+                  <UploadButton
+                    options={options}
+                    onComplete={(files) =>
+                      setProfilePic(files.map((x) => x.fileUrl).join("\n"))
+                    }
+                  >
+                    {({ onClick }) =>
+                      <button className={` border p-2 rounded ${profilePic ? ("border-green-700") : ("pt-3")}`} onClick={onClick}>
+                        {profilePic ? (<p className=' flex gap-2'>Uploaded <LiaCheckDoubleSolid className=' text-green-500 font-bold text-2xl' /></p>) : ("Upload a file...")}
+                      </button>
+                    }
+                  </UploadButton>
+                </div>
                 <button
                   onClick={generateQRCode}
                   className="inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10 mr-5"
@@ -371,7 +388,7 @@ const FormLayout = () => {
                       </tr>
                       <tr>
                         <td className="px-4 py-2 border">Licensee Aadhar No</td>
-                        <td className="px-4 py-2 border">{generatedData.LicenseeAadharNo}</td>
+                        <td className="px-4 py-2 border">{generatedData.LicenseeId}</td>
                       </tr>
                       <tr>
                         <td className="px-4 py-2 border">Police Verification Date</td>

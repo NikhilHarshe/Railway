@@ -1,6 +1,18 @@
 const mongoose = require("mongoose");
+const autoIncrement = require('mongoose-auto-increment')
+
+const counterSchema = new mongoose.Schema({
+  _id: { type: String, required: true },
+  seq: { type: Number, default: 0 },
+});
+
+const Counter = mongoose.model("Counter", counterSchema);
 
 const contractorSchema = new mongoose.Schema({
+  contractorId: {
+    type: Number,
+    unique: true,
+  },
   agency: {
     type: String,
   },
@@ -28,27 +40,45 @@ const contractorSchema = new mongoose.Schema({
   vendors_permitted: {
     type: Number,
   },
-  IsStationService:{
-    type : Boolean
+  IsStationService: {
+    type: Boolean,
   },
-  authorityDocument:{
+  authorityDocument: {
     type: String,
   },
-  isStationService:{
+  isStationService: {
     type: String,
   },
-  stationName: [
-    
-  ],
-  pfPermitted: [
-
-  ],
+  stationName: [],
+  pfPermitted: [],
+  nameofstation: [],
+  sectionname: [],
+  trainList: [],
   vendors: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Vendor",
     },
-  ]
+  ],
+});
+
+contractorSchema.pre("save", async function (next) {
+  const doc = this;
+  if (doc.isNew) {
+    try {
+      const counter = await Counter.findByIdAndUpdate(
+        { _id: "contractorId" },
+        { $inc: { seq: 1 } },
+        { new: true, upsert: true }
+      );
+      doc.contractorId = counter.seq;
+      next();
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    next();
+  }
 });
 
 module.exports = mongoose.model("Contractor", contractorSchema);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const ContractorDetails = () => {
 
@@ -10,12 +11,14 @@ const ContractorDetails = () => {
   const [contractorData, setContractorData] = useState(null);
 
   const getUser = async () => {
+    const toastId = toast.loading("Loading...")
     try {
       let response = await axios.post(baseUrl+'/contractor/fetchcontractordata', { qrcode });
       setContractorData(response.data.user);
     } catch (error) {
       console.error('Error fetching contractor data:', error);
     }
+    toast.dismiss(toastId);;
   };
 
   useEffect(() => {
