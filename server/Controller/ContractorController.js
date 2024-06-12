@@ -18,10 +18,8 @@ const registerContractor = async (req, res) => {
     PFPermitted,
     LicenseeAadharNo,
   } = req.body;
-
-  console.log("contractor back end ", req.body);
-
   try {
+    console.log("contractor back end ");
     if(!agency || !typeofcontract || !ContractperiodFrom || !ContractperiodTo || !Licenseename || !Licenseecontactdetails || !VendorsPermitted || !LicenseFeesPaidUptoDate || !Authority || !IsStationService || !StationNames || !PFPermitted || !LicenseeAadharNo){
       return res.status(400).json({
         success: false,
@@ -65,8 +63,6 @@ const registerContractor = async (req, res) => {
   }
 };
 
-
-
 const updateUser = async (req, res) => {
   const { email, name, gender, mobile, password } = req.body;
 
@@ -106,8 +102,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-
-
 const saveQRCode = async (req, res) => {
   const { qrcode } = req.body;
 
@@ -131,7 +125,6 @@ const saveQRCode = async (req, res) => {
 };
 
 const fetchContractorDataByQRCode = async (req, res) => {
-  
   try {
     const contractors = await Contractor.find({}).populate("vendors").exec();
     if (contractors) {

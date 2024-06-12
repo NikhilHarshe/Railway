@@ -12,7 +12,7 @@ const auth = async (req, res, next) => {
         // console.log("req.cookies.token 3 : ", req?.headers.authorization.split(" ")[1]);
         // const token = req.cookies.Token || req.body.Token || req?.headers.authorization?.split(" ")[1];
         const token = req.cookies.Token || req.body.Token || req.header("Authorization").replace("Bearer ", "");
-        console.log("inside Function auth", token);
+        // console.log("inside Function auth", token);
 
         //if token missing, then return responce
         // console.log("Token ", token);
@@ -165,10 +165,10 @@ const SignUp = async (req, res) => {
 const getUserDetails = async (req, res) => {
     try{
 
-        console.log("Funceiton call backend ");
+        // console.log("Funceiton call backend ");
         const {_id} = req.user;
 
-        console.log("User id in getuserdetails : ",  _id);
+        // console.log("User id in getuserdetails : ",  _id);
 
         const user = await Admin.findById({_id});
 

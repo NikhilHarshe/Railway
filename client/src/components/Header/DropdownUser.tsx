@@ -115,7 +115,7 @@ const DropdownUser = () => {
                   fill=""
                 />
               </svg>
-              My Profile2
+              My Profile
             </Link>
           </li>
           

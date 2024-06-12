@@ -18,10 +18,13 @@ import TableTwo from './components/Tables/TableTwo';
 import Admin from './pages/Form/Admin';
 import ContractorDetails from './pages/Form/ContractorDetails'
 import VenderDetails from './pages/Form/VenderDetails';
+import { useSelector } from 'react-redux';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
+
+  const {user} = useSelector((state) => state.auth)
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -95,7 +98,9 @@ function App() {
             </>
           }
           />
-        <Route
+        {
+          user?.Role === "SuperAdmin" ? (
+            <Route
           path="/admin"
           element={
             <>
@@ -104,6 +109,9 @@ function App() {
             </>
           }
           />
+          ) :
+           ("")
+        }
           <Route
           path="/AddSeller"
           element={
