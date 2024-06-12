@@ -75,10 +75,10 @@ const registerVendor = async (req, res) => {
     medicalValidityDate,
     madicalValidityDocument,
     validityAuthority,
-    LicenseeAadharNo,
+    LicenseeId,
     qrcode,
   } = req.body;
-
+console.log('Body',req.body)
   try {
     // Check if the vendor already exists
     const existingUser = await Vender.findOne({ aadhar });
@@ -86,8 +86,9 @@ const registerVendor = async (req, res) => {
       return res.status(400).json({ success: false, message: "User already exists" });
     }
 
-    // Find the contractor associated with the provided LicenseeAadharNo
-    const contractor = await Contractor.findOne({ LicenseeAadharNo });
+    // Find the contractor associated with the provided LicenseeId
+    const contractor = await Contractor.findOne({ contractorId: LicenseeId });
+    console.log('Contractor',contractor)
     if (!contractor) {
       return res.status(403).json({ success: false, message: "Contractor not Registered" });
     }
