@@ -22,93 +22,98 @@ const registerContractor = async (req, res) => {
     nameofstation,
   } = req.body;
   try {
-<<<<<<< HEAD
     console.log("contractor back end ");
-    if(!agency || !typeofcontract || !ContractperiodFrom || !ContractperiodTo || !Licenseename || !Licenseecontactdetails || !VendorsPermitted || !LicenseFeesPaidUptoDate || !Authority || !IsStationService || !StationNames || !PFPermitted || !LicenseeAadharNo){
+    if (
+      !agency ||
+      !typeofcontract ||
+      !ContractperiodFrom ||
+      !ContractperiodTo ||
+      !Licenseename ||
+      !Licenseecontactdetails ||
+      !VendorsPermitted ||
+      !LicenseFeesPaidUptoDate ||
+      !Authority ||
+      !IsStationService ||
+      !StationNames ||
+      !PFPermitted ||
+      !LicenseeAadharNo
+    ) {
       return res.status(400).json({
         success: false,
         message: "All Fields are Mandatory",
-      })
-=======
-    console.log('kkkkk', req.body);
-    // Check for mandatory fields
-    const mandatoryFields = [
-      "agency",
-      "typeofcontract",
-      "ContractperiodFrom",
-      "ContractperiodTo",
-      "Licenseename",
-      "Licenseecontactdetails",
-      "VendorsPermitted",
-      "LicenseFeesPaidUptoDate",
-      "Authority",
-      "IsStationService",
-      "StationNames",
-      "PFPermitted",
-      "LicenseeAadharNo",
-    ];
-
-    for (let field of mandatoryFields) {
-      if (!req.body[field]) {
-        return res
-          .status(400)
-          .json({ success: false, message: `Field ${field} is mandatory` });
-      }
->>>>>>> 16ce90aec3a4ad6cc142f52fee86581a6e00549a
-    }
-
-    // Check for duplicate contractor
-    const userExist = await Contractor.findOne({ LicenseeAadharNo });
-    if (userExist) {
-      return res.status(402).json({
-        ExistingContractor: userExist,
-        success: false,
-        message: "User already exists",
       });
-    }
 
-    // Create new contractor
-    const newContractor = new Contractor({
-      agency,
-      category: typeofcontract,
-      fromDate: ContractperiodFrom,
-      toDate: ContractperiodTo,
-      licensee: Licenseename,
-      licence_fees_paid_upto: LicenseFeesPaidUptoDate,
-      Licensee_Contact_details: Licenseecontactdetails,
-      vendors_permitted: VendorsPermitted,
-      stationName: StationNames,
-      pfPermitted: PFPermitted,
-      licence_fees_paid_upto: LicenseFeesPaidUptoDate,
-      isStationService: IsStationService,
-      authorityDocument: Authority,
-      LicenseeAadharNo,
-      trainList,
-      sectionname,
-    });
+      console.log("kkkkk", req.body);
+      // Check for mandatory fields
+      const mandatoryFields = [
+        "agency",
+        "typeofcontract",
+        "ContractperiodFrom",
+        "ContractperiodTo",
+        "Licenseename",
+        "Licenseecontactdetails",
+        "VendorsPermitted",
+        "LicenseFeesPaidUptoDate",
+        "Authority",
+        "IsStationService",
+        "StationNames",
+        "PFPermitted",
+        "LicenseeAadharNo",
+      ];
 
-    const data = await newContractor.save();
-    res
-      .status(200)
-      .json({
+      for (let field of mandatoryFields) {
+        if (!req.body[field]) {
+          return res
+            .status(400)
+            .json({ success: false, message: `Field ${field} is mandatory` });
+        }
+      }
+
+      // Check for duplicate contractor
+      const userExist = await Contractor.findOne({ LicenseeAadharNo });
+      if (userExist) {
+        return res.status(402).json({
+          ExistingContractor: userExist,
+          success: false,
+          message: "User already exists",
+        });
+      }
+
+      // Create new contractor
+      const newContractor = new Contractor({
+        agency,
+        category: typeofcontract,
+        fromDate: ContractperiodFrom,
+        toDate: ContractperiodTo,
+        licensee: Licenseename,
+        licence_fees_paid_upto: LicenseFeesPaidUptoDate,
+        Licensee_Contact_details: Licenseecontactdetails,
+        vendors_permitted: VendorsPermitted,
+        stationName: StationNames,
+        pfPermitted: PFPermitted,
+        licence_fees_paid_upto: LicenseFeesPaidUptoDate,
+        isStationService: IsStationService,
+        authorityDocument: Authority,
+        LicenseeAadharNo,
+        trainList,
+        sectionname,
+      });
+
+      const data = await newContractor.save();
+      res.status(200).json({
         success: true,
         data,
         message: "Contractor registered successfully",
       });
+    }
   } catch (error) {
     console.error("Error saving contractor:", error);
     res
       .status(500)
       .json({ success: false, message: "Internal server error", error });
   }
-};
+}
 
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> 16ce90aec3a4ad6cc142f52fee86581a6e00549a
 const updateUser = async (req, res) => {
   const { email, name, gender, mobile, password } = req.body;
 
