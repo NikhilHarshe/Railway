@@ -1,6 +1,7 @@
 const Admin = require("../Schema/Admin");
 const bcrypt = require("bcryptjs")
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const Contractor = require("../Schema/Contractor");
 
 
 const auth = async (req, res, next) => {
@@ -68,6 +69,8 @@ const Login = async (req, res) => {
             })
         }
 
+        const contractors = await Contractor.find();
+
         if (await bcrypt.compare(Password, user.Password)) {
             const token = jwt.sign(
                 { email: user.Email, _id: user._id, role: user.Role },
@@ -87,6 +90,7 @@ const Login = async (req, res) => {
             res.cookie("Token", token, options).status(200).json({
                 success: true,
                 token,
+                contractors,
                 user,
                 message: `User Login Success`,
             })
