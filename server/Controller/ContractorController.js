@@ -1,6 +1,7 @@
 
 const Contractor = require("../Schema/Contractor");
 const bcrypt = require("bcryptjs");
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 const registerContractor = async (req, res) => {
   const {
@@ -21,65 +22,80 @@ const registerContractor = async (req, res) => {
     sectionname,
     nameofstation,
   } = req.body;
-  try 
-  {
+  try {
     console.log("contractor back end ");
-    if (
-      !agency ||
-      !typeofcontract ||
-      !ContractperiodFrom ||
-      !ContractperiodTo ||
-      !Licenseename ||
-      !Licenseecontactdetails ||
-      !VendorsPermitted ||
-      !LicenseFeesPaidUptoDate ||
-      !Authority ||
-      !IsStationService ||
-      !StationNames ||
-      !PFPermitted ||
-      !LicenseeAadharNo
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "All Fields are Mandatory",
-      });
-    }
+    // if (
+    //   !agency ||
+    //   !typeofcontract ||
+    //   !ContractperiodFrom ||
+    //   !ContractperiodTo ||
+    //   !Licenseename ||
+    //   !Licenseecontactdetails ||
+    //   !VendorsPermitted ||
+    //   !LicenseFeesPaidUptoDate ||
+    //   !Authority ||
+    //   !IsStationService ||
+    //   !StationNames ||
+    //   !PFPermitted ||
+    //   !LicenseeAadharNo
+    // ) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "All Fields are Mandatory",
+    //   });
+    // }
 
     console.log("kkkkk", req.body);
     // Check for mandatory fields
-    const mandatoryFields = [
-      "agency",
-      "typeofcontract",
-      "ContractperiodFrom",
-      "ContractperiodTo",
-      "Licenseename",
-      "Licenseecontactdetails",
-      "VendorsPermitted",
-      "LicenseFeesPaidUptoDate",
-      "Authority",
-      "IsStationService",
-      "StationNames",
-      "PFPermitted",
-      "LicenseeAadharNo",
-    ];
+    // const mandatoryFields = [
+    //   "agency",
+    //   "typeofcontract",
+    //   "ContractperiodFrom",
+    //   "ContractperiodTo",
+    //   "Licenseename",
+    //   "Licenseecontactdetails",
+    //   "VendorsPermitted",
+    //   "LicenseFeesPaidUptoDate",
+    //   "Authority",
+    //   "IsStationService",
+    //   "StationNames",
+    //   "PFPermitted",
+    //   "LicenseeAadharNo",
+    // ];
 
-    for (let field of mandatoryFields) {
-      if (!req.body[field]) {
-        return res
-          .status(400)
-          .json({ success: false, message: `Field ${field} is mandatory` });
-      }
-    }
+    // for (let field of mandatoryFields) {
+    //   if (!req.body[field]) {
+    //     return res
+    //       .status(400)
+    //       .json({ success: false, message: `Field ${field} is mandatory` });
+    //   }
+    // }
 
     // Check for duplicate contractor
-    const userExist = await Contractor.findOne({ LicenseeAadharNo });
-    if (userExist) {
-      return res.status(402).json({
-        ExistingContractor: userExist,
-        success: false,
-        message: "User already exists",
-      });
+    // const userExist = await Contractor.findOne({ LicenseeAadharNo });
+    // if (userExist) {
+    //   return res.status(402).json({
+    //     ExistingContractor: userExist,
+    //     success: false,
+    //     message: "User already exists",
+    //   });
+    // }
+
+    console.log("req.files ", req.files);
+
+    // If ProductImage Image is found, update it
+    let img = "";
+    if (req.files) {
+      // console.log("Product update")
+      const Image = req.files.productImage
+      const ProductImage = await uploadImageToCloudinary(
+        Image,
+        process.env.FOLDER_NAME
+      )
+      img = ProductImage.secure_url
     }
+
+    console.log("img ", img);
 
     // Create new contractor
     const newContractor = new Contractor({
@@ -101,10 +117,11 @@ const registerContractor = async (req, res) => {
       sectionname,
     });
 
-    const data = await newContractor.save();
+    // const data = await newContractor.save();
     res.status(200).json({
       success: true,
       data,
+      img,
       message: "Contractor registered successfully",
     });
 
