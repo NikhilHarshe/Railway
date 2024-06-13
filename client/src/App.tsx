@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
@@ -15,16 +15,48 @@ import PrivateRoutes from './components/PrivateRoutes';
 import AddContractor from './pages/Form/AddContractor';
 import AddSeller from './pages/Form/AddSeller';
 import TableTwo from './components/Tables/TableTwo';
+import VendersTable from './components/Tables/VendersTable';
 import Admin from './pages/Form/Admin';
 import ContractorDetails from './pages/Form/ContractorDetails'
 import VenderDetails from './pages/Form/VenderDetails';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { setUser } from "./redux/slices/AuthSlice"
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, Token } = useSelector((state) => state.auth)
 
-  const {user} = useSelector((state) => state.auth)
+  console.log("User in side dashbord ", user);
+
+  const getUserData = async () => {
+    try {
+      if (Token) {
+        let res = await axios.post("http://localhost:3000/user/getUserDetails", {}, {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          }
+        })
+        // console.log("res in dashebord ", res.data?.user);
+        dispatch(setUser(res.data?.user));
+      }
+      else {
+        navigate("/login")
+        console.log("Token not found");
+      }
+    }
+    catch (error) {
+      console.error(error),
+        console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getUserData();
+  }, [])
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -136,6 +168,15 @@ function App() {
             <>
               <PageTitle title="TableTwo" />
               <TableTwo />
+            </>
+          }
+        />
+        <Route
+          path="/venderstable"
+          element={
+            <>
+              <PageTitle title="VendersTable" />
+              <VendersTable />
             </>
           }
         />

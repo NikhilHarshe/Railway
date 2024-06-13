@@ -21,7 +21,8 @@ const registerContractor = async (req, res) => {
     sectionname,
     nameofstation,
   } = req.body;
-  try {
+  try 
+  {
     console.log("contractor back end ");
     if (
       !agency ||
@@ -42,70 +43,71 @@ const registerContractor = async (req, res) => {
         success: false,
         message: "All Fields are Mandatory",
       });
+    }
 
-      console.log("kkkkk", req.body);
-      // Check for mandatory fields
-      const mandatoryFields = [
-        "agency",
-        "typeofcontract",
-        "ContractperiodFrom",
-        "ContractperiodTo",
-        "Licenseename",
-        "Licenseecontactdetails",
-        "VendorsPermitted",
-        "LicenseFeesPaidUptoDate",
-        "Authority",
-        "IsStationService",
-        "StationNames",
-        "PFPermitted",
-        "LicenseeAadharNo",
-      ];
+    console.log("kkkkk", req.body);
+    // Check for mandatory fields
+    const mandatoryFields = [
+      "agency",
+      "typeofcontract",
+      "ContractperiodFrom",
+      "ContractperiodTo",
+      "Licenseename",
+      "Licenseecontactdetails",
+      "VendorsPermitted",
+      "LicenseFeesPaidUptoDate",
+      "Authority",
+      "IsStationService",
+      "StationNames",
+      "PFPermitted",
+      "LicenseeAadharNo",
+    ];
 
-      for (let field of mandatoryFields) {
-        if (!req.body[field]) {
-          return res
-            .status(400)
-            .json({ success: false, message: `Field ${field} is mandatory` });
-        }
+    for (let field of mandatoryFields) {
+      if (!req.body[field]) {
+        return res
+          .status(400)
+          .json({ success: false, message: `Field ${field} is mandatory` });
       }
+    }
 
-      // Check for duplicate contractor
-      const userExist = await Contractor.findOne({ LicenseeAadharNo });
-      if (userExist) {
-        return res.status(402).json({
-          ExistingContractor: userExist,
-          success: false,
-          message: "User already exists",
-        });
-      }
-
-      // Create new contractor
-      const newContractor = new Contractor({
-        agency,
-        category: typeofcontract,
-        fromDate: ContractperiodFrom,
-        toDate: ContractperiodTo,
-        licensee: Licenseename,
-        licence_fees_paid_upto: LicenseFeesPaidUptoDate,
-        Licensee_Contact_details: Licenseecontactdetails,
-        vendors_permitted: VendorsPermitted,
-        stationName: StationNames,
-        pfPermitted: PFPermitted,
-        licence_fees_paid_upto: LicenseFeesPaidUptoDate,
-        isStationService: IsStationService,
-        authorityDocument: Authority,
-        LicenseeAadharNo,
-        trainList,
-        sectionname,
-      });
-
-      const data = await newContractor.save();
-      res.status(200).json({
-        success: true,
-        data,
-        message: "Contractor registered successfully",
+    // Check for duplicate contractor
+    const userExist = await Contractor.findOne({ LicenseeAadharNo });
+    if (userExist) {
+      return res.status(402).json({
+        ExistingContractor: userExist,
+        success: false,
+        message: "User already exists",
       });
     }
+
+    // Create new contractor
+    const newContractor = new Contractor({
+      agency,
+      category: typeofcontract,
+      fromDate: ContractperiodFrom,
+      toDate: ContractperiodTo,
+      licensee: Licenseename,
+      licence_fees_paid_upto: LicenseFeesPaidUptoDate,
+      Licensee_Contact_details: Licenseecontactdetails,
+      vendors_permitted: VendorsPermitted,
+      stationName: StationNames,
+      pfPermitted: PFPermitted,
+      licence_fees_paid_upto: LicenseFeesPaidUptoDate,
+      isStationService: IsStationService,
+      authorityDocument: Authority,
+      LicenseeAadharNo,
+      trainList,
+      sectionname,
+    });
+
+    const data = await newContractor.save();
+    res.status(200).json({
+      success: true,
+      data,
+      message: "Contractor registered successfully",
+    });
+
   } catch (error) {
     console.error("Error saving contractor:", error);
     res
@@ -155,7 +157,6 @@ const deleteUser = async (req, res) => {
 
 const saveQRCode = async (req, res) => {
   const { qrcode } = req.body;
-
   try {
     // Find the contractor with the given QR code
     const contractor = await Contractor.findOne({ qrcode });

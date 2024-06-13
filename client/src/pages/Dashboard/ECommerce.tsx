@@ -4,7 +4,7 @@ import Image1 from '../../images/engineer.png'
 import Image2 from '../../images/seller.png'
 import Image3 from '../../images/watch.png'
 import { useNavigate } from 'react-router-dom';
-import { setUser } from "../../redux/slices/AuthSlice"
+
 import '../../App.css'
 
 import DefaultLayout from '../../layout/DefaultLayout';
@@ -12,37 +12,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
 const ECommerce: React.FC = () => {
-  const dispatch = useDispatch();
+
   let navigate = useNavigate()
-  const { user, Token } = useSelector((state) => state.auth)
 
-  console.log("User in side dashbord ", user);
-
-  const getUserData = async () => {
-    try {
-      if (Token) {
-        let res = await axios.post("http://localhost:3000/user/getUserDetails", {}, {
-          headers: {
-            Authorization: `Bearer ${Token}`,
-          }
-        })
-        // console.log("res in dashebord ", res.data?.user);
-        dispatch(setUser(res.data?.user));
-      }
-      else {
-        navigate("/login")
-        console.log("Token not found");
-      }
-    }
-    catch (error) {
-      console.error(error),
-        console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    getUserData();
-  }, [])
 
   const navigateInvigilatorList = () => {
     navigate('/tables')

@@ -31,11 +31,8 @@ const VenderLogin = async (req, res) => {
 
 const fetchVenderData = async (req, res) => {
   try {
-    const Venders = await Vender.find();
-    Venders.forEach(element => {
-      let password = element.password;
-    });
-    res.status(200).json(Venders);
+    const Venders = await Vender.find().populate("Contractor").exec();
+    res.status(200).json({success: true, data:Venders, message: "Data Fetch successfuly"});
   } catch (error) {
     console.error("Error fetching data:", error);
     res.status(500).json({ message: "Internal server error", error });
