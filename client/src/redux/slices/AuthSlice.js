@@ -3,9 +3,14 @@ import toast from "react-hot-toast";
 import { Navigate } from "react-router-dom";
 
 const initialState = {
-    user: null,
-    Token: localStorage.getItem("Token") ? JSON.parse(localStorage.getItem("Token")) : null,
-}
+  user: null,
+  Token: localStorage.getItem('Token')
+    ? JSON.parse(localStorage.getItem('Token'))
+    : null,
+  contractors: localStorage.getItem('contractors')
+    ? JSON.parse(localStorage.getItem('contractors'))
+    : null,
+};
 
 export const AuthSlice = createSlice({
     name: "Auth",
@@ -23,10 +28,13 @@ export const AuthSlice = createSlice({
             setToken(null)
             localStorage.removeItem("Token");
             console.log("logOut in slice");
+        },
+        setContractors(state,action) {
+            state.contractors = action.payload
         }
     })
 
 })
 
-export const {setUser, setToken, logOut} = AuthSlice.actions
+export const { setUser, setToken, logOut, setContractors } = AuthSlice.actions;
 export default AuthSlice.reducer

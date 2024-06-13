@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,createContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ImWrench } from "react-icons/im";
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import { IoPrint } from "react-icons/io5";
+import ECommerce from '../../pages/Dashboard/ECommerce';
+
+let Length = createContext()
 
 const TableOne = () => {
   let navigate = useNavigate();
@@ -34,8 +36,8 @@ const TableOne = () => {
 
     fetchInvigilators();
   }, []);
-    console.log('Contractor',invigilators)
-
+    console.log('length',invigilators.length)
+      
   const handleContractorList = (invigilators) => {
     navigate('/tabletwo', { state: { invigilators } });
   }
@@ -156,8 +158,13 @@ const TableOne = () => {
           </div>
         </div>
       )}
+      <Length.Provider value={invigilators.length}>
+        {/* <ECommerce/> */}
+      </Length.Provider>
     </div>
+    
   );
 };
 
 export default TableOne;
+export {Length}
