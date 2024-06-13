@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 const ContractorDetails = () => {
 
-  // const baseUrl = process.env.REACT_APP_API_BASE_URL
+  // const baseUrl = process.env.REACT_APP_API_BASE_UR
   const baseUrl = "https://crease-railway.onrender.com"
   const { qrcode } = useParams();
   const [contractorData, setContractorData] = useState(null);
@@ -13,8 +13,10 @@ const ContractorDetails = () => {
   const getUser = async () => {
     const toastId = toast.loading("Loading...")
     try {
-      let response = await axios.post(baseUrl+'/contractor/fetchcontractordata', { qrcode });
+      let response = await axios.post(baseUrl + '/contractor/fetchcontractordata', { qrcode });
+      
       setContractorData(response.data.user);
+      
     } catch (error) {
       console.error('Error fetching contractor data:', error);
     }
