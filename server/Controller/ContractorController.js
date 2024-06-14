@@ -17,51 +17,46 @@ const registerContractor = async (req, res) => {
     IsStationService,
     StationNames,
     PFPermitted,
-    LicenseeAadharNo,
-    trainList,
+    selectedTrains,
     sectionname,
     nameofstation,
   } = req.body;
-  try {
-    console.log("contractor back end ");
-    // if (
-    //   !agency ||
-    //   !typeofcontract ||
-    //   !ContractperiodFrom ||
-    //   !ContractperiodTo ||
-    //   !Licenseename ||
-    //   !Licenseecontactdetails ||
-    //   !VendorsPermitted ||
-    //   !LicenseFeesPaidUptoDate ||
-    //   !Authority ||
-    //   !IsStationService ||
-    //   !StationNames ||
-    //   !PFPermitted ||
-    //   !LicenseeAadharNo
-    // ) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "All Fields are Mandatory",
-    //   });
-    // }
-
-    console.log("kkkkk", req.body);
-    // Check for mandatory fields
-    // const mandatoryFields = [
-    //   "agency",
-    //   "typeofcontract",
-    //   "ContractperiodFrom",
-    //   "ContractperiodTo",
-    //   "Licenseename",
-    //   "Licenseecontactdetails",
-    //   "VendorsPermitted",
-    //   "LicenseFeesPaidUptoDate",
-    //   "Authority",
-    //   "IsStationService",
-    //   "StationNames",
-    //   "PFPermitted",
-    //   "LicenseeAadharNo",
-    // ];
+  try 
+  {
+    console.log("contractor back end ",req.body);
+    if (
+      !agency ||
+      !typeofcontract ||
+      !ContractperiodFrom ||
+      !ContractperiodTo ||
+      !Licenseename ||
+      !Licenseecontactdetails ||
+      !VendorsPermitted ||
+      !LicenseFeesPaidUptoDate ||
+      !Authority ||
+      !IsStationService ||
+      !StationNames ||
+      !PFPermitted
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "All Fields are Mandatory",
+      });
+    }
+    const mandatoryFields = [
+      "agency",
+      "typeofcontract",
+      "ContractperiodFrom",
+      "ContractperiodTo",
+      "Licenseename",
+      "Licenseecontactdetails",
+      "VendorsPermitted",
+      "LicenseFeesPaidUptoDate",
+      "Authority",
+      "IsStationService",
+      "StationNames",
+      "PFPermitted",
+    ];
 
     // for (let field of mandatoryFields) {
     //   if (!req.body[field]) {
@@ -81,23 +76,6 @@ const registerContractor = async (req, res) => {
     //   });
     // }
 
-    console.log("req.files ", req.files);
-
-    // If ProductImage Image is found, update it
-    let img = "";
-    if (req.files) {
-      // console.log("Product update")
-      const Image = req.files.productImage
-      const ProductImage = await uploadImageToCloudinary(
-        Image,
-        process.env.FOLDER_NAME
-      )
-      img = ProductImage.secure_url
-    }
-
-    console.log("img ", img);
-
-    // Create new contractor
     const newContractor = new Contractor({
       agency,
       category: typeofcontract,
@@ -112,12 +90,11 @@ const registerContractor = async (req, res) => {
       licence_fees_paid_upto: LicenseFeesPaidUptoDate,
       isStationService: IsStationService,
       authorityDocument: Authority,
-      LicenseeAadharNo,
-      trainList,
+      trainList : selectedTrains,
       sectionname,
     });
 
-    // const data = await newContractor.save();
+    const data = await newContractor.save();
     res.status(200).json({
       success: true,
       data,

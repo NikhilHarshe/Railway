@@ -31,9 +31,6 @@ const contractorSchema = new mongoose.Schema({
   licensee: {
     type: String,
   },
-  LicenseeAadharNo: {
-    type: String,
-  },
   Licensee_Contact_details: {
     type: Number,
   },
