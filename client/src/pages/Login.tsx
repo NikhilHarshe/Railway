@@ -35,7 +35,7 @@ export default function Login() {
     dispatch(setToken(user?.data.token));
     dispatch(setContractors(user?.data.contractors))
     localStorage.setItem("Token", JSON.stringify(user?.data.token))
-    localStorage.setItem("contractors", JSON.stringify(user?.data.contractors))
+    localStorage.setItem("contractors", JSON.stringify(user?.data.token))
     toast.success("Log in Successful");
     navigate("/dashboard")
   }

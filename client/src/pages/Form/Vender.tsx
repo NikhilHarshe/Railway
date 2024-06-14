@@ -94,7 +94,7 @@ const FormLayout = () => {
   });
 
   const options = {
-    apiKey: "public_12a1yyQ4Dbt9UDABRk4Budpc2L8v",
+    apiKey: "public_kW15c7QDZR7i1vmbhh26HXrTfHvb",
     maxFileCount: 1
   };
 

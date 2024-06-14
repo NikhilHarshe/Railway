@@ -3,15 +3,17 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import axios from 'axios';
 import { UploadButton } from '@bytescale/upload-widget-react';
 import { LiaCheckDoubleSolid } from 'react-icons/lia';
+import { MdOutlineCancel } from 'react-icons/md';
 
 export default function AddContractor() {
-  const baseUrl = "http://localhost:3000";
+  const baseUrl = 'http://localhost:3000';
   // const baseUrl = "https://railway-qbx4.onrender.com";
-  const clientUrl = "http://crease-railway-8njx.vercel.app";
+  const clientUrl = 'http://crease-railway-8njx.vercel.app';
 
-  const [Authority, setAuthority] = useState("");
-  const [fieldInput,setFieldInput] = useState(false)
-  const [staticfieldInput,setStaticFieldInput] = useState(false)
+  const [Authority, setAuthority] = useState('');
+  const [fieldInput, setFieldInput] = useState(false);
+  const [staticfieldInput, setStaticFieldInput] = useState(false);
+
   const [formData, setFormData] = useState({
     agency: '',
     typeofcontract: '',
@@ -19,11 +21,10 @@ export default function AddContractor() {
     ContractperiodTo: '',
     LicenseFeesPaidUptoDate: '',
     Licenseename: '',
-    LicenseeAadharNo: '',
+    // LicenseeAadharNo: '',
     Licenseecontactdetails: '',
     VendorsPermitted: '',
     IsStationService: false,
-    // StationName: '',
     Authority: '',
     PFPermitted: [],
     StationNames: [],
@@ -38,7 +39,10 @@ export default function AddContractor() {
 
   const handleStationChange = (index, field, value) => {
     const updatedStationNames = [...formData.StationNames];
-    updatedStationNames[index] = { ...updatedStationNames[index], [field]: value };
+    updatedStationNames[index] = {
+      ...updatedStationNames[index],
+      [field]: value,
+    };
     setFormData({ ...formData, StationNames: updatedStationNames });
   };
 
@@ -55,10 +59,12 @@ export default function AddContractor() {
     setFormData({ ...formData, StationNames: updatedStationNames });
   };
 
-
   const handlePFPermittedChange = (index, field, value) => {
     const updatedPFPermitted = [...formData.PFPermitted];
-    updatedPFPermitted[index] = { ...updatedPFPermitted[index], [field]: value };
+    updatedPFPermitted[index] = {
+      ...updatedPFPermitted[index],
+      [field]: value,
+    };
     setFormData({ ...formData, PFPermitted: updatedPFPermitted });
   };
 
@@ -77,10 +83,13 @@ export default function AddContractor() {
 
   const handleSave = async () => {
     try {
-      setAuthority(Authority)
+      setAuthority(Authority);
       if (formData) {
-        console.log("generatedData ", formData);
-        const response = await axios.post(baseUrl + '/contractor/registercontractor', formData);
+        console.log('generatedData ', formData);
+        const response = await axios.post(
+          baseUrl + '/contractor/registercontractor',
+          formData,
+        );
         if (response) {
           console.log(response);
           alert(`Data saved`);
@@ -92,44 +101,116 @@ export default function AddContractor() {
   };
 
   const options = {
-    apiKey: "public_12a1yyQ4Dbt9UDABRk4Budpc2L8v",
-    maxFileCount: 1
+    apiKey: 'public_kW15c7QDZR7i1vmbhh26HXrTfHvb',
+    maxFileCount: 1,
   };
 
   formData.Authority = Authority;
-  useEffect(() => (
-    handleDynamicInput(),
-    handleStaticInput()
-  ),[formData.typeofcontract])
+  useEffect(
+    () => (handleDynamicInput(), handleStaticInput()),
+    [formData.typeofcontract],
+  );
 
   const handleDynamicInput = () => {
-    if (formData.typeofcontract === 'On board Catering' || formData.typeofcontract === 'On board Non–Catering') {
-      setFieldInput(true)
-      setStaticFieldInput(false)
-      setFormData(prevFormData => ({
+    if (
+      formData.typeofcontract === 'On board Catering' ||
+      formData.typeofcontract === 'On board Non–Catering'
+    ) {
+      setFieldInput(true);
+      setStaticFieldInput(false);
+      setFormData((prevFormData) => ({
         ...prevFormData,
         sectionname: [],
-        trainList:[]
-      }))
-      console.log('pppppppppppp',formData)
+      }));
+      console.log('pppppppppppp', formData);
     }
-  }
+  };
 
   const handleStaticInput = () => {
     // alert('hi')
-    if (formData.typeofcontract === 'Static Unit' || formData.typeofcontract === 'PF permit') {
+    if (
+      formData.typeofcontract === 'Static Unit' ||
+      formData.typeofcontract === 'PF permit'
+    ) {
       setStaticFieldInput(true);
-      setFieldInput(false)
-      setFormData(prevFormData => ({
+      setFieldInput(false);
+      setFormData((prevFormData) => ({
         ...prevFormData,
-        nameofstation: []
-      }))
+        nameofstation: [],
+      }));
     }
-  }
+  };
 
   const handleTypeClick = () => {
-    console.log('lllllllllllllll',formData.typeofcontract)
-  }
+    console.log('lllllllllllllll', formData.typeofcontract);
+  };
+
+  const [isInputVisible, setInputVisible] = useState(false);
+  const [filter, setFilter] = useState('');
+  const [trainsName] = useState([
+    'Maharashtra_Exp',
+    'Puri_Surat_Weekly_SF_Express',
+    'Surat_Puri_Weekly_SF_Express',
+    'Hapa_Bilaspur_SF_Express',
+    'Prerana_Express',
+    'Hatia_Pune_SF_Express',
+    'Pune_Hatia_SF_Express',
+    'Shalimar_Mumbai_LTT_(Kurla)_Express.',
+    'Mumbai_LTT_Shalimar_(Kurla)_Express.',
+    'Malda_Town_Surat_Express.',
+    'Surat_Malda_Town_Express.',
+    'Bilaspur_Hapa_S_Express.',
+    'Vidarbha_SF_Express',
+    'Vidarbha_SF_Express',
+  ]);
+  const [selectedTrains, setSelectedTrains] = useState([]);
+
+  useEffect(() => {
+    console.log('Array of new train:', selectedTrains);
+  }, [selectedTrains]);
+
+  const toggleDropdown = () => {
+    setInputVisible(true);
+  };
+  const toggleDropdown2 = () => {
+    setInputVisible(false);
+  };
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+  };
+
+  const filteredOptions = trainsName.filter((option) =>
+    option.toLowerCase().includes(filter.toLowerCase()),
+  );
+
+  const handleTrainClick = (trainName) => {
+    setSelectedTrains((prevSelectedTrains) => [
+      ...prevSelectedTrains,
+      trainName,
+    ]);
+  };
+  const handleTrainRemove = (nameToRemove) => {
+    const updatedOptions = selectedTrains.filter(
+      (option) => !option.toLowerCase().includes(nameToRemove.toLowerCase()),
+    );
+    setSelectedTrains(updatedOptions);
+  };
+
+  const addTrains = () => {
+    setFormData((prevFormData) => ({
+        ...prevFormData,
+        selectedTrains: selectedTrains,
+      }));
+    }
+
+    
+  useEffect(() => {
+    addTrains();
+  }, [selectedTrains])
+
+  console.log("form data train :", formData);
+  
 
   return (
     <div>
@@ -150,14 +231,14 @@ export default function AddContractor() {
                   Register Contractor
                 </h3>
               </div>
-              <form >
+              <form>
                 <div className="p-6.5">
                   <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-
-                  {/* Contract allotting Agency */}
+                    {/* Contract allotting Agency */}
                     <div className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Contract allotting Agency <span className=' text-red-600 text-lg'>*</span>
+                        Contract allotting Agency{' '}
+                        <span className=" text-red-600 text-lg">*</span>
                       </label>
                       <select
                         name="agency"
@@ -165,14 +246,17 @@ export default function AddContractor() {
                         onChange={handleChange}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
-                        <option value="" disabled>Contract Allocating Agency</option>
+                        <option value="" disabled>
+                          Contract Allocating Agency
+                        </option>
                         <option value="Railway">Railway</option>
                         <option value="IRCTC">IRCTC</option>
                       </select>
                     </div>
                     <div onClick={handleTypeClick} className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Type of Contract <span className=' text-red-600 text-lg'>*</span>
+                        Type of Contract{' '}
+                        <span className=" text-red-600 text-lg">*</span>
                       </label>
                       <select
                         name="typeofcontract"
@@ -180,36 +264,69 @@ export default function AddContractor() {
                         onChange={handleChange}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
-                        <option value="" disabled>Type of Contract</option>
-                        <option onClick={handleDynamicInput} value="On board Catering">On board Catering</option>
-                        <option onClick={handleDynamicInput} value="On board Non–Catering">On board Non–Catering</option>
-                        <option onClick={handleStaticInput} value="PF permit">PF permit</option>
-                        <option onClick={handleStaticInput} value="Static Unit">Static Unit</option>
+                        <option value="" disabled>
+                          Type of Contract
+                        </option>
+                        <option
+                          onClick={handleDynamicInput}
+                          value="On board Catering"
+                        >
+                          On board Catering
+                        </option>
+                        <option
+                          onClick={handleDynamicInput}
+                          value="On board Non–Catering"
+                        >
+                          On board Non–Catering
+                        </option>
+                        <option onClick={handleStaticInput} value="PF permit">
+                          PF permit
+                        </option>
+                        <option onClick={handleStaticInput} value="Static Unit">
+                          Static Unit
+                        </option>
+                        <option onClick={handleStaticInput} value="Static Unit">
+                          Parking
+                        </option>
+                        <option onClick={handleStaticInput} value="Static Unit">
+                          Parcel Handling
+                        </option>
+                        <option onClick={handleStaticInput} value="Static Unit">
+                          Station Cleaning
+                        </option>
                       </select>
                     </div>
                   </div>
-                  {
-                    fieldInput &&
+                  {fieldInput && (
                     <div>
-                         <div className="w-full xl:w-1/2">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Section Names <span className=' text-red-600 text-lg'>*</span>
-                      </label>
-                      <select
-                        name="sectionname"
-                        value={formData.sectionname}
-                        onChange={handleChange}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      >
-                        <option value="" disabled>Type of Contract</option>
-                        <option  value="Nagpur to Betul">Nagpur to Betul</option>
-                        <option  value="Nagpur to Vardha">Nagpur to Vardha</option>
-                        <option value="Nagpur to Pune">Nagpur to Pune</option>
-                        <option value="Nagpur to Mumbai">Nagpur to Mumbai</option>
-                      </select>
-                    </div>
-                    
-                    <div className="w-full xl:w-1/2">
+                      <div className="w-full xl:w-1/2">
+                        <label className="mb-2.5 block text-black dark:text-white">
+                          Section Names{' '}
+                          <span className=" text-red-600 text-lg">*</span>
+                        </label>
+                        <select
+                          name="sectionname"
+                          value={formData.sectionname}
+                          onChange={handleChange}
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        >
+                          <option value="" disabled>
+                            Type of Contract
+                          </option>
+                          <option value="Nagpur to Betul">
+                            Nagpur to Betul
+                          </option>
+                          <option value="Nagpur to Vardha">
+                            Nagpur to Vardha
+                          </option>
+                          <option value="Nagpur to Pune">Nagpur to Pune</option>
+                          <option value="Nagpur to Mumbai">
+                            Nagpur to Mumbai
+                          </option>
+                        </select>
+                      </div>
+
+                      {/* <div className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
                         List of Trains <span className=' text-red-600 text-lg'>*</span>
                       </label>
@@ -227,13 +344,102 @@ export default function AddContractor() {
                         <option value="Sampta Express">Sampta Express</option>
                         <option value="Nagpur-Indore">Nagpur-Indore</option>
                       </select>
+                    </div> */}
+
+                      <div className="w-full gap-12 flex">
+                        <div>
+                          <p className="mb-2.5 block text-black dark:text-white pt-2">
+                            Train List
+                            <span className=" text-red-600 text-lg">*</span>
+                          </p>
+                          <div
+                            // className="dropdown border border-red-300 px-3 py-2"
+                            style={{
+                              position: 'relative',
+                              display: 'inline-block',
+                            }}
+                          >
+                            {/* <button
+                            onClick={toggleDropdown}
+                            style={{
+                              display: isInputVisible ? 'none' : 'inline-block',
+                            }}
+                          >
+                            Dropdown
+                          </button> */}
+                            <input
+                              type="text"
+                              value={filter}
+                              // value={formData.trainList}
+                              onChange={handleFilterChange}
+                              //  onChange={handleChange}
+                              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                              style={{
+                                display: true ? 'inline-block' : 'none',
+                              }}
+                              onFocus={toggleDropdown}
+                              // onMouseEnter={toggleDropdown}
+                              // onMouseLeave={toggleDropdown2}
+
+                              // onBlur={toggleDropdown2}
+                            />
+                            {isInputVisible && (
+                              <div
+                                onMouseEnter={toggleDropdown}
+                                onMouseLeave={toggleDropdown2}
+                                className="dropdown-content"
+                                style={{
+                                  display: 'block',
+                                  position: 'absolute',
+                                  backgroundColor: '#f9f9f9',
+                                  minWidth: '160px',
+                                  boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)',
+                                  zIndex: 1,
+                                }}
+                              >
+                                {filteredOptions.map((option, index) => (
+                                  <div
+                                    key={index}
+                                    onClick={() => handleTrainClick(option)}
+                                    style={{
+                                      color: 'black',
+                                      padding: '12px 16px',
+                                      textDecoration: 'none',
+                                      display: 'block',
+                                      cursor: 'pointer',
+                                    }}
+                                  >
+                                    {option}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div>
+                          <p className="mb-1 block text-black dark:text-white pt-3">
+                            Selected Trais{' '}
+                            <span className=" text-red-600 text-lg">*</span>
+                          </p>
+                          {selectedTrains.map((item) => (
+                            <p className=" flex align-middle items-center justify-between gap-3">
+                              {item}{' '}
+                              <MdOutlineCancel
+                                className=" text-red-500"
+                                onClick={() => handleTrainRemove(item)}
+                              />
+                            </p>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                   </div>
-                  }
-                  {staticfieldInput &&
-                   <div className="w-full xl:w-1/2">
+                  )}
+                  {staticfieldInput && (
+                    <div className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Names of Station<span className=' text-red-600 text-lg'>*</span>
+                        Names of Station
+                        <span className=" text-red-600 text-lg">*</span>
                       </label>
                       <select
                         name="typeofcontract"
@@ -241,18 +447,25 @@ export default function AddContractor() {
                         onChange={handleChange}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
-                        <option value="" disabled>Station Names</option>
-                        <option  value="Nagpur to Betul">Nagpur to Betul</option>
-                        <option  value="Nagpur to Vardha">Nagpur to Vardha</option>
+                        <option value="" disabled>
+                          Station Names
+                        </option>
+                        <option value="Nagpur to Betul">Nagpur to Betul</option>
+                        <option value="Nagpur to Vardha">
+                          Nagpur to Vardha
+                        </option>
                         <option value="Nagpur to Pune">Nagpur to Pune</option>
-                        <option value="Nagpur to Mumbai">Nagpur to Mumbai</option>
+                        <option value="Nagpur to Mumbai">
+                          Nagpur to Mumbai
+                        </option>
                       </select>
                     </div>
-                  }
+                  )}
                   {/* Contract Period From */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Contract Period From <span className=' text-red-600 text-lg'>*</span>
+                      Contract Period From{' '}
+                      <span className=" text-red-600 text-lg">*</span>
                     </label>
                     <input
                       type="date"
@@ -262,11 +475,11 @@ export default function AddContractor() {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-
                   {/* Contract Period To */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Contract Period To <span className=' text-red-600 text-lg'>*</span>
+                      Contract Period To{' '}
+                      <span className=" text-red-600 text-lg">*</span>
                     </label>
                     <input
                       type="date"
@@ -276,11 +489,11 @@ export default function AddContractor() {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-
                   {/* License Fees Paid Upto Date  */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      License Fees Paid Upto Date <span className=' text-red-600 text-lg'>*</span>
+                      License Fees Paid Upto Date{' '}
+                      <span className=" text-red-600 text-lg">*</span>
                     </label>
                     <input
                       type="date"
@@ -290,11 +503,11 @@ export default function AddContractor() {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-
                   {/* Licensee Name */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Licensee Name <span className=' text-red-600 text-lg'>*</span>
+                      Licensee Name{' '}
+                      <span className=" text-red-600 text-lg">*</span>
                     </label>
                     <input
                       type="text"
@@ -305,11 +518,11 @@ export default function AddContractor() {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-
                   {/* Licensee AadharNo */}
-                  <div className="mb-4.5">
+                  {/* <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Licensee Aadhar No. <span className=' text-red-600 text-lg'>*</span>
+                      Licensee Aadhar No.{' '}
+                      <span className=" text-red-600 text-lg">*</span>
                     </label>
                     <input
                       type="text"
@@ -322,12 +535,12 @@ export default function AddContractor() {
                       placeholder="Enter Licensee Name"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
-                  </div>
-
+                  </div> */}
                   {/* Licensee Contact Details */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Licensee Contact Details <span className=' text-red-600 text-lg'>*</span>
+                      Licensee Contact Details{' '}
+                      <span className=" text-red-600 text-lg">*</span>
                     </label>
                     <input
                       type="number"
@@ -338,31 +551,42 @@ export default function AddContractor() {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-
-
                   {/* Upload Authority Pic */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Upload Authority Pic <span className=' text-red-600 text-lg'>*</span>
+                      Upload Authority Pic{' '}
+                      <span className=" text-red-600 text-lg">*</span>
                     </label>
                     <UploadButton
                       options={options}
                       onComplete={(files) =>
-                        setAuthority(files.map((x) => x.fileUrl).join("\n"))
+                        setAuthority(files.map((x) => x.fileUrl).join('\n'))
                       }
                     >
-                      {({ onClick }) =>
-                        <button className={` border p-2 rounded ${Authority ? ("border-green-700") : ("pt-3")}`} onClick={onClick}>
-                          {Authority ? (<p className=' flex gap-2'>Uploaded <LiaCheckDoubleSolid className=' text-green-500 font-bold text-2xl' /></p>) : ("Upload a file...")}
+                      {({ onClick }) => (
+                        <button
+                          className={` border p-2 rounded ${
+                            Authority ? 'border-green-700' : 'pt-3'
+                          }`}
+                          onClick={onClick}
+                        >
+                          {Authority ? (
+                            <p className=" flex gap-2">
+                              Uploaded{' '}
+                              <LiaCheckDoubleSolid className=" text-green-500 font-bold text-2xl" />
+                            </p>
+                          ) : (
+                            'Upload a file...'
+                          )}
                         </button>
-                      }
+                      )}
                     </UploadButton>
                   </div>
-
                   {/* Vendors Permitted */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Vendors Permitted <span className=' text-red-600 text-lg'>*</span>
+                      Vendors Permitted{' '}
+                      <span className=" text-red-600 text-lg">*</span>
                     </label>
                     <input
                       type="number"
@@ -373,34 +597,56 @@ export default function AddContractor() {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-
                   {/* Is Station Service */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Is Station Service <span className=' text-red-600 text-lg'>*</span>
+                      Is Station Service{' '}
+                      <span className=" text-red-600 text-lg">*</span>
                     </label>
-                    <div className=' flex  gap-16'>
+                    <div className=" flex  gap-16">
                       <div>
-                        <input type="radio" id="stationServiceYes" name="IsStationService" value="Yes" checked={formData.IsStationService === "Yes"} style={{ accentColor: 'green' }} onChange={handleChange} className="mr-2 radiobtn" />
+                        <input
+                          type="radio"
+                          id="stationServiceYes"
+                          name="IsStationService"
+                          value="Yes"
+                          checked={formData.IsStationService === 'Yes'}
+                          style={{ accentColor: 'green' }}
+                          onChange={handleChange}
+                          className="mr-2 radiobtn"
+                        />
                         <label htmlFor="stationServiceYes">Yes</label>
                       </div>
                       <div>
-                        <input type="radio" id="stationServiceNo" name="IsStationService" value="No" checked={formData.IsStationService === "No"} style={{ accentColor: 'green' }} onChange={handleChange} className="mr-2" />
+                        <input
+                          type="radio"
+                          id="stationServiceNo"
+                          name="IsStationService"
+                          value="No"
+                          checked={formData.IsStationService === 'No'}
+                          style={{ accentColor: 'green' }}
+                          onChange={handleChange}
+                          className="mr-2"
+                        />
                         <label htmlFor="stationServiceNo">No</label>
                       </div>
                     </div>
                   </div>
 
+                  {/* Station Name */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Station Name <span className=' text-red-600 text-lg'>*</span>
+                      Station Name
+                      <span className=" text-red-600 text-lg">*</span>
                     </label>
                     {formData.StationNames.map((StationName, index) => (
                       <div key={index} className="mb-4 flex items-center">
                         <input
                           type="text"
                           value={StationName.SName}
-                          onChange={(e) => handleStationChange(index, 'SName', e.target.value)}
+                          onChange={(e) =>
+                            handleStationChange(index, 'SName', e.target.value)
+                          }
                           placeholder="Station Name"
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
@@ -422,20 +668,28 @@ export default function AddContractor() {
                     </button>
                   </div>
 
+                  {/* Platforms Permitted */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Platforms Permitted <span className=' text-red-600 text-lg'>*</span>
+                      Platforms Permitted
+                      <span className=" text-red-600 text-lg">*</span>
                     </label>
                     {formData.PFPermitted.map((PFPermitted, index) => (
                       <div key={index} className="mb-4 flex items-center">
                         <input
                           type="text"
                           value={PFPermitted.Platform}
-                          onChange={(e) => handlePFPermittedChange(index, 'PFPermitted', e.target.value)}
+                          onChange={(e) =>
+                            handlePFPermittedChange(
+                              index,
+                              'PFPermitted',
+                              e.target.value,
+                            )
+                          }
                           placeholder="Platform Name"
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
-                        
+
                         <button
                           type="button"
                           onClick={() => removePFPermitted(index)}
@@ -457,14 +711,15 @@ export default function AddContractor() {
               </form>
             </div>
 
-
             <div className="flex flex-col items-center">
               {/* <QRCode value={qrCodeValue} /> */}
-              <button onClick={handleSave} className="mt-4 inline-flex items-center justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+              <button
+                onClick={handleSave}
+                className="mt-4 inline-flex items-center justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
                 Save
               </button>
             </div>
-
           </div>
         </div>
       </DefaultLayout>

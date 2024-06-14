@@ -22,6 +22,7 @@ import VenderDetails from './pages/Form/VenderDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { setUser } from "./redux/slices/AuthSlice"
+import SortingTrainList from './pages/Form/SortingTrainList';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -98,6 +99,16 @@ function App() {
             <>
               {/* <PageTitle title="/" /> */}
               <ECommerce />
+            </>
+          }
+        />
+          <Route
+            // index
+        path="/train"
+          element={
+            <>
+              {/* <PageTitle title="/" /> */}
+              <SortingTrainList />
             </>
           }
         />
