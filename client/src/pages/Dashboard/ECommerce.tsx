@@ -21,29 +21,28 @@ const ECommerce: React.FC = () => {
   console.log('User in side dashbord ', user);
   const numOfContractors = contractors.length;
   // console.log('jjjjjjj', numOfContractors);
-
-  const getUserData = async () => {
-    try {
-      if (Token) {
-        let res = await axios.post(
-          'http://localhost:3000/user/getUserDetails',
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${Token}`,
+    const getUserData = async () => {
+      try {
+        if (Token) {
+          let res = await axios.post(
+            'http://localhost:3000/user/getUserDetails',
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${Token}`,
+              },
             },
-          },
-        );
-        // console.log("res in dashebord ", res.data?.user);
-        dispatch(setUser(res.data?.user));
-      } else {
-        navigate('/login');
-        console.log('Token not found');
+          );
+          // console.log("res in dashebord ", res.data?.user);
+          dispatch(setUser(res.data?.user));
+        } else {
+          navigate('/login');
+          console.log('Token not found');
+        }
+      } catch (error) {
+        console.error(error), console.log(error);
       }
-    } catch (error) {
-      console.error(error), console.log(error);
-    }
-  };
+    };
 
   useEffect(() => {
     getUserData();
