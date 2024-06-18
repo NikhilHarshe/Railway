@@ -7,9 +7,6 @@ const initialState = {
   Token: localStorage.getItem('Token')
     ? JSON.parse(localStorage.getItem('Token'))
     : null,
-  contractors: localStorage.getItem('contractors')
-    ? JSON.parse(localStorage.getItem('contractors'))
-    : null,
 };
 
 export const AuthSlice = createSlice({
@@ -29,9 +26,6 @@ export const AuthSlice = createSlice({
             localStorage.removeItem("Token");
             console.log("logOut in slice");
         },
-        setContractors(state,action) {
-            state.contractors = action.payload
-        }
     })
 
 })

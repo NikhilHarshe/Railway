@@ -1,15 +1,23 @@
 import { useState, useEffect, createContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ImWrench } from 'react-icons/im';
-import { RiDeleteBin5Fill } from 'react-icons/ri';
+
+import { ImWrench } from "react-icons/im";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import ECommerce from '../../pages/Dashboard/ECommerce';
+import { useDispatch } from 'react-redux';
+import {setIsEditContractor} from "../../redux/slices/ContractorSlice"
+
 
 let Length = createContext();
 
 const TableOne = () => {
+
+  const dispatch = useDispatch();
   const baseUrl = 'http://localhost:3000';
   // const baseUrl = "https://railway-qbx4.onrender.com";
   const clientUrl = 'http://crease-railway-8njx.vercel.app';
+
 
   let navigate = useNavigate();
   const [filteredInvigilators, setFilteredInvigilators] = useState([]);
@@ -23,7 +31,7 @@ const TableOne = () => {
   const handleDelete = async (_id) => {
     try {
       setShowDeleteConfirmation(false);
-      await axios.delete(`http://localhost:3000/contractor/delete/${_id}`);
+      await axios.delete(baseUrl + `/contractor/delete/${_id}`);
       setInvigilators(
         invigilators.filter((invigilator) => invigilator._id !== _id),
       );
@@ -36,7 +44,7 @@ const TableOne = () => {
     const fetchInvigilators = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:3000/contractor/fetchcontractordata',
+          baseUrl + '/contractor/fetchcontractordata',
         );
         setInvigilators(response.data);
       } catch (error) {
@@ -48,7 +56,7 @@ const TableOne = () => {
   }, []);
 
   const handleContractorList = (invigilator) => {
-    navigate('/tabletwo', { state: { invigilators } });
+    navigate('/tabletwo', { state: { invigilator } });
   };
 
   const handleDeleteClick = (_id) => {
@@ -237,7 +245,7 @@ const TableOne = () => {
               <button
                 title="Edit"
                 onClick={() =>
-                  navigate('/AddContractors', { state: { invigilator } })
+                  {navigate('/EditeContractors', { state: { invigilator } }); dispatch(setIsEditContractor(true))}
                 }
                 type="button"
                 className="px-6 py-2.5 rounded text-white text-sm tracking-wider font-semibold border-none outline-none bg-green-600 hover:bg-green-700 active:bg-green-600"
@@ -262,7 +270,7 @@ const TableOne = () => {
           <div className="bg-white p-8 rounded shadow-lg text-center">
             <h2 className="mb-4 text-lg font-bold">Confirm Deletion</h2>
             <p className="mb-4">
-              Are you sure you want to delete this invigilator?
+              Are you sure you want to delete this Contractor?
             </p>
             <div className="flex justify-center gap-4">
               <button

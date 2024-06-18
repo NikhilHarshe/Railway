@@ -11,8 +11,10 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Login from './pages/Login'
+import SignInN from "./pages/SignInN"
 import PrivateRoutes from './components/PrivateRoutes';
 import AddContractor from './pages/Form/AddContractor';
+import EditeContractor from './pages/Form/EditeContractor';
 import AddSeller from './pages/Form/AddSeller';
 import TableTwo from './components/Tables/TableTwo';
 import VendersTable from './components/Tables/VendersTable';
@@ -88,7 +90,7 @@ function App() {
           element={
             <>
               {/* <PageTitle title="/" /> */}
-              <Login />
+              <SignInN/>
             </>
           }
         />
@@ -138,6 +140,15 @@ function App() {
             <>
               <PageTitle title="Form Layout" />
               <AddContractor />
+            </>
+          }
+          />
+        <Route
+          path="/EditeContractors"
+          element={
+            <>
+              <PageTitle title="Edite Contractors Layout" />
+              <EditeContractor />
             </>
           }
           />
