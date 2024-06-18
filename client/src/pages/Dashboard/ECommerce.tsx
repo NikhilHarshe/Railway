@@ -12,6 +12,9 @@ import axios from 'axios';
 import { Length } from '../../components/Tables/TableOne';
 
 const ECommerce: React.FC = () => {
+  const baseUrl = 'http://localhost:3000';
+  // const baseUrl = "https://railway-qbx4.onrender.com";
+  const clientUrl = 'http://crease-railway-8njx.vercel.app';
   console.log('length', typeof length);
 
   const dispatch = useDispatch();
@@ -22,11 +25,12 @@ const ECommerce: React.FC = () => {
   console.log('User in side dashbord ', user);
   const numOfContractors = contractors?.length;
   // console.log('jjjjjjj', numOfContractors);
+
   const getUserData = async () => {
     try {
       if (Token) {
         let res = await axios.post(
-          'http://localhost:3000/user/getUserDetails',
+          baseUrl + '/user/getUserDetails',
           {},
           {
             headers: {

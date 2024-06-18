@@ -1,4 +1,3 @@
-
 const Contractor = require("../Schema/Contractor");
 const bcrypt = require("bcryptjs");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
@@ -132,6 +131,21 @@ const updateUser = async (req, res) => {
     res.status(500).json({ message: "Internal server error", error });
   }
 };
+const FetchAgency = async (req, res) => {
+  const agency = req.body.params.agency; 
+  console.log("oooo", agency);
+  try {
+
+    const users = await Contractor.findAll({ where: { agency } });
+    console.log("hi");
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error", error });
+  }
+};
 
 const deleteUser = async (req, res) => {
   const { id } = req.params; // Correctly read the parameter from req.params
@@ -184,11 +198,10 @@ const fetchContractorDataByQRCode = async (req, res) => {
   }
 };
 
-
-
 module.exports = {
   updateUser,
   deleteUser,
+  FetchAgency,
   registerContractor,
   fetchContractorDataByQRCode,
   saveQRCode,
