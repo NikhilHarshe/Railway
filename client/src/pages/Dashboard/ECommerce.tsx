@@ -107,7 +107,7 @@ const ECommerce: React.FC = () => {
           >
             <div className=' bg-white dark:bg-boxdark h-[9rem] '>
               <img  src={Image1} className="w-[45px] h-[45px] px-1 rounded-full py-1 text-black dark:text-white relative top-7 left-7 bg-[#F1F5F9] dark:bg-graydark  "/>
-              <p className='mt-12 ml-7 font-semibold text-black dark:text-white'>Contractors {numOfContractors}</p>
+              <p className='mt-12 ml-7 font-semibold text-black dark:text-white'>Contractors - {numOfContractors}</p>
             </div>
           </div>
           <div

@@ -56,7 +56,7 @@ const TableOne = () => {
   }, []);
 
   const handleContractorList = (invigilator) => {
-    navigate('/tabletwo', { state: { invigilators } });
+    navigate('/tabletwo', { state: { invigilator } });
   };
 
   const handleDeleteClick = (_id) => {
@@ -270,7 +270,7 @@ const TableOne = () => {
           <div className="bg-white p-8 rounded shadow-lg text-center">
             <h2 className="mb-4 text-lg font-bold">Confirm Deletion</h2>
             <p className="mb-4">
-              Are you sure you want to delete this invigilator?
+              Are you sure you want to delete this Contractor?
             </p>
             <div className="flex justify-center gap-4">
               <button
