@@ -16,33 +16,34 @@ const ECommerce: React.FC = () => {
 
   const dispatch = useDispatch();
   let navigate = useNavigate();
-  const { user, Token, contractors } = useSelector((state) => state.auth);
+  const { user, Token } = useSelector((state) => state.auth);
+  const { contractors } = useSelector((state) => state.contractor)
 
   console.log('User in side dashbord ', user);
-  const numOfContractors = contractors.length;
+  const numOfContractors = contractors?.length;
   // console.log('jjjjjjj', numOfContractors);
-    const getUserData = async () => {
-      try {
-        if (Token) {
-          let res = await axios.post(
-            'http://localhost:3000/user/getUserDetails',
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${Token}`,
-              },
+  const getUserData = async () => {
+    try {
+      if (Token) {
+        let res = await axios.post(
+          'http://localhost:3000/user/getUserDetails',
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${Token}`,
             },
-          );
-          // console.log("res in dashebord ", res.data?.user);
-          dispatch(setUser(res.data?.user));
-        } else {
-          navigate('/login');
-          console.log('Token not found');
-        }
-      } catch (error) {
-        console.error(error), console.log(error);
+          },
+        );
+        // console.log("res in dashebord ", res.data?.user);
+        dispatch(setUser(res.data?.user));
+      } else {
+        navigate('/login');
+        console.log('Token not found');
       }
-    };
+    } catch (error) {
+      console.error(error), console.log(error);
+    }
+  };
 
   useEffect(() => {
     getUserData();
@@ -80,16 +81,18 @@ const ECommerce: React.FC = () => {
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5 ">
           <div
             onClick={() => navigateInvigilatorList()}
-            className="list"
+            className="list "
             style={{
               cursor: 'pointer',
               color: 'black',
             }}
           >
-            <CardDataStats title="Admin">
-              <RiAdminLine className="w-[30px] h-[30px]" />
-            </CardDataStats>
+            <div className=' bg-white dark:bg-boxdark h-[9rem] '>
+              <RiAdminLine className="w-[45px] h-[45px] px-1 rounded-full py-1 text-black dark:text-white relative top-7 left-7 bg-[#F1F5F9] dark:bg-graydark" />
+              <p className='mt-12 ml-7 font-semibold text-black dark:text-white'>Admin</p>
+            </div>
           </div>
+
           <div
             onClick={() => navigateContractorList()}
             className="list"
@@ -98,10 +101,10 @@ const ECommerce: React.FC = () => {
               color: 'black',
             }}
           >
-            <CardDataStats title={`Contractors (${numOfContractors})`}>
-              <img src={Image1} />
-              {/* <p>{numOfContractors}</p> */}
-            </CardDataStats>
+            <div className=' bg-white dark:bg-boxdark h-[9rem] '>
+              <img  src={Image1} className="w-[45px] h-[45px] px-1 rounded-full py-1 text-black dark:text-white relative top-7 left-7 bg-[#F1F5F9] dark:bg-graydark  "/>
+              <p className='mt-12 ml-7 font-semibold text-black dark:text-white'>Contractors {numOfContractors}</p>
+            </div>
           </div>
           <div
             onClick={() => navigate('/venderstable')}
@@ -111,9 +114,10 @@ const ECommerce: React.FC = () => {
               color: 'black',
             }}
           >
-            <CardDataStats title="Vendors">
-              <img src={Image2} />
-            </CardDataStats>
+             <div className=' bg-white dark:bg-boxdark h-[9rem] '>
+              <img  src={Image2} className="w-[45px] h-[45px] px-1 rounded-full py-1 text-black dark:text-white relative top-7 left-7 bg-[#F1F5F9] dark:bg-graydark  "/>
+              <p className='mt-12 ml-7 font-semibold text-black dark:text-white'>Vendor </p>
+            </div>
           </div>
         </div>
       </>

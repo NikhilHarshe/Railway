@@ -4,8 +4,16 @@ import axios from 'axios';
 import { UploadButton } from '@bytescale/upload-widget-react';
 import { LiaCheckDoubleSolid } from 'react-icons/lia';
 import { MdOutlineCancel } from 'react-icons/md';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 export default function AddContractor() {
+  const {isEditContractor} = useSelector(state => state.contractor) 
+  const location = useLocation();
+  const { invigilator } = location.state || {};
+  console.log("invigilator data ",invigilator);
+
+  console.log("isEdite contrcator ", isEditContractor);
   const baseUrl = 'http://localhost:3000';
   // const baseUrl = "https://railway-qbx4.onrender.com";
   const clientUrl = 'http://crease-railway-8njx.vercel.app';

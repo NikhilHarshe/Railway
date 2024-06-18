@@ -2,7 +2,8 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {setUser, setToken, setContractors} from "../redux/slices/AuthSlice"
+import {setUser, setToken} from "../redux/slices/AuthSlice"
+import {setContractors} from "../redux/slices/ContractorSlice"
 import toast from 'react-hot-toast';
 
 
@@ -35,7 +36,7 @@ export default function Login() {
     dispatch(setToken(user?.data.token));
     dispatch(setContractors(user?.data.contractors))
     localStorage.setItem("Token", JSON.stringify(user?.data.token))
-    localStorage.setItem("contractors", JSON.stringify(user?.data.token))
+    localStorage.setItem("contractors", JSON.stringify(user?.data.contractors))
     toast.success("Log in Successful");
     navigate("/dashboard")
   }

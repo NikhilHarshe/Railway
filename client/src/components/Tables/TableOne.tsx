@@ -4,10 +4,13 @@ import axios from 'axios';
 import { ImWrench } from "react-icons/im";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import ECommerce from '../../pages/Dashboard/ECommerce';
+import { useDispatch } from 'react-redux';
+import {setIsEditContractor} from "../../redux/slices/ContractorSlice"
 
 let Length = createContext()
 
 const TableOne = () => {
+  const dispatch = useDispatch();
   let navigate = useNavigate();
   const [invigilators, setInvigilators] = useState([]);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -138,7 +141,7 @@ const TableOne = () => {
               <button
                 title="Edit"
                 onClick={() =>
-                  navigate('/AddContractors', { state: { invigilator } })
+                  {navigate('/EditeContractors', { state: { invigilator } }); dispatch(setIsEditContractor(true))}
                 }
                 type="button"
                 className="px-6 py-2.5 rounded text-white text-sm tracking-wider font-semibold border-none outline-none bg-green-600 hover:bg-green-700 active:bg-green-600"

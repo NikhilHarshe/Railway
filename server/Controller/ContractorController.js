@@ -98,7 +98,7 @@ const registerContractor = async (req, res) => {
     res.status(200).json({
       success: true,
       data,
-      img,
+      // img,
       message: "Contractor registered successfully",
     });
 
