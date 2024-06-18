@@ -1,6 +1,6 @@
 const Contractor = require("../Schema/Contractor");
 const bcrypt = require("bcryptjs");
-const { uploadImageToCloudinary } = require("../utils/imageUploader");
+// const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 const registerContractor = async (req, res) => {
   const {
@@ -56,24 +56,6 @@ const registerContractor = async (req, res) => {
       "StationNames",
       "PFPermitted",
     ];
-
-    // for (let field of mandatoryFields) {
-    //   if (!req.body[field]) {
-    //     return res
-    //       .status(400)
-    //       .json({ success: false, message: `Field ${field} is mandatory` });
-    //   }
-    // }
-
-    // Check for duplicate contractor
-    // const userExist = await Contractor.findOne({ LicenseeAadharNo });
-    // if (userExist) {
-    //   return res.status(402).json({
-    //     ExistingContractor: userExist,
-    //     success: false,
-    //     message: "User already exists",
-    //   });
-    // }
 
     const newContractor = new Contractor({
       agency,
@@ -131,24 +113,10 @@ const updateUser = async (req, res) => {
     res.status(500).json({ message: "Internal server error", error });
   }
 };
-const FetchAgency = async (req, res) => {
-  const agency = req.body.params.agency; 
-  console.log("oooo", agency);
-  try {
 
-    const users = await Contractor.findAll({ where: { agency } });
-    console.log("hi");
-    if (!users || users.length === 0) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ message: "Internal server error", error });
-  }
-};
 
 const deleteUser = async (req, res) => {
-  const { id } = req.params; // Correctly read the parameter from req.params
+  const { id } = req.params; 
   console.log("Deleting user with ID:", id);
   try {
     const user = await Contractor.findByIdAndDelete(id);
@@ -201,7 +169,6 @@ const fetchContractorDataByQRCode = async (req, res) => {
 module.exports = {
   updateUser,
   deleteUser,
-  FetchAgency,
   registerContractor,
   fetchContractorDataByQRCode,
   saveQRCode,
