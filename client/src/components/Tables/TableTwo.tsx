@@ -30,11 +30,10 @@ const TableTwo = () => {
 
   return (
     <DefaultLayout>
-<<<<<<< HEAD
+
       <div style={{ overflowX: 'auto', width: '1290px' }} className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-=======
+
       <div style={{ overflowX: 'auto', width: '1189px' }} className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
->>>>>>> 983c64a870492291bdcddc7b94b60ab04657260b
         <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
           Venders
         </h4>
@@ -133,7 +132,8 @@ const TableTwo = () => {
               : (<div className=" text-center text-white text-2xl py-6">Venders not Found</div>)
           }
         </div>
-      </div>
+        </div>
+        </div>
     </DefaultLayout>
   );
 };
