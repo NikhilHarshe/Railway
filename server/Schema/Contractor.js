@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const autoIncrement = require('mongoose-auto-increment')
+const autoIncrement = require("mongoose-auto-increment");
 
 const counterSchema = new mongoose.Schema({
   _id: { type: String, required: true },
@@ -37,9 +37,9 @@ const contractorSchema = new mongoose.Schema({
   vendors_permitted: {
     type: Number,
   },
-  IsStationService: {
-    type: Boolean,
-  },
+  // IsStationService: {
+  //   type: Boolean,
+  // },
   authorityDocument: {
     type: String,
   },

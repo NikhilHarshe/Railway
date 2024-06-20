@@ -13,7 +13,7 @@ export default function AddContractor() {
   const { invigilator } = location.state || {};
   console.log("invigilator data ", invigilator);
 
-  console.log("isEdite contrcator ", isEditContractor);
+  console.log('isEdite contrcator ', isEditContractor);
   const baseUrl = 'http://localhost:3000';
   // const baseUrl = "https://railway-qbx4.onrender.com";
   const clientUrl = 'http://crease-railway-8njx.vercel.app';
@@ -36,6 +36,10 @@ export default function AddContractor() {
     AutherityDoc: null,
     PFPermitted: [],
     StationNames: [],
+    // IsStationService: false,
+    Authority: '',
+    // PFPermitted: [],
+    // StationNames: [],
   });
 
   const [generatedData, setGeneratedData] = useState(null);
@@ -54,14 +58,14 @@ export default function AddContractor() {
 
   };
 
-  const handleStationChange = (index, field, value) => {
-    const updatedStationNames = [...formData.StationNames];
-    updatedStationNames[index] = {
-      ...updatedStationNames[index],
-      [field]: value,
-    };
-    setFormData({ ...formData, StationNames: updatedStationNames });
-  };
+  // const handleStationChange = (index, field, value) => {
+  //   const updatedStationNames = [...formData.StationNames];
+  //   updatedStationNames[index] = {
+  //     ...updatedStationNames[index],
+  //     [field]: value,
+  //   };
+  //   setFormData({ ...formData, StationNames: updatedStationNames });
+  // };
 
   const addStation = () => {
     setFormData({
@@ -112,6 +116,7 @@ export default function AddContractor() {
             }
           }
         );
+        console.log('qazwsxedcrfvtgbyhnujmi','nameofstation' in formData);
         if (response) {
           console.log(response);
           alert(`Data saved`);
@@ -146,15 +151,15 @@ export default function AddContractor() {
       console.log('pppppppppppp', formData);
     }
   };
-
-  const handleStaticInput = () => {
-    // alert('hi')
+let nameofstation;
+  const handleStaticInput = (a) => {
     if (
       formData.typeofcontract === 'Static Unit' ||
       formData.typeofcontract === 'PF permit'
     ) {
       setStaticFieldInput(true);
       setFieldInput(false);
+      console.log('sssss', a);
       setFormData((prevFormData) => ({
         ...prevFormData,
         nameofstation: [],
@@ -224,14 +229,12 @@ export default function AddContractor() {
       selectedTrains: selectedTrains,
     }));
   }
-
-
+  };
   useEffect(() => {
     addTrains();
-  }, [selectedTrains])
+  }, [selectedTrains]);
 
   console.log("form data train :", formData);
-
 
   return (
     <div>
@@ -332,7 +335,7 @@ export default function AddContractor() {
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         >
                           <option value="" disabled>
-                            Type of Contract
+                            Enter Section
                           </option>
                           <option value="Nagpur to Betul">
                             Nagpur to Betul
@@ -347,26 +350,6 @@ export default function AddContractor() {
                         </select>
                       </div>
 
-                      {/* <div className="w-full xl:w-1/2">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        List of Trains <span className=' text-red-600 text-lg'>*</span>
-                      </label>
-                      <select
-                        name="trainList"
-                        value={formData.trainList}
-                        onChange={handleChange}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      >
-                        <option value="" disabled>Type of Contract</option>
-                        <option  value="Gondwana">Gondwana</option>
-                            <option value="Grand-Trank">
-                              Grand-trank
-                        </option>
-                        <option value="Sampta Express">Sampta Express</option>
-                        <option value="Nagpur-Indore">Nagpur-Indore</option>
-                      </select>
-                    </div> */}
-
                       <div className="w-full gap-12 flex">
                         <div>
                           <p className="mb-2.5 block text-black dark:text-white pt-2">
@@ -380,14 +363,6 @@ export default function AddContractor() {
                               display: 'inline-block',
                             }}
                           >
-                            {/* <button
-                            onClick={toggleDropdown}
-                            style={{
-                              display: isInputVisible ? 'none' : 'inline-block',
-                            }}
-                          >
-                            Dropdown
-                          </button> */}
                             <input
                               type="text"
                               value={filter}
@@ -463,22 +438,19 @@ export default function AddContractor() {
                         <span className=" text-red-600 text-lg">*</span>
                       </label>
                       <select
-                        name="typeofcontract"
-                        value={formData.typeofcontract}
+                        name="nameofstation"
+                        value={formData.nameofstation}
                         onChange={handleChange}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
                         <option value="" disabled>
                           Station Names
                         </option>
-                        <option value="Nagpur to Betul">Nagpur to Betul</option>
-                        <option value="Nagpur to Vardha">
-                          Nagpur to Vardha
-                        </option>
-                        <option value="Nagpur to Pune">Nagpur to Pune</option>
-                        <option value="Nagpur to Mumbai">
-                          Nagpur to Mumbai
-                        </option>
+                        <option value="Ballarshah">Ballarshah</option>
+                        <option value="Ajni">Ajni</option>
+                        <option value="Chandur">Chandur</option>
+                        <option value="Katol">Katol</option>
+                        <option value="Bordhai">Bordhai</option>
                       </select>
                     </div>
                   )}
@@ -539,25 +511,6 @@ export default function AddContractor() {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-                  {/* Licensee AadharNo */}
-                  {/* <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Licensee Aadhar No.{' '}
-                      <span className=" text-red-600 text-lg">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="LicenseeAadharNo"
-                      value={formData.LicenseeAadharNo}
-                      onChange={handleChange}
-                      maxLength={12}
-                      minLength={12}
-                      pattern="[0-9]*"
-                      placeholder="Enter Licensee Name"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div> */}
-                  {/* Licensee Contact Details */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
                       Licensee Contact Details{' '}
@@ -628,122 +581,10 @@ export default function AddContractor() {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-                  {/* Is Station Service */}
-                  <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Is Station Service{' '}
-                      <span className=" text-red-600 text-lg">*</span>
-                    </label>
-                    <div className=" flex  gap-16">
-                      <div>
-                        <input
-                          type="radio"
-                          id="stationServiceYes"
-                          name="IsStationService"
-                          value="Yes"
-                          checked={formData.IsStationService === 'Yes'}
-                          style={{ accentColor: 'green' }}
-                          onChange={handleChange}
-                          className="mr-2 radiobtn"
-                        />
-                        <label htmlFor="stationServiceYes">Yes</label>
-                      </div>
-                      <div>
-                        <input
-                          type="radio"
-                          id="stationServiceNo"
-                          name="IsStationService"
-                          value="No"
-                          checked={formData.IsStationService === 'No'}
-                          style={{ accentColor: 'green' }}
-                          onChange={handleChange}
-                          className="mr-2"
-                        />
-                        <label htmlFor="stationServiceNo">No</label>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Station Name */}
-                  <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Station Name
-                      <span className=" text-red-600 text-lg">*</span>
-                    </label>
-                    {formData.StationNames.map((StationName, index) => (
-                      <div key={index} className="mb-4 flex items-center">
-                        <input
-                          type="text"
-                          value={StationName.SName}
-                          onChange={(e) =>
-                            handleStationChange(index, 'SName', e.target.value)
-                          }
-                          placeholder="Station Name"
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => removeStation(index)}
-                          className="ml-2 text-red-500 hover:text-red-700"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={addStation}
-                      className="mt-2 inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                      Add Station
-                    </button>
-                  </div>
-
-                  {/* Platforms Permitted */}
-                  <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Platforms Permitted
-                      <span className=" text-red-600 text-lg">*</span>
-                    </label>
-                    {formData.PFPermitted.map((PFPermitted, index) => (
-                      <div key={index} className="mb-4 flex items-center">
-                        <input
-                          type="text"
-                          value={PFPermitted.Platform}
-                          onChange={(e) =>
-                            handlePFPermittedChange(
-                              index,
-                              'PFPermitted',
-                              e.target.value,
-                            )
-                          }
-                          placeholder="Platform Name"
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        />
-
-                        <button
-                          type="button"
-                          onClick={() => removePFPermitted(index)}
-                          className="ml-2 text-red-500 hover:text-red-700"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={addPFPermitted}
-                      className="mt-2 inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                      Add Platform
-                    </button>
-                  </div>
                 </div>
               </form>
             </div>
-
             <div className="flex flex-col items-center">
-              {/* <QRCode value={qrCodeValue} /> */}
               <button
                 onClick={handleSave}
                 className="mt-4 inline-flex items-center justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"

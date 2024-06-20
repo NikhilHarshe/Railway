@@ -14,44 +14,49 @@ const registerContractor = async (req, res) => {
     VendorsPermitted,
     LicenseFeesPaidUptoDate,
     Authority,
-    IsStationService,
-    StationNames,
-    PFPermitted,
+    // IsStationService,
+    // StationNames,
+    // PFPermitted,
     selectedTrains,
     sectionname,
     nameofstation,
   } = req.body;
-  try {
-
-    console.log("contractor back end ", req.body);
-    console.log("contractor back end files ", req.files);
-    // if (
-    //   !agency ||
-    //   !typeofcontract ||
-    //   !ContractperiodFrom ||
-    //   !ContractperiodTo ||
-    //   !Licenseename ||
-    //   !Licenseecontactdetails ||
-    //   !VendorsPermitted ||
-    //   !LicenseFeesPaidUptoDate ||
-    //   !Authority ||
-    //   !IsStationService ||
-    //   !StationNames ||
-    //   !PFPermitted
-    // ) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "All Fields are Mandatory",
-    //   });
-    // }
-    let imgUrl = ""
-    if (req.files) {
-      const file = req.files.AutherityDoc;
-      const fileName = process.env.FOLDER_NAME;
-      const response = await uploadImageToCloudinary(file, fileName);
-      console.log("responces ", response)
-      imgUrl = response?.secure_url
+  try 
+  {
+    console.log("contractor back end ",req.body);
+    if (
+      !agency ||
+      !typeofcontract ||
+      !ContractperiodFrom ||
+      !ContractperiodTo ||
+      !Licenseename ||
+      !Licenseecontactdetails ||
+      !VendorsPermitted ||
+      !LicenseFeesPaidUptoDate ||
+      !Authority ||
+      !IsStationService ||
+      !StationNames ||
+      !PFPermitted
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "All Fields are Mandatory",
+      });
     }
+    const mandatoryFields = [
+      "agency",
+      "typeofcontract",
+      "ContractperiodFrom",
+      "ContractperiodTo",
+      "Licenseename",
+      "Licenseecontactdetails",
+      "VendorsPermitted",
+      "LicenseFeesPaidUptoDate",
+      "Authority",
+      "IsStationService",
+      "StationNames",
+      "PFPermitted",
+    ];
 
     const newContractor = new Contractor({
       agency,
@@ -62,13 +67,14 @@ const registerContractor = async (req, res) => {
       licence_fees_paid_upto: LicenseFeesPaidUptoDate,
       Licensee_Contact_details: Licenseecontactdetails,
       vendors_permitted: VendorsPermitted,
-      stationName: StationNames,
-      pfPermitted: PFPermitted,
+      // stationName: StationNames,
+      // pfPermitted: PFPermitted,
       licence_fees_paid_upto: LicenseFeesPaidUptoDate,
       isStationService: IsStationService,
-      authorityDocument: imgUrl,
-      trainList: selectedTrains,
+      authorityDocument: Authority,
+      trainList : selectedTrains,
       sectionname,
+      nameofstation,
     });
 
     const data = await newContractor.save();
@@ -78,14 +84,14 @@ const registerContractor = async (req, res) => {
       // img,
       message: "Contractor registered successfully",
     });
-
+    
   } catch (error) {
     console.error("Error saving contractor:", error);
     res
       .status(500)
       .json({ success: false, message: "Internal server error", error });
   }
-}
+};
 
 const updateUser = async (req, res) => {
   const { email, name, gender, mobile, password } = req.body;
@@ -109,7 +115,6 @@ const updateUser = async (req, res) => {
     res.status(500).json({ message: "Internal server error", error });
   }
 };
-
 
 const deleteUser = async (req, res) => {
   const { id } = req.params;
