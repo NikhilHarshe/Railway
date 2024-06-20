@@ -9,7 +9,6 @@ import ECommerce from './pages/Dashboard/ECommerce';
 import FormLayout from './pages/Form/Vender';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
-import Tables from './pages/Tables';
 import Login from './pages/Login'
 import SignInN from "./pages/SignInN"
 import PrivateRoutes from './components/PrivateRoutes';
@@ -25,6 +24,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { setUser } from "./redux/slices/AuthSlice"
 import SortingTrainList from './pages/Form/SortingTrainList';
+import TableOne from './components/Tables/TableOne';
+import ImgUpload from './pages/Dashboard/ImgUpload';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -78,25 +79,25 @@ function App() {
           index
           element={
             <>
-            <PrivateRoutes><PageTitle title="Railway Dashboard" /> </PrivateRoutes>   
-             <PrivateRoutes> <ECommerce /> </PrivateRoutes> 
-            
+              <PrivateRoutes><PageTitle title="Railway Dashboard" /> </PrivateRoutes>
+              <PrivateRoutes> <ECommerce /> </PrivateRoutes>
+
             </>
           }
         />
-          <Route
-            // index
-        path="/login"
+        <Route
+          // index
+          path="/login"
           element={
             <>
               {/* <PageTitle title="/" /> */}
-              <SignInN/>
+              <SignInN />
             </>
           }
         />
-          <Route
-            // index
-        path="/dashboard"
+        <Route
+          // index
+          path="/dashboard"
           element={
             <>
               {/* <PageTitle title="/" /> */}
@@ -104,9 +105,9 @@ function App() {
             </>
           }
         />
-          <Route
-            // index
-        path="/train"
+        <Route
+          // index
+          path="/train"
           element={
             <>
               {/* <PageTitle title="/" /> */}
@@ -123,7 +124,7 @@ function App() {
             </>
           }
         />
-        
+
         <Route
           path="/AddInvigilator"
           element={
@@ -142,7 +143,7 @@ function App() {
               <AddContractor />
             </>
           }
-          />
+        />
         <Route
           path="/EditeContractors"
           element={
@@ -151,22 +152,22 @@ function App() {
               <EditeContractor />
             </>
           }
-          />
+        />
         {
           user?.Role === "SuperAdmin" ? (
             <Route
-          path="/admin"
-          element={
-            <>
-              <PageTitle title="Form Layout" />
-              <Admin />
-            </>
-          }
-          />
+              path="/admin"
+              element={
+                <>
+                  <PageTitle title="Form Layout" />
+                  <Admin />
+                </>
+              }
+            />
           ) :
-           ("")
+            ("")
         }
-          <Route
+        <Route
           path="/AddSeller"
           element={
             <>
@@ -176,20 +177,29 @@ function App() {
           }
         />
         <Route
-          path="/tables"
+          path="/contractortables"
           element={
             <>
-              <PageTitle title="Tables" />
-              <Tables />
+              <PageTitle title="ContractorTables" />
+              <TableOne />
             </>
           }
         />
         <Route
-          path="/tabletwo"
+          path="/vendorsData"
           element={
             <>
-              <PageTitle title="TableTwo" />
+              <PageTitle title="VendersData" />
               <TableTwo />
+            </>
+          }
+        />
+        <Route
+          path="/img"
+          element={
+            <>
+              <PageTitle title="img" />
+              <ImgUpload />
             </>
           }
         />
@@ -198,7 +208,7 @@ function App() {
           element={
             <>
               <PageTitle title="VendersTable" />
-              <VendersTable />
+              <TableTwo />
             </>
           }
         />
@@ -233,7 +243,7 @@ function App() {
           path="/contractorDetails/:qrcode"
           element={
             <>
-              <ContractorDetails/>
+              <ContractorDetails />
             </>
           }
         />
@@ -242,7 +252,7 @@ function App() {
           path="/venderDetails/:qrcode"
           element={
             <>
-              <VenderDetails/>
+              <VenderDetails />
             </>
           }
         />

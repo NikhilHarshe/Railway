@@ -1,6 +1,7 @@
 const Vender = require("../Schema/Vendor");
 const Contractor = require("../Schema/Contractor")
 const bcrypt = require("bcryptjs");
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 const VenderLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -166,6 +167,28 @@ const deleteVender = async (req, res) => {
   }
 };
 
+const fileUpload = async (req, res) => {
+  try{
+    console.log("Inside function ")
+    const file = req.files.file;
+    console.log("img ", req.files.file);
+    const fileName = process.env.FOLDER_NAME;
+    const response = await uploadImageToCloudinary(file, fileName);
+    console.log("res : ", response);
+    res.status(200).json({
+      success: true,
+      message: "Image uploded Successfully",
+    })
+  }
+  catch(error) {
+    console.error(error),
+    res.status(400).json({
+      success: false,
+      message: "Internal Server error",
+    })
+  }
+}
+
 
 module.exports = {
   fetchVenderData,
@@ -174,4 +197,5 @@ module.exports = {
   registerVendor,
   updateVender,
   deleteVender,
+  fileUpload,
 };

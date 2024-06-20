@@ -57,7 +57,7 @@ const ECommerce: React.FC = () => {
     // navigate('/tables')
   };
   const navigateContractorList = () => {
-    navigate('/tables');
+    navigate('/contractortables');
   };
   const navigateSellerList = () => {
     alert('Seller');
