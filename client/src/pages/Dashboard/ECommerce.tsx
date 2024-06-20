@@ -78,7 +78,7 @@ const ECommerce: React.FC = () => {
             className="mb-[200px] text-center"
             style={{ fontSize: '40px', fontWeight: 'bold' }}
           >
-            SYSTEM NGP_CR
+            SYSTEM NGP-CR
             {/* Nagpur Railways */}
           </h4>
         </div>

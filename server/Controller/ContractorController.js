@@ -13,16 +13,15 @@ const registerContractor = async (req, res) => {
     VendorsPermitted,
     LicenseFeesPaidUptoDate,
     Authority,
-    IsStationService,
-    StationNames,
-    PFPermitted,
+    // IsStationService,
+    // StationNames,
+    // PFPermitted,
     selectedTrains,
     sectionname,
     nameofstation,
   } = req.body;
-  try 
-  {
-    console.log("contractor back end ",req.body);
+  try {
+    console.log("contractor back end ", req.body);
     if (
       !agency ||
       !typeofcontract ||
@@ -33,9 +32,10 @@ const registerContractor = async (req, res) => {
       !VendorsPermitted ||
       !LicenseFeesPaidUptoDate ||
       !Authority ||
-      !IsStationService ||
-      !StationNames ||
-      !PFPermitted
+      !nameofstation
+      // !IsStationService ||
+      // !StationNames ||
+      // !PFPermitted
     ) {
       return res.status(400).json({
         success: false,
@@ -52,9 +52,9 @@ const registerContractor = async (req, res) => {
       "VendorsPermitted",
       "LicenseFeesPaidUptoDate",
       "Authority",
-      "IsStationService",
-      "StationNames",
-      "PFPermitted",
+      // "IsStationService",
+      // "StationNames",
+      // "PFPermitted",
     ];
 
     const newContractor = new Contractor({
@@ -66,13 +66,14 @@ const registerContractor = async (req, res) => {
       licence_fees_paid_upto: LicenseFeesPaidUptoDate,
       Licensee_Contact_details: Licenseecontactdetails,
       vendors_permitted: VendorsPermitted,
-      stationName: StationNames,
-      pfPermitted: PFPermitted,
+      // stationName: StationNames,
+      // pfPermitted: PFPermitted,
       licence_fees_paid_upto: LicenseFeesPaidUptoDate,
-      isStationService: IsStationService,
+      // isStationService: IsStationService,
       authorityDocument: Authority,
-      trainList : selectedTrains,
+      trainList: selectedTrains,
       sectionname,
+      nameofstation,
     });
 
     const data = await newContractor.save();
@@ -82,14 +83,14 @@ const registerContractor = async (req, res) => {
       // img,
       message: "Contractor registered successfully",
     });
-
+    
   } catch (error) {
     console.error("Error saving contractor:", error);
     res
       .status(500)
       .json({ success: false, message: "Internal server error", error });
   }
-}
+};
 
 const updateUser = async (req, res) => {
   const { email, name, gender, mobile, password } = req.body;
@@ -114,9 +115,8 @@ const updateUser = async (req, res) => {
   }
 };
 
-
 const deleteUser = async (req, res) => {
-  const { id } = req.params; 
+  const { id } = req.params;
   console.log("Deleting user with ID:", id);
   try {
     const user = await Contractor.findByIdAndDelete(id);

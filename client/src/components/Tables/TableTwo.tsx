@@ -30,12 +30,9 @@ const TableTwo = () => {
 
   return (
     <DefaultLayout>
-
-      <div style={{ overflowX: 'auto', width: '1290px' }} className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-
       <div style={{ overflowX: 'auto', width: '1189px' }} className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-          Venders
+          Vendors
         </h4>
         <div className="flex flex-col">
           <div className="grid grid-cols-7 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-7">
@@ -131,7 +128,6 @@ const TableTwo = () => {
               )
               : (<div className=" text-center text-white text-2xl py-6">Venders not Found</div>)
           }
-        </div>
         </div>
         </div>
     </DefaultLayout>
