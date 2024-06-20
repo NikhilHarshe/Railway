@@ -7,6 +7,7 @@ const {
   registerVendor,
   updateVender,
   deleteVender,
+  fileUpload,
 } = require("../Controller/VendorController");
 
 router.get("/fetchVenderData", fetchVenderData);
@@ -15,6 +16,7 @@ router.post("/Venderlogin", VenderLogin);
 router.post("/registerVendor", registerVendor);
 router.put("/updateVender/", updateVender); 
 router.delete("/deleteVender/:email", deleteVender);
+router.post("/imgUploade", fileUpload);
 
 module.exports = router;
 

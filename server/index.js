@@ -33,7 +33,7 @@ app.use(
 );
 
 //localhost:5173/127.0.0.1:3000/contractor/fetchcontractordata/0UBYCF
-http: connectDB();
+connectDB();
 
 
 cloudinaryConnect();

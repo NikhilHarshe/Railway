@@ -7,23 +7,23 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const VendersTable = () => {
-    const baseUrl = "http://localhost:3000";
+  const baseUrl = "http://localhost:3000";
   const location = useLocation();
   const navigate = useNavigate();
   const [venders, setVenders] = useState([]);
 
   const getVendersData = async () => {
     const toastid = toast.loading("Loading...")
-    try{
-        const res = await axios.get(baseUrl + "/vendor/fetchVenderData");
-        console.log("res of venders table : ", res.data?.data);
-        setVenders(res.data.data);
-        // if(!res?.success){
-        //   console.log("Fail to fetch venders data");
-        // }
+    try {
+      const res = await axios.get(baseUrl + "/vendor/fetchVenderData");
+      console.log("res of venders table : ", res.data?.data);
+      setVenders(res.data.data);
+      // if(!res?.success){
+      //   console.log("Fail to fetch venders data");
+      // }
     }
-    catch{
-        console.log("Internal server error to fetch vendes data");
+    catch {
+      console.log("Internal server error to fetch vendes data");
     }
     toast.dismiss(toastid);
   }
@@ -77,11 +77,10 @@ const VendersTable = () => {
           {venders.length > 0 ? (
             venders.map((vender) => (
               <div
-                className={`grid grid-cols-5 sm:grid-cols-5 ${
-                  vender === vender[venders?.length - 1]
+                className={`grid grid-cols-5 sm:grid-cols-5 ${vender === vender[venders?.length - 1]
                     ? ''
                     : 'border-b border-stroke dark:border-strokedark'
-                }`}
+                  }`}
                 key={vender._id}
               >
                 <div
