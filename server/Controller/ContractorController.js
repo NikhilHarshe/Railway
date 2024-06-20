@@ -1,5 +1,6 @@
 const Contractor = require("../Schema/Contractor");
 const bcrypt = require("bcryptjs");
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
 // const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 const registerContractor = async (req, res) => {
@@ -20,42 +21,37 @@ const registerContractor = async (req, res) => {
     sectionname,
     nameofstation,
   } = req.body;
-  try 
-  {
-    console.log("contractor back end ",req.body);
-    if (
-      !agency ||
-      !typeofcontract ||
-      !ContractperiodFrom ||
-      !ContractperiodTo ||
-      !Licenseename ||
-      !Licenseecontactdetails ||
-      !VendorsPermitted ||
-      !LicenseFeesPaidUptoDate ||
-      !Authority ||
-      !IsStationService ||
-      !StationNames ||
-      !PFPermitted
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "All Fields are Mandatory",
-      });
+  try {
+
+    console.log("contractor back end ", req.body);
+    console.log("contractor back end files ", req.files);
+    // if (
+    //   !agency ||
+    //   !typeofcontract ||
+    //   !ContractperiodFrom ||
+    //   !ContractperiodTo ||
+    //   !Licenseename ||
+    //   !Licenseecontactdetails ||
+    //   !VendorsPermitted ||
+    //   !LicenseFeesPaidUptoDate ||
+    //   !Authority ||
+    //   !IsStationService ||
+    //   !StationNames ||
+    //   !PFPermitted
+    // ) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "All Fields are Mandatory",
+    //   });
+    // }
+    let imgUrl = ""
+    if (req.files) {
+      const file = req.files.AutherityDoc;
+      const fileName = process.env.FOLDER_NAME;
+      const response = await uploadImageToCloudinary(file, fileName);
+      console.log("responces ", response)
+      imgUrl = response?.secure_url
     }
-    const mandatoryFields = [
-      "agency",
-      "typeofcontract",
-      "ContractperiodFrom",
-      "ContractperiodTo",
-      "Licenseename",
-      "Licenseecontactdetails",
-      "VendorsPermitted",
-      "LicenseFeesPaidUptoDate",
-      "Authority",
-      "IsStationService",
-      "StationNames",
-      "PFPermitted",
-    ];
 
     const newContractor = new Contractor({
       agency,
@@ -70,8 +66,8 @@ const registerContractor = async (req, res) => {
       pfPermitted: PFPermitted,
       licence_fees_paid_upto: LicenseFeesPaidUptoDate,
       isStationService: IsStationService,
-      authorityDocument: Authority,
-      trainList : selectedTrains,
+      authorityDocument: imgUrl,
+      trainList: selectedTrains,
       sectionname,
     });
 
@@ -116,7 +112,7 @@ const updateUser = async (req, res) => {
 
 
 const deleteUser = async (req, res) => {
-  const { id } = req.params; 
+  const { id } = req.params;
   console.log("Deleting user with ID:", id);
   try {
     const user = await Contractor.findByIdAndDelete(id);

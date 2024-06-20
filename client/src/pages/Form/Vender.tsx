@@ -22,13 +22,13 @@ const FormLayout = () => {
     fname: '',
     dob: '',
     mobile: '',
-    profilePic: '',
+    profilePic: null,
     aadhar: '',
-    aadharCard: '',
+    aadharCardImg: null,
     policeVarificationDate: '',
-    policeVarificationDocument: '',
+    policeVarificationDocument: null,
     medicalValidityDate: '',
-    madicalValidityDocument: '',
+    madicalValidityDocument: null,
     validityAuthority: '',
     LicenseeId: '',
     qrcode: '',
@@ -37,9 +37,19 @@ const FormLayout = () => {
   const [generatedData, setGeneratedData] = useState(null);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, files } = e.target;
+    console.log("name : ", name, "  value: ", value);
+
+    if (files) {
+      console.log("In side function ")
+      setFormData({ ...formData, [name]: files[0] });
+    }
+    else {
+      setFormData({ ...formData, [name]: value });
+    }
+
   };
+  console.log("Form data in Vendor ", generatedData)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,10 +72,10 @@ const FormLayout = () => {
     setGeneratedData(updatedFormData);
     setSuccess(true);
 
-    setProfilePic(profilePic);
-    setAadharCard(aadharCard);
-    setPoliceVarificationDocument(policeVarificationDocument);
-    setMadicalValidityDocument(madicalValidityDocument);
+    // setProfilePic(profilePic);
+    // setAadharCard(aadharCard);
+    // setPoliceVarificationDocument(policeVarificationDocument);
+    // setMadicalValidityDocument(madicalValidityDocument);
     console.log('Generated QR Code:', result);
   };
 
@@ -78,8 +88,15 @@ const FormLayout = () => {
     } else {
       try {
         console.log('Submitting formData:', generatedData);
-        const response = await axios.post(baseUrl + '/vendor/registerVendor', generatedData);
+        const response = await axios.post(baseUrl + '/vendor/registerVendor', generatedData, 
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        );
         alert('Data saved successfully');
+        console.log("response ", response);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -98,10 +115,10 @@ const FormLayout = () => {
     maxFileCount: 1
   };
 
-  formData.profilePic = profilePic;
-  formData.aadharCard = aadharCard;
-  formData.madicalValidityDocument = madicalValidityDocument;
-  formData.policeVarificationDocument = policeVarificationDocument;
+  // formData.profilePic = profilePic;
+  // formData.aadharCard = aadharCard;
+  // formData.madicalValidityDocument = madicalValidityDocument;
+  // formData.policeVarificationDocument = policeVarificationDocument;
 
   return (
     <DefaultLayout>
@@ -191,7 +208,7 @@ const FormLayout = () => {
                 </div>
 
                 {/* Upload Aadhar Pic */}
-                <div className="mb-4.5">
+                {/* <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">
                     Upload Aadhar Pic <span className=' text-red-600 text-lg'>*</span>
                   </label>
@@ -207,10 +224,16 @@ const FormLayout = () => {
                       </button>
                     }
                   </UploadButton>
+                </div> */}
+                <div className=' flex flex-col pb-5 gap-2'>
+                  <label htmlFor="aadharCardImg" className="mb-2.5 block text-black dark:text-white">Uploade Aadhar Card</label>
+                  <input type="file" name='aadharCardImg' onChange={handleChange} />
+
                 </div>
 
+
                 {/* Upload PoliceVarification Document */}
-                <div className="mb-4.5">
+                {/* <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">
                     Upload PoliceVarification Document <span className=' text-red-600 text-lg'>*</span>
                   </label>
@@ -226,10 +249,15 @@ const FormLayout = () => {
                       </button>
                     }
                   </UploadButton>
+                </div> */}
+                <div className=' flex flex-col pb-5 gap-2'>
+                  <label htmlFor="policeVarificationDocument" className="mb-2.5 block text-black dark:text-white">Upload PoliceVarification Document</label>
+                  <input type="file" name='policeVarificationDocument' onChange={handleChange} />
+
                 </div>
 
                 {/* Upload MadicalValidity Document */}
-                <div className="mb-4.5">
+                {/* <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">
                     Upload MadicalValidity Document <span className=' text-red-600 text-lg'>*</span>
                   </label>
@@ -245,6 +273,11 @@ const FormLayout = () => {
                       </button>
                     }
                   </UploadButton>
+                </div> */}
+                <div className=' flex flex-col pb-5 gap-2'>
+                  <label htmlFor="madicalValidityDocument" className="mb-2.5 block text-black dark:text-white">Upload MadicalValidity Document</label>
+                  <input type="file" name='madicalValidityDocument' onChange={handleChange} />
+
                 </div>
 
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -310,7 +343,9 @@ const FormLayout = () => {
                     />
                   </div>
                 </div>
-                    <div className="mb-4.5">
+
+                {/* Upload Profile Pic */}
+                {/* <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">
                     Upload Profile Pic <span className=' text-red-600 text-lg'>*</span>
                   </label>
@@ -326,7 +361,13 @@ const FormLayout = () => {
                       </button>
                     }
                   </UploadButton>
+                </div> */}
+                <div className=' flex flex-col pb-5 gap-2'>
+                  <label htmlFor="profilePic" className="mb-2.5 block text-black dark:text-white">Upload Profile Photo</label>
+                  <input type="file" name='profilePic' onChange={handleChange} />
+
                 </div>
+
                 <button
                   onClick={generateQRCode}
                   className="inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10 mr-5"
@@ -348,7 +389,6 @@ const FormLayout = () => {
                   Save
                 </button>
 
-                
               </div>
             </form>
           </div>

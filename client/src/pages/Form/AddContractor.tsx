@@ -8,17 +8,17 @@ import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 export default function AddContractor() {
-  const {isEditContractor} = useSelector(state => state.contractor) 
+  const { isEditContractor } = useSelector(state => state.contractor)
   const location = useLocation();
   const { invigilator } = location.state || {};
-  console.log("invigilator data ",invigilator);
+  console.log("invigilator data ", invigilator);
 
   console.log("isEdite contrcator ", isEditContractor);
   const baseUrl = 'http://localhost:3000';
   // const baseUrl = "https://railway-qbx4.onrender.com";
   const clientUrl = 'http://crease-railway-8njx.vercel.app';
 
-  const [Authority, setAuthority] = useState('');
+  // const [Authority, setAuthority] = useState('');
   const [fieldInput, setFieldInput] = useState(false);
   const [staticfieldInput, setStaticFieldInput] = useState(false);
 
@@ -33,7 +33,7 @@ export default function AddContractor() {
     Licenseecontactdetails: '',
     VendorsPermitted: '',
     IsStationService: false,
-    Authority: '',
+    AutherityDoc: null,
     PFPermitted: [],
     StationNames: [],
   });
@@ -41,8 +41,17 @@ export default function AddContractor() {
   const [generatedData, setGeneratedData] = useState(null);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, files } = e.target;
+    console.log("name : ", name, "  value: ", value);
+
+    if (name === "AutherityDoc") {
+      console.log("In side function ")
+      setFormData({ ...formData, [name]: files[0] });
+    }
+    else {
+      setFormData({ ...formData, [name]: value });
+    }
+
   };
 
   const handleStationChange = (index, field, value) => {
@@ -91,12 +100,17 @@ export default function AddContractor() {
 
   const handleSave = async () => {
     try {
-      setAuthority(Authority);
+      // setAuthority(Authority);
       if (formData) {
         console.log('generatedData ', formData);
         const response = await axios.post(
           baseUrl + '/contractor/registercontractor',
           formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
         );
         if (response) {
           console.log(response);
@@ -113,7 +127,6 @@ export default function AddContractor() {
     maxFileCount: 1,
   };
 
-  formData.Authority = Authority;
   useEffect(
     () => (handleDynamicInput(), handleStaticInput()),
     [formData.typeofcontract],
@@ -207,18 +220,18 @@ export default function AddContractor() {
 
   const addTrains = () => {
     setFormData((prevFormData) => ({
-        ...prevFormData,
-        selectedTrains: selectedTrains,
-      }));
-    }
+      ...prevFormData,
+      selectedTrains: selectedTrains,
+    }));
+  }
 
-    
+
   useEffect(() => {
     addTrains();
   }, [selectedTrains])
 
   console.log("form data train :", formData);
-  
+
 
   return (
     <div>
@@ -386,10 +399,10 @@ export default function AddContractor() {
                                 display: true ? 'inline-block' : 'none',
                               }}
                               onFocus={toggleDropdown}
-                              // onMouseEnter={toggleDropdown}
-                              // onMouseLeave={toggleDropdown2}
+                            // onMouseEnter={toggleDropdown}
+                            // onMouseLeave={toggleDropdown2}
 
-                              // onBlur={toggleDropdown2}
+                            // onBlur={toggleDropdown2}
                             />
                             {isInputVisible && (
                               <div
@@ -559,8 +572,11 @@ export default function AddContractor() {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
+
+
+
                   {/* Upload Authority Pic */}
-                  <div className="mb-4.5">
+                  {/* <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
                       Upload Authority Pic{' '}
                       <span className=" text-red-600 text-lg">*</span>
@@ -589,7 +605,14 @@ export default function AddContractor() {
                         </button>
                       )}
                     </UploadButton>
+                  </div> */}
+
+                  <div className=' flex flex-col pb-5 gap-2'>
+                    <label htmlFor="AutherityDoc" className="mb-2.5 block text-black dark:text-white">Uploade Autherity Document</label>
+                    <input type="file" name='AutherityDoc' onChange={handleChange} />
+
                   </div>
+
                   {/* Vendors Permitted */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
