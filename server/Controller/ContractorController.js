@@ -13,44 +13,79 @@ const registerContractor = async (req, res) => {
     Licenseecontactdetails,
     VendorsPermitted,
     LicenseFeesPaidUptoDate,
-    Authority,
-    IsStationService,
-    StationNames,
-    PFPermitted,
     selectedTrains,
+    // Authority,
+    // IsStationService,
+    // StationNames,
+    // PFPermitted,
     sectionname,
-    nameofstation,
+    nameofstation, // Ensure this matches the key in req.body
   } = req.body;
-  try {
 
+  try {
     console.log("contractor back end ", req.body);
     console.log("contractor back end files ", req.files);
+
     if (
-      !agency ||
-      !typeofcontract ||
-      !ContractperiodFrom ||
-      !ContractperiodTo ||
-      !Licenseename ||
-      !Licenseecontactdetails ||
-      !VendorsPermitted ||
-      !LicenseFeesPaidUptoDate ||
-      !Authority ||
-      !IsStationService ||
-      !StationNames ||
-      !PFPermitted
+      req.body.typeofcontract === "On board Catering" ||
+      req.body.typeofcontract === "On board Non–Catering"
     ) {
-      return res.status(400).json({
-        success: false,
-        message: "All Fields are Mandatory",
-      });
+      if (
+        !agency ||
+        !typeofcontract ||
+        !ContractperiodFrom ||
+        !ContractperiodTo ||
+        !Licenseename ||
+        !Licenseecontactdetails ||
+        !VendorsPermitted ||
+        !LicenseFeesPaidUptoDate ||
+        !selectedTrains ||
+        // !Authority ||
+        // !sectionname ||
+        !sectionname // Ensure this matches the key in req.body
+        // !IsStationService ||
+        // !StationNames ||
+        // !PFPermitted
+      ) {
+        console.log();
+        return res.status(400).json({
+          success: false,
+          message: "All Fields are Mandatory for Dynamic",
+        });
+      }
+    } else {
+      if (
+        !agency ||
+        !typeofcontract ||
+        !ContractperiodFrom ||
+        !ContractperiodTo ||
+        !Licenseename ||
+        !Licenseecontactdetails ||
+        !VendorsPermitted ||
+        !LicenseFeesPaidUptoDate ||
+        // !Authority ||
+        // !sectionname ||
+        !nameofstation // Ensure this matches the key in req.body
+        // !IsStationService ||
+        // !StationNames ||
+        // !PFPermitted
+      ) {
+        console.log();
+        return res.status(400).json({
+          success: false,
+          message: "All Fields are Mandatory for static",
+        });
+      }
     }
-    let imgUrl = ""
+      
+
+    let imgUrl = "";
     if (req.files) {
       const file = req.files.AutherityDoc;
       const fileName = process.env.FOLDER_NAME;
       const response = await uploadImageToCloudinary(file, fileName);
-      console.log("responces ", response)
-      imgUrl = response?.secure_url
+      console.log("response ", response);
+      imgUrl = response?.secure_url;
     }
 
     const newContractor = new Contractor({
@@ -62,12 +97,12 @@ const registerContractor = async (req, res) => {
       licence_fees_paid_upto: LicenseFeesPaidUptoDate,
       Licensee_Contact_details: Licenseecontactdetails,
       vendors_permitted: VendorsPermitted,
-      stationName: StationNames,
-      pfPermitted: PFPermitted,
+      stationName: nameofstation, // Corrected field name
+      // pfPermitted: PFPermitted,
       licence_fees_paid_upto: LicenseFeesPaidUptoDate,
-      isStationService: IsStationService,
+      // isStationService: IsStationService,
       authorityDocument: imgUrl,
-      trainList: selectedTrains,
+      // trainList: selectedTrains,
       sectionname,
     });
 
@@ -78,14 +113,14 @@ const registerContractor = async (req, res) => {
       // img,
       message: "Contractor registered successfully",
     });
-
   } catch (error) {
-    console.error("Error saving contractor:", error);
+    console.log("Error saving contractor:", error);
     res
       .status(500)
       .json({ success: false, message: "Internal server error", error });
   }
-}
+};
+
 
 const updateUser = async (req, res) => {
   const {
@@ -106,7 +141,8 @@ const updateUser = async (req, res) => {
     nameofstation,
     contractorId,
   } = req.body;
-// console.log('hi',req.body)
+  // console.log('hi',req.body)
+
   try {
     
     const user = await Contractor.findOne({ contractorId });
@@ -122,10 +158,10 @@ const updateUser = async (req, res) => {
     if (Licenseecontactdetails) user.Licenseecontactdetails = Licenseecontactdetails;
     if (VendorsPermitted) user.VendorsPermitted = VendorsPermitted;
     if (LicenseFeesPaidUptoDate) user.LicenseFeesPaidUptoDate = LicenseFeesPaidUptoDate;
-    if (Authority) user.Authority = Authority
-    if (selectedTrains) user.selectedTrains = selectedTrains;
+    // if (Authority) user.Authority = Authority
+    // if (selectedTrains) user.selectedTrains = selectedTrains;
     if (sectionname) user.sectionname = sectionname;
-    if (nameofstation) user.nameofstation = nameofstation
+    // if (nameofstation) user.nameofstation = nameofstation
       await user.save();
      console.log(user)
     res.status(200).json({ message: "User updated successfully" });

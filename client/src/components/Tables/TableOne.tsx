@@ -1,28 +1,22 @@
-import { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
-import { ImWrench } from "react-icons/im";
-import { RiDeleteBin5Fill } from "react-icons/ri";
-import ECommerce from '../../pages/Dashboard/ECommerce';
+import { ImWrench } from 'react-icons/im';
+import { RiDeleteBin5Fill } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
-import { setIsEditContractor } from "../../redux/slices/ContractorSlice"
+import { setIsEditContractor } from '../../redux/slices/ContractorSlice';
 import DefaultLayout from '../../layout/DefaultLayout';
-
 
 let Length = createContext();
 
 const TableOne = () => {
-
   const dispatch = useDispatch();
   const baseUrl = 'http://localhost:3000';
   // const baseUrl = "https://railway-qbx4.onrender.com";
   const clientUrl = 'http://crease-railway-8njx.vercel.app';
 
-
   let navigate = useNavigate();
   const [filteredInvigilators, setFilteredInvigilators] = useState([]);
-  // const [filteredCategory, setFilteredCategory] = useState([]);
   const [initialDate, setInitialDate] = useState('');
   const [finalDate, setFinalDate] = useState('');
   const [invigilators, setInvigilators] = useState([]);
@@ -78,6 +72,14 @@ const TableOne = () => {
     return date.toLocaleDateString();
   }
 
+  function isWithinFifteenDays(date) {
+    const currentDate = new Date();
+    const givenDate = new Date(date);
+    const timeDifference = Math.abs(givenDate - currentDate);
+    const dayDifference = timeDifference / (1000 * 3600 * 24);
+    return dayDifference <= 15;
+  }
+
   const handleAgency = (e) => {
     let agency = e.target.value;
     if (agency === '') {
@@ -123,14 +125,15 @@ const TableOne = () => {
 
   useEffect(() => {
     setFilteredInvigilators(invigilators);
-    // setFilteredCategory(invigilators);
   }, [invigilators]);
 
   useEffect(() => {
     handleDate();
   }, [initialDate, finalDate]);
 
-  console.log('yyyyyy', invigilators);
+  const handleDashboard = () => {
+    navigate('/dashboard');
+  }
 
   return (
     <DefaultLayout>
@@ -138,10 +141,29 @@ const TableOne = () => {
         style={{ overflowX: 'auto', width: '1100px' }}
         className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1"
       >
-        <div className="flex flex-row">
-          <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-            Contractors
-          </h4>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
+          <div className="flex flex-row">
+            <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
+              Contractors
+            </h4>
+          </div>
+          <div>
+            <button
+              onClick={() => handleDashboard()}
+              className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
+border-blue-600
+border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
+active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+            >
+              Back
+            </button>
+          </div>
         </div>
         <div className="flex flex-col">
           <div className="grid grid-cols-7 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-7">
@@ -178,21 +200,23 @@ const TableOne = () => {
                 <option value="Station Cleaning">Station Cleaning</option>
               </select>
             </div>
+            <div className="mt-[20px] ml-[130px]">From</div>
             <input
               type="date"
               onChange={handleInitialDateChange}
               value={initialDate}
               name="ContractperiodFrom"
-              className="w-[150px] mt-[10px] rounded border-[1.5px] ml-[55px] h-[50px] border-stroke bg-transparent py-3 px-2.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              className="w-[40px] mt-[10px] rounded border-[1.5px] ml-[25px] h-[50px] border-stroke bg-transparent py-3 px-2.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             />
+            <div className="mt-[20px] ml-[-5px]">To</div>
             <input
               type="date"
               onChange={handleFinalDateChange}
               value={finalDate}
               name="ContractperiodTo"
-              className="w-[150px] mt-[10px] rounded border-[1.5px] ml-[85px] h-[50px] border-stroke bg-transparent py-3 px-2.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              className="w-[40px] mt-[10px] rounded border-[1.5px] ml-[-125px] h-[50px] border-stroke bg-transparent py-3 px-2.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             />
-            <div className="ml-[150px] p-2.5 text-center sm:block xl:p-5">
+            <div className="mt-[-60px] ml-[900px] p-2.5 text-center sm:block xl:p-5">
               <h5 className="text-sm font-medium uppercase xsm:text-base">
                 Action
               </h5>
@@ -201,10 +225,11 @@ const TableOne = () => {
 
           {filteredInvigilators.map((invigilator) => (
             <div
-              className={`grid grid-cols-7 sm:grid-cols-7 ${invigilator === invigilators[invigilators.length - 1]
+              className={`grid grid-cols-7 sm:grid-cols-7 ${
+                invigilator === invigilators[invigilators.length - 1]
                   ? ''
                   : 'border-b border-stroke dark:border-strokedark'
-                }`}
+              }`}
               key={invigilator._id}
             >
               <div
@@ -227,22 +252,28 @@ const TableOne = () => {
                 </div>
               </div>
               <div className="ml-[130px] items-center justify-center p-2.5 sm:flex xl:p-5">
-                From{' '}
                 <p className="text-meta-5 ml-[10px]">
                   {formatDate(invigilator.fromDate)}
                 </p>
               </div>
               <div className="ml-[150px] items-center justify-center p-2.5 sm:flex xl:p-5">
-                To{' '}
-                <p className="text-meta-5 ml-[10px]">
+                <p
+                  className={`ml-[10px] ${
+                    isWithinFifteenDays(invigilator.toDate)
+                      ? 'text-red-500'
+                      : 'text-meta-5'
+                  }`}
+                >
                   {formatDate(invigilator.toDate)}
                 </p>
               </div>
               <div className="ml-[180px] flex items-center justify-center p-2.5 sm:flex xl:p-5 gap-2">
                 <button
                   title="Edit"
-                  onClick={() => { navigate('/EditeContractors', { state: { invigilator } }); dispatch(setIsEditContractor(true)) }
-                  }
+                  onClick={() => {
+                    navigate('/EditeContractors', { state: { invigilator } });
+                    dispatch(setIsEditContractor(true));
+                  }}
                   type="button"
                   className="px-6 py-2.5 rounded text-white text-sm tracking-wider font-semibold border-none outline-none bg-green-600 hover:bg-green-700 active:bg-green-600"
                 >

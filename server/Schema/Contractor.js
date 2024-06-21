@@ -43,14 +43,14 @@ const contractorSchema = new mongoose.Schema({
   authorityDocument: {
     type: String,
   },
-  isStationService: {
-    type: String,
-  },
+  // isStationService: {
+  //   type: String,
+  // },
   stationName: [],
   pfPermitted: [],
-  nameofstation: [],
+  // nameofstation: [],
   sectionname: [],
-  trainList: [],
+  selectedTrains: [],
   vendors: [
     {
       type: mongoose.Schema.Types.ObjectId,
