@@ -115,13 +115,10 @@ const TableOne = () => {
         const toDate = new Date(item.toDate);
         const initDate = new Date(initialDate);
         const finDate = new Date(finalDate);
-<<<<<<< HEAD
-=======
         console.log('aaaa', fromDate)
         console.log('bbbbb', toDate)
         console.log('ccccc', initDate)
         console.log('ddddddd', finDate)
->>>>>>> 4e6706eb0b0484fb3d68c513a2cb02258b14f51a
         return fromDate >= initDate && toDate <= finDate;
       });
       setFilteredInvigilators(filteredDate);

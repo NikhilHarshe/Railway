@@ -93,24 +93,49 @@ const registerContractor = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { email, name, gender, mobile, password } = req.body;
-
+  const {
+    agency,
+    typeofcontract,
+    ContractperiodFrom,
+    ContractperiodTo,
+    Licenseename,
+    Licenseecontactdetails,
+    VendorsPermitted,
+    LicenseFeesPaidUptoDate,
+    Authority,
+    // IsStationService,
+    // StationNames,
+    // PFPermitted,
+    selectedTrains,
+    sectionname,
+    nameofstation,
+    contractorId,
+  } = req.body;
+// console.log('hi',req.body)
   try {
-    const user = await Invigilator.findOne({ email });
-
+    
+    const user = await Contractor.findOne({ contractorId });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (name) user.name = name;
-    if (gender) user.gender = gender;
-    if (mobile) user.mobile = mobile;
-    if (password) user.password = await bcrypt.hash(password, 10);
-
-    await user.save();
-
+    if (agency) user.agency = agency;
+    if (typeofcontract) user.typeofcontract = typeofcontract;
+    if (ContractperiodFrom) user.ContractperiodFrom = ContractperiodFrom;
+    if (ContractperiodTo) user.ContractperiodTo = ContractperiodTo;
+    if (Licenseename) user.Licenseename = Licenseename;
+    if (Licenseecontactdetails) user.Licenseecontactdetails = Licenseecontactdetails;
+    if (VendorsPermitted) user.VendorsPermitted = VendorsPermitted;
+    if (LicenseFeesPaidUptoDate) user.LicenseFeesPaidUptoDate = LicenseFeesPaidUptoDate;
+    if (Authority) user.Authority = Authority
+    if (selectedTrains) user.selectedTrains = selectedTrains;
+    if (sectionname) user.sectionname = sectionname;
+    if (nameofstation) user.nameofstation = nameofstation
+      await user.save();
+     console.log(user)
     res.status(200).json({ message: "User updated successfully" });
   } catch (error) {
+    console.log(`Error:${error}`)
     res.status(500).json({ message: "Internal server error", error });
   }
 };
@@ -153,8 +178,10 @@ const saveQRCode = async (req, res) => {
 };
 
 const fetchContractorDataByQRCode = async (req, res) => {
+
   try {
     const contractors = await Contractor.find({}).populate("vendors").exec();
+    console.log('hi')
     if (contractors) {
       res.status(200).json(contractors);
     } else {
