@@ -65,18 +65,15 @@ const registerVendor = async (req, res) => {
     fname,
     dob,
     mobile,
-    profilePic,
     aadhar,
-    aadharCard,
     policeVarificationDate,
-    policeVarificationDocument,
     medicalValidityDate,
-    madicalValidityDocument,
     validityAuthority,
     LicenseeId,
     qrcode,
   } = req.body;
-console.log('Body',req.body)
+  console.log('Body', req.body);
+
   try {
     // Check if the vendor already exists
     const existingUser = await Vender.findOne({ aadhar });
@@ -86,9 +83,27 @@ console.log('Body',req.body)
 
     // Find the contractor associated with the provided LicenseeId
     const contractor = await Contractor.findOne({ contractorId: LicenseeId });
-    console.log('Contractor',contractor)
+    console.log('Contractor', contractor);
     if (!contractor) {
       return res.status(403).json({ success: false, message: "Contractor not Registered" });
+    }
+
+    let imgUrls = {};
+
+    if (req.files) {
+      console.log("img ", req.files);
+
+      for (const [key, file] of Object.entries(req.files)) {
+        try {
+          const fileName = process.env.FOLDER_NAME;
+          const response = await uploadImageToCloudinary(file, fileName);
+          console.log(`response for ${key}: `, response);
+          imgUrls[key] = response?.secure_url; // Store the secure URL for each file
+        } catch (error) {
+          console.error(`Error uploading ${key}: `, error);
+          return res.status(500).json({ success: false, message: `Error uploading ${key}` });
+        }
+      }
     }
 
     // Create a new vendor
@@ -96,13 +111,13 @@ console.log('Body',req.body)
       fname,
       dob,
       mobile,
-      profilePic,
+      profilePic: imgUrls.profilePic,
       aadhar,
-      aadharCard,
+      aadharCard: imgUrls.aadharCardImg,
       policeVarificationDate,
-      policeVarificationDocument,
+      policeVarificationDocument: imgUrls.policeVarificationDocument,
       medicalValidityDate,
-      madicalValidityDocument,
+      madicalValidityDocument: imgUrls.madicalValidityDocument,
       validityAuthority,
       Contractor: contractor._id,
       qrcode
@@ -121,6 +136,7 @@ console.log('Body',req.body)
     console.log(error);
   }
 };
+
 
 
 const updateVender = async (req, res) => {
@@ -169,12 +185,12 @@ const deleteVender = async (req, res) => {
 
 const fileUpload = async (req, res) => {
   try{
-    console.log("Inside function ")
+    // console.log("Inside function ")
     const file = req.files.file;
-    console.log("img ", req.files.file);
+    // console.log("img ", req.files.file);
     const fileName = process.env.FOLDER_NAME;
     const response = await uploadImageToCloudinary(file, fileName);
-    console.log("res : ", response);
+    // console.log("res : ", response);
     res.status(200).json({
       success: true,
       message: "Image uploded Successfully",
