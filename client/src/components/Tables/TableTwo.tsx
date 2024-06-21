@@ -164,11 +164,7 @@ const TableTwo = () => {
               : (<div className=" text-center text-white text-2xl py-6">Venders not Found</div>)
           }
         </div>
-<<<<<<< HEAD
-        </div>
-=======
       </div>
->>>>>>> 4e6706eb0b0484fb3d68c513a2cb02258b14f51a
     </DefaultLayout>
   );
 };

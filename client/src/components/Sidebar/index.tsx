@@ -11,7 +11,7 @@ interface SidebarProps {
 }
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const { pathname } = location;
-  const {user} = useSelector(state => state.auth);
+  const { user } = useSelector(state => state.auth);
 
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
