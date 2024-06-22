@@ -1,21 +1,21 @@
 const express = require("express");
 const router = express.Router();
 const {
-  fetchVenderData,
-  fetchVenderDataByQRCode,
-  VenderLogin,
+  fetchVendorData,
+  fetchVendorDataByQRCode,
+  VendorLogin,
   registerVendor,
-  updateVender,
-  deleteVender,
+  updateVendor,
+  deleteVendor,
   fileUpload,
 } = require("../Controller/VendorController");
 
-router.get("/fetchVenderData", fetchVenderData);
-router.post("/fetchVendorDataByQR", fetchVenderDataByQRCode);
-router.post("/Venderlogin", VenderLogin);
+router.get("/fetchVenderData", fetchVendorData);
+router.post("/fetchVendorDataByQR", fetchVendorDataByQRCode);
+router.post("/Vendorlogin", VendorLogin);
 router.post("/registerVendor", registerVendor);
-router.put("/updateVender/", updateVender); 
-router.delete("/deleteVender/:email", deleteVender);
+router.post("/updateVendor", updateVendor); 
+router.delete("/deleteVender/:id", deleteVendor);
 router.post("/imgUploade", fileUpload);
 
 module.exports = router;

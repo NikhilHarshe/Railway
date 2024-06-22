@@ -21,10 +21,12 @@ const ECommerce: React.FC = () => {
   let navigate = useNavigate();
   const { user, Token } = useSelector((state) => state.auth);
   const { contractors } = useSelector((state) => state.contractor)
+  const {vendorsData} = useSelector((state) => state.vendor);
 
   console.log('User in side dashbord ', user);
   const numOfContractors = contractors?.length;
-  // console.log('jjjjjjj', numOfContractors);
+  const numOfVendors = vendorsData?.length;
+  console.log('jjjjjjj', numOfVendors);
 
   const getUserData = async () => {
     try {
@@ -131,7 +133,7 @@ const ECommerce: React.FC = () => {
                 className="w-[45px] h-[45px] px-1 rounded-full py-1 text-black dark:text-white relative top-7 left-7 bg-[#F1F5F9] "
               />
               <p className="mt-12 ml-7 font-semibold text-black dark:text-white">
-                Vendor{' '}
+                Vendor - {numOfVendors}
               </p>
             </div>
           </div>
