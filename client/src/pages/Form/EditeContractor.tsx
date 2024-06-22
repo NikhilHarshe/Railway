@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import DefaultLayout from '../../layout/DefaultLayout';
 import axios from 'axios';
-import { UploadButton } from '@bytescale/upload-widget-react';
-import { LiaCheckDoubleSolid } from 'react-icons/lia';
 import { MdOutlineCancel } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import toast from 'react-hot-toast';
+// import { toast, useToaster } from 'react-hot-toast';
 
 export default function EditeContractor() {
   const { isEditContractor } = useSelector((state) => state.contractor);
@@ -30,9 +28,29 @@ export default function EditeContractor() {
   console.log('invigilator data ', invigilator);
   useEffect(() => {
     if (invigilator) {
-      setFormData(invigilator);
+      setFormData({
+        agency: invigilator.agency || '',
+        typeofcontract: invigilator.category || '',
+        ContractperiodFrom: invigilator.fromDate
+          ? invigilator.fromDate.slice(0, 10)
+          : '',
+        ContractperiodTo: invigilator.toDate
+          ? invigilator.toDate.slice(0, 10)
+          : '',
+        LicenseFeesPaidUptoDate: invigilator.licence_fees_paid_upto
+          ? invigilator.licence_fees_paid_upto.slice(0, 10)
+          : '',
+        Licenseename: invigilator.licensee || '',
+        Licenseecontactdetails: invigilator.Licensee_Contact_details || '',
+        VendorsPermitted: invigilator.vendors_permitted || '',
+        nameofstation: invigilator.nameofstation || [],
+        AutherityDoc: null, // Assuming authorityDocument is handled separately (not in invigilator)
+        // Add other fields as needed
+      });
+      setSelectedTrains(invigilator.trainList || []);
     }
   }, [invigilator]);
+
 
   console.log('isEdite contrcator ', isEditContractor);
   const baseUrl = 'http://localhost:3000';
@@ -49,43 +67,68 @@ export default function EditeContractor() {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    console.log('name : ', name, '  value: ', value);
-
     if (name === 'AutherityDoc') {
-      console.log('In side function ');
-      setFormData({ ...formData, [name]: files[0] });
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: files[0] || null, 
+      }));
     } else {
-      setFormData({ ...formData, [name]: value });
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
     }
   };
 
+
+
   const handleSave = async () => {
-    const toastId = toast.loading('Loading...');
+    // const { addToast } = useToaster(); 
+    // const toastId = addToast('Loading...', { duration: 4000 }); 
     try {
       if (formData) {
-        console.log('generatedData ', formData);
+        formData['contractorId'] = invigilator.contractorId;
+         
+      let updatedFormData = {...formData}
+
+        console.log('updatedFormData: ', updatedFormData);
         const response = await axios.put(
           baseUrl + '/contractor/update',
-          formData,
+          updatedFormData,
+          
           {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           },
         );
-        // toast.dismiss(toastId);
+
         if (response) {
-          console.log('responce of backend ', response);
-          alert(`Data saved`);
+          console.log('Response from backend: ', response);
+          //  addToast('Data Saved', { type: 'success' });
+          alert('Data Saved Succcessfully')
         }
       }
     } catch (error) {
-      console.error('this is Error :', error);
-      console.log('messgae', error.response.data.message);
-      toast.error(error.response.data.message);
+      console.log('Error: ', error);
+
+      // Check if error.response exists and has data and message properties
+      // if (
+      //   error.response &&
+      //   error.response.data &&
+      //   error.response.data.message
+      // ) {
+      //   toast.error(error.response.data.message);
+      // } else {
+      //   // Handle other types of errors (network error, etc.)
+      //   toast.error('An error occurred while saving data.');
+      // }
     }
-    toast.dismiss(toastId);
+    // finally {
+    //   toast.dismiss(toastId);
+    // }
   };
+
 
   useEffect(
     () => (handleDynamicInput(), handleStaticInput()),
