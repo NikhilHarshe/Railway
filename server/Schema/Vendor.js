@@ -4,17 +4,20 @@ const Contractor = require("./Contractor");
 const model = new mongoose.Schema({
   fname: {
     type: String,
+    trim: true,
   },
   dob: {
     type: Date,
   },
   mobile: {
     type: Number,
+    trim: true,
   },
   aadhar: {
     type: Number,
+    trim: true,
   },
-  aadharCard: {
+  aadharCardImg: {
     type: String,
   },
   policeVarificationDate: {
@@ -37,6 +40,7 @@ const model = new mongoose.Schema({
   },
   qrcode: {
     type: String,
+    trim: true,
   },
   Contractor: {
       type: mongoose.Schema.Types.ObjectId,

@@ -7,6 +7,7 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import { UploadButton } from "@bytescale/upload-widget-react";
 import { LiaCheckDoubleSolid } from "react-icons/lia";
 import toast from 'react-hot-toast';
+import {setVendorsData} from "../../redux/slices/VendorSlice"
 
 const FormLayout = () => {
   // const baseUrl = "https://railway-qbx4.onrender.com";
@@ -67,9 +68,9 @@ const FormLayout = () => {
     }
     const updatedFormData = { ...formData, qrcode: result };
 
-    let result2 = clientUrl + `/#/venderDetails/${result}`;
+    // let result2 = clientUrl + `/#/venderDetails/${result}`;
 
-    setQRCodeValue(result2);
+    setQRCodeValue(result);
     setGeneratedData(updatedFormData);
     setSuccess(true);
 
@@ -97,10 +98,14 @@ const FormLayout = () => {
             }
           }
         );
-        alert('Data saved successfully');
+        // alert('Data saved successfully');
+        toast.success("Vendor Registered")
+        setVendorsData(response.data.vendors);
+        localStorage.setItem("vendors", JSON.stringify(response?.data.vendors))
         console.log("response ", response);
       } catch (error) {
         console.error('Error:', error);
+        toast.error(error.response.data.message)
       }
       toast.dismiss(toastId);
     }

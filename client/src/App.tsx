@@ -26,6 +26,7 @@ import { setUser } from "./redux/slices/AuthSlice"
 import SortingTrainList from './pages/Form/SortingTrainList';
 import TableOne from './components/Tables/TableOne';
 import ImgUpload from './pages/Dashboard/ImgUpload';
+import EditVendor from './pages/Form/EditVendor';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -150,6 +151,15 @@ function App() {
             <>
               <PageTitle title="Edite Contractors Layout" />
               <EditeContractor />
+            </>
+          }
+        />
+        <Route
+          path="/editVendor"
+          element={
+            <>
+              <PageTitle title="Edite Contractors Layout" />
+              <EditVendor />
             </>
           }
         />

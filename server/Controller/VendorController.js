@@ -1,13 +1,13 @@
-const Vender = require("../Schema/Vendor");
+const Vendor = require("../Schema/Vendor");
 const Contractor = require("../Schema/Contractor")
 const bcrypt = require("bcryptjs");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
-const VenderLogin = async (req, res) => {
+const VendorLogin = async (req, res) => {
   const { email, password } = req.body;
   console.log(req.body)
   try {
-    const user = await Vender.findOne({ email });
+    const user = await Vendor.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -30,22 +30,22 @@ const VenderLogin = async (req, res) => {
   }
 };
 
-const fetchVenderData = async (req, res) => {
+const fetchVendorData = async (req, res) => {
   try {
-    const Venders = await Vender.find().populate("Contractor").exec();
-    res.status(200).json({success: true, data:Venders, message: "Data Fetch successfuly"});
+    const Vendors = await Vendor.find().populate("Contractor").exec();
+    res.status(200).json({success: true, data:Vendors, message: "Data Fetch successfuly"});
   } catch (error) {
     console.error("Error fetching data:", error);
     res.status(500).json({ message: "Internal server error", error });
   }
 };
 
-const fetchVenderDataByQRCode = async (req, res) => {
+const fetchVendorDataByQRCode = async (req, res) => {
   const { qrcode } = req.body;
   console.log("QR Code:", req.body);
 
   try {
-    const user = await Vender.findOne({ qrcode });
+    const user = await Vendor.findOne({ qrcode });
 
     if (user) {
       res
@@ -76,7 +76,7 @@ const registerVendor = async (req, res) => {
 
   try {
     // Check if the vendor already exists
-    const existingUser = await Vender.findOne({ aadhar });
+    const existingUser = await Vendor.findOne({ aadhar });
     if (existingUser) {
       return res.status(400).json({ success: false, message: "User already exists" });
     }
@@ -107,13 +107,13 @@ const registerVendor = async (req, res) => {
     }
 
     // Create a new vendor
-    const newVendor = new Vender({
+    const newVendor = new Vendor({
       fname,
       dob,
       mobile,
       profilePic: imgUrls.profilePic,
       aadhar,
-      aadharCard: imgUrls.aadharCardImg,
+      aadharCardImg: imgUrls.aadharCardImg,
       policeVarificationDate,
       policeVarificationDocument: imgUrls.policeVarificationDocument,
       medicalValidityDate,
@@ -129,8 +129,9 @@ const registerVendor = async (req, res) => {
     // Add the new vendor's ID to the contractor's vendors array
     contractor.vendors.push(savedVendor._id);
     await contractor.save();
+    const vendors = await Vendor.find();
 
-    res.status(201).json({ data: savedVendor, message: "User created successfully" });
+    res.status(201).json({ data: savedVendor, vendors, message: "User created successfully" });
   } catch (error) {
     res.status(500).json({ message: "Internal server error", error });
     console.log(error);
@@ -139,49 +140,82 @@ const registerVendor = async (req, res) => {
 
 
 
-const updateVender = async (req, res) => {
-  const { firstName, lastName, mobile, email, password } = req.body;
-  console.log('hi')
-  console.log(req.body)
+const updateVendor = async (req, res) => {
+  const { _id, ...newData } = req.body;
+  console.log("req.body:", req.body);
+
   try {
-    const user = await Vender.findOne({ email });
+      const oldVendor = await Vendor.findById(_id);
+      if (!oldVendor) {
+          return res.status(404).json({ message: "Vendor not found" });
+      }
+      console.log("OldVendor:", oldVendor);
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+      let imgUrls = {};
 
-    if (firstName) user.firstName = firstName;
-    if (lastName) user.lastName = lastName;
-    if (mobile) user.mobile = mobile;
-    if (email) user.email = email;
-    if (password) user.password = await bcrypt.hash(password, 10);
+      if (req.files) {
+          console.log("Files to upload:", req.files);
 
-    await user.save();
+          for (const [key, file] of Object.entries(req.files)) {
+              try {
+                  const fileName = process.env.FOLDER_NAME; // Replace with your folder name
+                  const response = await uploadImageToCloudinary(file, fileName);
+                  console.log(`Response for ${key}: `, response);
+                  imgUrls[key] = response?.secure_url; // Store the secure URL for each file
+              } catch (error) {
+                  console.error(`Error uploading ${key}: `, error);
+                  return res.status(500).json({ success: false, message: `Error uploading ${key}` });
+              }
+          }
+      }
 
-    res.status(200).json({ message: "User updated successfully" });
+      // Update fields in newData with imgUrls if they exist
+      for (const key in imgUrls) {
+          if (imgUrls.hasOwnProperty(key)) {
+              newData[key] = imgUrls[key];
+          }
+      }
+
+      // Update the vendor with newData
+      await Vendor.updateOne({ _id }, newData);
+
+      res.status(200).json({ message: "Vendor updated successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error", error });
+      console.error("Error updating vendor:", error);
+      res.status(500).json({ message: "Internal server error", error });
   }
 };
 
-const deleteVender = async (req, res) => {
-
-  const { email } = req.params;
-  console.log(req.params);
+const deleteVendor = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
   try {
+    // Correct usage of findByIdAndDelete
+    const user = await Vendor.findByIdAndDelete(id);
+    console.log("deleted vendor", user);
 
-    const user = await Vender.findOneAndDelete({ email });
+    const vendors = await Vendor.find();
+    console.log("Vendors ", vendors);
 
     if (!user) {
-
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({  
+        message: "User not found" 
+      });
     }
 
-    res.status(200).json({ message: "User deleted successfully" });
+    res.status(200).json({ 
+      vendors, 
+      deletedVendor: user, 
+      message: "User deleted successfully" 
+    });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error", error });
+    console.error(error);
+    res.status(500).json({ 
+      message: "Internal server error",
+      error });
   }
 };
+
 
 const fileUpload = async (req, res) => {
   try{
@@ -207,11 +241,11 @@ const fileUpload = async (req, res) => {
 
 
 module.exports = {
-  fetchVenderData,
-  fetchVenderDataByQRCode,
-  VenderLogin,
+  fetchVendorData,
+  fetchVendorDataByQRCode,
+  VendorLogin,
   registerVendor,
-  updateVender,
-  deleteVender,
+  updateVendor,
+  deleteVendor,
   fileUpload,
 };

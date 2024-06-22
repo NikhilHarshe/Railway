@@ -8,6 +8,7 @@ import {setContractors} from "../redux/slices/ContractorSlice"
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import img from "../images/Login Railway Logo.png"
+import { setVendorsData} from '../redux/slices/VendorSlice';
 
 const SignInN = () => {
   const navigate = useNavigate();
@@ -39,8 +40,10 @@ const SignInN = () => {
     dispatch(setUser(user?.data?.user));
     dispatch(setToken(user?.data.token));
     dispatch(setContractors(user?.data.contractors))
+    dispatch(setVendorsData(user?.data.vendors))
     localStorage.setItem("Token", JSON.stringify(user?.data.token))
     localStorage.setItem("contractors", JSON.stringify(user?.data.contractors))
+    localStorage.setItem("vendors", JSON.stringify(user?.data.vendors))
     toast.success("Log in Successful");
     navigate("/dashboard")
   }
