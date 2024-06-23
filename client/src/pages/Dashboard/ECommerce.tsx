@@ -21,7 +21,7 @@ const ECommerce: React.FC = () => {
   let navigate = useNavigate();
   const { user, Token } = useSelector((state) => state.auth);
   const { contractors } = useSelector((state) => state.contractor)
-  const {vendorsData} = useSelector((state) => state.vendor);
+  const { vendorsData } = useSelector((state) => state.vendor);
 
   console.log('User in side dashbord ', user);
   const numOfContractors = contractors?.length;
@@ -68,73 +68,75 @@ const ECommerce: React.FC = () => {
   return (
     <DefaultLayout>
       <>
-        <div>
-          <h2
-            className="mb-[20px] text-center"
-            style={{ fontSize: '40px', fontWeight: 'bold' }}
-          >
-            {/* NGP-CR VENDOR MANAGEMENT SYSTEM */}
-            WELCOME TO VENDOR MANAGEMENT{' '}
-          </h2>
-          <h4
-            className="mb-[200px] text-center"
-            style={{ fontSize: '40px', fontWeight: 'bold' }}
-          >
-            SYSTEM NGP-CR
-            {/* Nagpur Railways */}
-          </h4>
-        </div>
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5 ">
-          <div
-            onClick={() => navigateInvigilatorList()}
-            className="list "
-            style={{
-              cursor: 'pointer',
-              color: 'black',
-            }}
-          >
-            <div className=" bg-white dark:bg-boxdark h-[9rem] ">
-              <RiAdminLine className="w-[45px] h-[45px] px-1 rounded-full py-1 text-black  relative top-7 left-7 bg-[#F1F5F9]" />
-              <p className="mt-12 ml-7 font-semibold text-black dark:text-white">
-                Admin
-              </p>
-            </div>
+        <div className=' flex flex-col justify-around overflow-y-hidden h-[74.8vh]'>
+          <div className=''>
+            <h2
+              className="mb-[20px] text-center"
+              style={{ fontSize: '40px', fontWeight: 'bold' }}
+            >
+              {/* NGP-CR VENDOR MANAGEMENT SYSTEM */}
+              WELCOME TO VENDOR MANAGEMENT{' '}
+            </h2>
+            <h4
+              className=" text-center"
+              style={{ fontSize: '40px', fontWeight: 'bold' }}
+            >
+              SYSTEM NGP-CR
+              {/* Nagpur Railways */}
+            </h4>
           </div>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5 ">
+            <div
+              onClick={() => navigateInvigilatorList()}
+              className="list "
+              style={{
+                cursor: 'pointer',
+                color: 'black',
+              }}
+            >
+              <div className=" bg-white dark:bg-boxdark h-[9rem] ">
+                <RiAdminLine className="w-[45px] h-[45px] px-1 rounded-full py-1 text-black  relative top-7 left-7 bg-[#F1F5F9]" />
+                <p className="mt-12 ml-7 font-semibold text-black dark:text-white">
+                  Admin
+                </p>
+              </div>
+            </div>
 
-          <div
-            onClick={() => navigateContractorList()}
-            className="list"
-            style={{
-              cursor: 'pointer',
-              color: 'black',
-            }}
-          >
-            <div className=" bg-white dark:bg-boxdark h-[9rem] ">
-              <img
-                src={Image1}
-                className="w-[45px] h-[45px] px-1 rounded-full py-1 text-black dark:text-white relative top-7 left-7 bg-[#F1F5F9]   "
-              />
-              <p className="mt-12 ml-7 font-semibold text-black dark:text-white">
-                Contractors - {numOfContractors}
-              </p>
+            <div
+              onClick={() => navigateContractorList()}
+              className="list"
+              style={{
+                cursor: 'pointer',
+                color: 'black',
+              }}
+            >
+              <div className=" bg-white dark:bg-boxdark h-[9rem] ">
+                <img
+                  src={Image1}
+                  className="w-[45px] h-[45px] px-1 rounded-full py-1 text-black dark:text-white relative top-7 left-7 bg-[#F1F5F9]   "
+                />
+                <p className="mt-12 ml-7 font-semibold text-black dark:text-white">
+                  Contractors - {numOfContractors}
+                </p>
+              </div>
             </div>
-          </div>
-          <div
-            onClick={() => navigate('/venderstable')}
-            className="list"
-            style={{
-              cursor: 'pointer',
-              color: 'black',
-            }}
-          >
-            <div className=" bg-white dark:bg-boxdark h-[9rem] ">
-              <img
-                src={Image2}
-                className="w-[45px] h-[45px] px-1 rounded-full py-1 text-black dark:text-white relative top-7 left-7 bg-[#F1F5F9] "
-              />
-              <p className="mt-12 ml-7 font-semibold text-black dark:text-white">
-                Vendor - {numOfVendors}
-              </p>
+            <div
+              onClick={() => navigate('/venderstable')}
+              className="list"
+              style={{
+                cursor: 'pointer',
+                color: 'black',
+              }}
+            >
+              <div className=" bg-white dark:bg-boxdark h-[9rem] ">
+                <img
+                  src={Image2}
+                  className="w-[45px] h-[45px] px-1 rounded-full py-1 text-black dark:text-white relative top-7 left-7 bg-[#F1F5F9] "
+                />
+                <p className="mt-12 ml-7 font-semibold text-black dark:text-white">
+                  Vendor - {numOfVendors}
+                </p>
+              </div>
             </div>
           </div>
         </div>
