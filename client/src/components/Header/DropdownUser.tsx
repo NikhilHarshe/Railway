@@ -1,35 +1,34 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
-import UserOne from '../../images/user/blank-profile-picture-973460_1280.png';
 import { useDispatch, useSelector } from 'react-redux';
-import {logOut} from "../../redux/slices/AuthSlice"
+import { logOut } from "../../redux/slices/AuthSlice";
+import UserOne from '../../images/user/blank-profile-picture-973460_1280.png';
 
 const DropdownUser = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {user} = useSelector((state) => state.auth);
+  const { user } = useSelector((state: any) => state.auth);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const trigger = useRef<any>(null);
-  const dropdown = useRef<any>(null);
+  const trigger = useRef<HTMLAnchorElement>(null);
+  const dropdown = useRef<HTMLDivElement>(null);
 
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
-      if (!dropdown.current) return;
+      if (!dropdown.current || !trigger.current) return;
       if (
         !dropdownOpen ||
-        dropdown.current.contains(target) ||
-        trigger.current.contains(target)
-      )
-        return;
+        dropdown.current.contains(target as Node) ||
+        trigger.current.contains(target as Node)
+      ) return;
       setDropdownOpen(false);
     };
+
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
-  });
+  }, [dropdownOpen]);
 
   // close if the esc key is pressed
   useEffect(() => {
@@ -37,15 +36,15 @@ const DropdownUser = () => {
       if (!dropdownOpen || keyCode !== 27) return;
       setDropdownOpen(false);
     };
+
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
-  });
+  }, [dropdownOpen]);
 
   const LogOutHandler = () => {
-    console.log("logOut function call ")
     dispatch(logOut());
-    navigate("/login")
-  }
+    navigate("/login");
+  };
 
   return (
     <div className="relative">
@@ -54,18 +53,12 @@ const DropdownUser = () => {
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-4"
         to="#"
+        aria-haspopup="true"
+        aria-expanded={dropdownOpen}
       >
-        <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
-           
-          </span>
-          <span className="block text-xs"></span>
-        </span>
-
         <span className="h-12 w-12 rounded-full">
-          <img src={user?.Image} alt="User" style={{borderRadius:'50%'}}/>
+          <img src={user?.Image || UserOne} alt="User" className="rounded-full" />
         </span>
-
         <svg
           className="hidden fill-current sm:block"
           width="12"
@@ -83,20 +76,20 @@ const DropdownUser = () => {
         </svg>
       </Link>
 
-      {/* <!-- Dropdown Start --> */}
+      {/* Dropdown Start */}
       <div
         ref={dropdown}
-        onFocus={() => setDropdownOpen(true)}
-        onBlur={() => setDropdownOpen(false)}
         className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
-          dropdownOpen === true ? 'block' : 'hidden'
+          dropdownOpen ? 'block' : 'hidden'
         }`}
+        role="menu"
       >
         <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
           <li>
             <Link
               to="/profile"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+              role="menuitem"
             >
               <svg
                 className="fill-current"
@@ -118,10 +111,8 @@ const DropdownUser = () => {
               My Profile
             </Link>
           </li>
-          
-        
         </ul>
-        <button onClick={LogOutHandler} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+        <button onClick={LogOutHandler} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base" role="menuitem">
           <svg
             className="fill-current"
             width="22"
@@ -141,7 +132,7 @@ const DropdownUser = () => {
           Log Out
         </button>
       </div>
-      {/* <!-- Dropdown End --> */}
+      {/* Dropdown End */}
     </div>
   );
 };

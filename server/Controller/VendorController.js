@@ -138,8 +138,6 @@ const registerVendor = async (req, res) => {
   }
 };
 
-
-
 const updateVendor = async (req, res) => {
   const { _id, ...newData } = req.body;
   console.log("req.body:", req.body);
