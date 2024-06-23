@@ -102,56 +102,51 @@ console.log("selectedTrains", req.body["selectedTrains[]"]);
   }
 };
 
+
 const updateUser = async (req, res) => {
   const {
-    contractorId, ...newData
+    agency,
+    typeofcontract,
+    ContractperiodFrom,
+    ContractperiodTo,
+    Licenseename,
+    Licenseecontactdetails,
+    VendorsPermitted,
+    LicenseFeesPaidUptoDate,
+    sectionname,
+    contractorId,
+    stationName,
+    "selectedTrains[]": selectedTrains,
   } = req.body;
 
-  const selectedTrains = req.body["selectedTrains[]"];
-  // console.log("Request body received1:", req.body.selectedTrains);
-  console.log("Request body received2:", req.body);
-console.log('id',contractorId)
-console.log('data',newData)
   try {
-    const user = await Contractor.updateOne({ contractorId },newData);
+    let user = await Contractor.findOne({ contractorId });
 
-    // if (!user) {
-    //   return res.status(404).json({ message: "User not found" });
-    // }
-    // console.log('ooooo',user)
-    // // Update user object properties
-    // user.agency = req.body.agency;
-    // user.typeofcontract = req.body.typeofcontract;
-    // user.ContractperiodFrom = req.body.ContractperiodFrom;
-    // user.ContractperiodTo = req.body.ContractperiodTo;
-    // user.Licenseename = req.body.Licenseename;
-    // user.Licenseecontactdetails = req.body.Licenseecontactdetails;
-    // user.VendorsPermitted = req.body.VendorsPermitted;
-    // user.LicenseFeesPaidUptoDate = req.body.LicenseFeesPaidUptoDate;
-    // user.sectionname = req.body.sectionname;
-    // user.stationName = req.body.nameofstation;
-    // user.selectedTrains = req.body.selectedTrains;
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-    // Mark arrays as modified
-    // if (Array.isArray(user.selectedTrains)) {
-    //   user.markModified("selectedTrains");
-    // }
+    user.agency = agency;
+    user.typeofcontract = typeofcontract;
+    user.ContractperiodFrom = ContractperiodFrom;
+    user.ContractperiodTo = ContractperiodTo;
+    user.Licenseename = Licenseename;
+    user.Licenseecontactdetails = Licenseecontactdetails;
+    user.VendorsPermitted = VendorsPermitted;
+    user.LicenseFeesPaidUptoDate = LicenseFeesPaidUptoDate;
+    user.sectionname = sectionname;
+    user.stationName = stationName;
+    user.selectedTrains = selectedTrains;
 
-    // const updatedUser= await user.save();
+    console.log("Updated user data:", user);
 
-    console.log("Updated user:", user);
-
-
-
+    await user.save();
     res.status(200).json({ message: "User updated successfully" });
   } catch (error) {
     console.error(`Error updating user: ${error}`);
     res.status(500).json({ message: "Internal server error", error });
   }
 };
-
-
-
 
 const deleteUser = async (req, res) => {
   const { id } = req.params;

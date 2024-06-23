@@ -3,10 +3,13 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import axios from 'axios';
 import { MdOutlineCancel } from 'react-icons/md';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 // import { toast, useToaster } from 'react-hot-toast';
 
 export default function EditeContractor() {
+
+  let navigate = useNavigate()
+
   const { isEditContractor } = useSelector((state) => state.contractor);
   const [formData, setFormData] = useState({
     agency: '',
@@ -234,6 +237,10 @@ export default function EditeContractor() {
 
   console.log('form data train :', formData);
 
+  const handleDashboard = () => {
+    navigate('/contractortables');
+  };
+  
   return (
     <div>
       <DefaultLayout>
@@ -248,33 +255,51 @@ export default function EditeContractor() {
         >
           <div className="flex flex-col gap-9">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Edit Contractor
-                </h3>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent:'space-between'
+              }} className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+                <div>
+                  <h3 className="font-medium text-black dark:text-white">
+                    Edit Contractor
+                  </h3>
+                </div>
+                <div>
+                  <button
+                    onClick={() => handleDashboard()}
+                    className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
+border-blue-600
+border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
+active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+                  >
+                    Back
+                  </button>
+                </div>
               </div>
+
               <form>
                 <div className="p-6.5">
                   <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                     {/* Contract allotting Agency */}
-                      <div className="w-full xl:w-1/2">
-                        <label className="mb-2.5 block text-black dark:text-white">
-                          Contract allotting Agency{' '}
-                          <span className=" text-red-600 text-lg">*</span>
-                        </label>
-                        <select
-                          name="agency"
-                          value={formData.agency}
-                          onChange={handleChange}
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        >
-                          <option value="" disabled>
-                            Contract Allocating Agency
-                          </option>
-                          <option value="Railway">Railway</option>
-                          <option value="IRCTC">IRCTC</option>
-                        </select>
-                      </div>
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Contract allotting Agency{' '}
+                        <span className=" text-red-600 text-lg">*</span>
+                      </label>
+                      <select
+                        name="agency"
+                        value={formData.agency}
+                        onChange={handleChange}
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      >
+                        <option value="" disabled>
+                          Contract Allocating Agency
+                        </option>
+                        <option value="Railway">Railway</option>
+                        <option value="IRCTC">IRCTC</option>
+                      </select>
+                    </div>
                     <div onClick={handleTypeClick} className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
                         Type of Contract{' '}
