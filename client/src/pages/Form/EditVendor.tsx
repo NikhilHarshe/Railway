@@ -2,13 +2,17 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { setVendorsData } from "../../redux/slices/VendorSlice";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import DefaultLayout from '../../layout/DefaultLayout';
 import QRCode from 'qrcode.react';
 
 const EditVendor = () => {
+
+    const naviagte = useNavigate()
+
     const navigate = useNavigate();
+
     const baseUrl = "http://localhost:3000";
     const clientUrl = "https://railway-kappa.vercel.app/";
 

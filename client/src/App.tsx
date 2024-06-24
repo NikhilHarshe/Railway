@@ -27,6 +27,7 @@ import SortingTrainList from './pages/Form/SortingTrainList';
 import TableOne from './components/Tables/TableOne';
 import ImgUpload from './pages/Dashboard/ImgUpload';
 import EditVendor from './pages/Form/EditVendor';
+import Master from './pages/Form/Master';
 
 
 function App() {
@@ -81,9 +82,13 @@ function App() {
           index
           element={
             <>
-              <PrivateRoutes><PageTitle title="Railway Dashboard" /> </PrivateRoutes>
-              <PrivateRoutes> <ECommerce /> </PrivateRoutes>
-
+              <PrivateRoutes>
+                <PageTitle title="Railway Dashboard" />{' '}
+              </PrivateRoutes>
+              <PrivateRoutes>
+                {' '}
+                <ECommerce />{' '}
+              </PrivateRoutes>
             </>
           }
         />
@@ -164,20 +169,19 @@ function App() {
             </>
           }
         />
-        {
-          user?.Role === "SuperAdmin" ? (
-            <Route
-              path="/admin"
-              element={
-                <>
-                  <PageTitle title="Form Layout" />
-                  <Admin />
-                </>
-              }
-            />
-          ) :
-            ("")
-        }
+        {user?.Role === 'SuperAdmin' ? (
+          <Route
+            path="/admin"
+            element={
+              <>
+                <PageTitle title="Form Layout" />
+                <Admin />
+              </>
+            }
+          />
+        ) : (
+          ''
+        )}
         <Route
           path="/AddSeller"
           element={
@@ -202,6 +206,15 @@ function App() {
             <>
               <PageTitle title="VendersData" />
               <TableTwo />
+            </>
+          }
+        />
+        <Route
+          path="/master"
+          element={
+            <>
+              <PageTitle title="VendersData" />
+              <Master />
             </>
           }
         />

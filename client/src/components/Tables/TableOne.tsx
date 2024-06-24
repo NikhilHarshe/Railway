@@ -80,11 +80,20 @@ const TableOne = () => {
 
   function isWithinFifteenDays(date) {
     const currentDate = new Date();
-    const givenDate = new Date(date);
-    const timeDifference = Math.abs(givenDate - currentDate);
-    const dayDifference = timeDifference / (1000 * 3600 * 24);
-    return dayDifference <= 15;
+    const futureDate = new Date(currentDate); // Create a copy of the current date
+    futureDate.setDate(currentDate.getDate() + 5); // Set the future date to 15 days from now
+    const givenDate = new Date(date); // Convert the input date to a Date object
+
+    console.log('futureDate:', futureDate);
+    console.log('givenDate:', givenDate);
+
+    if (futureDate >= givenDate) {
+      return true;
+    } else {
+      return false;
+    }
   }
+
 
   const handleAgency = (e) => {
     let agency = e.target.value;

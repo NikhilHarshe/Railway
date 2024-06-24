@@ -22,7 +22,7 @@ export default function AddContractor() {
   // const [Authority, setAuthority] = useState('');
   const [fieldInput, setFieldInput] = useState(false);
   const [staticfieldInput, setStaticFieldInput] = useState(false);
-  const [nameofstation, setNameofstation] = useState('');
+  const [filterStationName, setFilterStationName] = useState('');
 
   const [formData, setFormData] = useState({
     agency: '',
@@ -111,10 +111,10 @@ export default function AddContractor() {
     ) {
       setStaticFieldInput(true);
       setFieldInput(false);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        nameofstation: [],
-      }));
+      // setFormData((prevFormData) => ({
+      //   ...prevFormData,
+      //   nameofstation: [],
+      // }));
     }
   };
 
@@ -144,6 +144,7 @@ export default function AddContractor() {
     '12849 Bilaspur Pune Sf Express'
   ]);
   const [selectedTrains, setSelectedTrains] = useState([]);
+  const [selectedStations, setSelectedStations] = useState([]);
 
   useEffect(() => {
     console.log('ggggggggggggggggg', typeof selectedTrains);
@@ -160,9 +161,9 @@ export default function AddContractor() {
     setFilter(e.target.value);
   };
 
-  const filteredOptions = trainsName.filter((option) =>
-    option.toLowerCase().includes(filter.toLowerCase()),
-  );
+  const filteredOptions = trainsName
+    .filter((option) => option.toLowerCase().includes(filter.toLowerCase()))
+    .slice(0, 10);
 
   const handleTrainClick = (trainName) => {
     setSelectedTrains((prevSelectedTrains) => [
@@ -176,6 +177,12 @@ export default function AddContractor() {
     );
     setSelectedTrains(updatedOptions);
   };
+  const handleStationRemove = (nameToRemove) => {
+    const updatedOptions = selectedStations.filter(
+      (option) => !option.toLowerCase().includes(nameToRemove.toLowerCase()),
+    );
+    setSelectedStations(updatedOptions);
+  };
 
   const addTrains = () => {
     setFormData((prevFormData) => ({
@@ -184,9 +191,29 @@ export default function AddContractor() {
     }));
   };
 
+  // useEffect(() => {
+  //   addTrains();
+  // }, [selectedTrains]);
+
+  const addStation = () => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      selectedStations,
+    }));
+  };
+
   useEffect(() => {
     addTrains();
-  }, [selectedTrains]);
+    addStation()
+  }, [selectedTrains,selectedStations]);
+
+  const handleStationNameChange = (e) => {
+    setFilterStationName(e.target.value)
+  }
+  const toggleStationNameDropdown = () => {
+    setInputVisible(true)
+  }
+ 
 
   // console.log('form data train :', formData);
 
@@ -195,7 +222,7 @@ export default function AddContractor() {
     'Nagpur to Wardha',
     'Nagpur to Betul',
     'Nagpur to Chandrapur',
-    'Nagpur to Sewagram',
+    'Nagpur to Sewagram', 
     'Nagpur to Ajni',
     'Nagpur to Amla',
     'Nagpur to Bhandak',
@@ -284,6 +311,115 @@ export default function AddContractor() {
     'Nagpur to Bhidi',
     'Nagpur to Riddhapur',
   ]);
+
+  const [stationNames] = useState([
+    'Nagpur',
+    'Ballarshah',
+    'Wardha',
+    'Betul',
+    'Chandrapur',
+    'Sewagram',
+    'Ajni',
+    'Amla',
+    'Bhandak',
+    'Bhugaon',
+    'Chandur',
+    'Dhamangaon',
+    'Ghoradongri',
+    'Hinganghat',
+    'Junnardeo',
+    'Katol',
+    'Multai',
+    'Narkhed',
+    'Pandhurna',
+    'Parasia',
+    'Pulgaon',
+    'Warora',
+    'Babupeth',
+    'Barbatpur',
+    'Barsali',
+    'Bharatwada',
+    'Bordhai',
+    'Borkhedi',
+    'Butibori',
+    'Chichonda',
+    'Chikni Road',
+    'Dahegaon',
+    'Dharakhoh',
+    'Dhodramohor',
+    'Godhni',
+    'Gumgaon',
+    'Hirdagarh',
+    'Iklehra',
+    'Jambhara',
+    'Jaulkheda',
+    'Kalaakhar',
+    'Kalambha',
+    'Kalmeshwar',
+    'Kaotha',
+    'Kayar',
+    'Khapri',
+    'Kirathgarh',
+    'Kohli',
+    'Lingti',
+    'Majri',
+    'Majri Khadan',
+    'Malkhed',
+    'Maramjhiri',
+    'Metpanjra',
+    'Morshi',
+    'Nagri',
+    'Navegaon',
+    'Palachauri',
+    'Pimpalkhuti',
+    'Pusla',
+    'Saheli',
+    'Seloo Road',
+    'Sindi',
+    'Sonegaon',
+    'Sonkhamb',
+    'Tadali',
+    'Taku',
+    'Talni',
+    'Teegaon',
+    'Timtala',
+    'Tuljapur',
+    'Wagholi',
+    'Wani',
+    'Warud Orange City',
+    'Kalamb',
+    'Deoli',
+    'Barchi Road',
+    'Barelipar',
+    'Benoda',
+    'Gangiwara',
+    'Markadhana',
+    'Mowad',
+    'Varud',
+    'Darimeta',
+    'Ghudankhapa',
+    'Gondwana Visapur',
+    'Hatnapur',
+    'Lalawadi',
+    'Magrdoh',
+    'Malkapur  Road',
+    'Tinkheda',
+    'Bhidi',
+    'Riddhapur',
+  ]);
+
+   const filteredStationNamesOptions = stationNames
+     .filter((option) =>
+       option.toLowerCase().includes(filterStationName.toLowerCase()),
+     )
+     .slice(0, 5);
+   const handleStationNameClick = (stationNames) => {
+     setSelectedStations((prevSelectedTrains) => [
+       ...prevSelectedTrains,
+       stationNames,
+      ]);
+     console.log('dddddddddddd', selectedStations);
+   };
 
   return (
     <div>
@@ -386,7 +522,6 @@ export default function AddContractor() {
                           {sectionName.map((item) => (
                             <option>{item}</option>
                           ))}
-                          
                         </select>
                       </div>
 
@@ -409,7 +544,7 @@ export default function AddContractor() {
                               // value={formData.trainList}
                               onChange={handleFilterChange}
                               //  onChange={handleChange}
-                              className="w-[300px] rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                               style={{
                                 display: true ? 'inline-block' : 'none',
                               }}
@@ -422,9 +557,10 @@ export default function AddContractor() {
                                 className="dropdown-content"
                                 style={{
                                   display: 'block',
+                                  color: 'black',
                                   position: 'absolute',
                                   backgroundColor: '#f9f9f9',
-                                  minWidth: '160px',
+                                  minWidth: '350px',
                                   boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)',
                                   zIndex: 1,
                                 }}
@@ -451,7 +587,7 @@ export default function AddContractor() {
 
                         <div>
                           <p className="mb-1 block text-black dark:text-white pt-3">
-                            Selected Trais{' '}
+                            Selected Trains{' '}
                             <span className=" text-red-600 text-lg">*</span>
                           </p>
                           {selectedTrains.map((item) => (
@@ -468,31 +604,73 @@ export default function AddContractor() {
                     </div>
                   )}
                   {staticfieldInput && (
-                    <div className="w-full xl:w-1/2">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Names of Station
-                        <span className=" text-red-600 text-lg">*</span>
-                      </label>
-                      <select
-                        name="nameofstation"
-                        value={setNameofstation}
-                        onChange={handleChange}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      >
-                        <option value="" disabled>
-                          Station Names
-                        </option>
-                        <option value="Nagpur to Betul">Nagpur to Betul</option>
-                        <option value="Nagpur to Vardha">
-                          Nagpur to Vardha
-                        </option>
-                        <option value="Nagpur to Pune">Nagpur to Pune</option>
-                        <option value="Nagpur to Mumbai">
-                          Nagpur to Mumbai
-                        </option>
-                      </select>
+                    <div className="flex">
+                      <div className="w-full xl:w-1/2">
+                        <label className="mb-2.5 block text-black dark:text-white">
+                          Names of Station
+                          <span className=" text-red-600 text-lg">*</span>
+                        </label>
+                        <input
+                          name="selectedStations"
+                          value={filterStationName}
+                          onChange={handleStationNameChange}
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          onFocus={toggleStationNameDropdown}
+                        />
+                        {isInputVisible && (
+                          <div
+                            onMouseEnter={toggleDropdown}
+                            onMouseLeave={toggleDropdown2}
+                            className="dropdown-content"
+                            style={{
+                              display: 'block',
+                              position: 'absolute',
+                              backgroundColor: '#f9f9f9',
+                              minWidth: '160px',
+                              minHeight: '100px',
+                              boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)',
+                              zIndex: 1,
+                            }}
+                          >
+                            {filteredStationNamesOptions.map(
+                              (option, index) => (
+                                <div
+                                  key={index}
+                                  onClick={() => handleStationNameClick(option)}
+                                  style={{
+                                    color: 'black',
+                                    padding: '12px 16px',
+                                    textDecoration: 'none',
+                                    display: 'block',
+                                    cursor: 'pointer',
+                                  }}
+                                >
+                                  {option}
+                                </div>
+                              ),
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="ml-[50px] mt-[-10px]">
+                        <p className="mb-1 block text-black dark:text-white pt-3">
+                          Selected Station{' '}
+                          <span className=" text-red-600 text-lg">*</span>
+                        </p>
+                        {selectedStations.map((item) => (
+                          <p className="flex align-middle items-center justify-between gap-3 ">
+                            {item}{' '}
+                            <MdOutlineCancel
+                              className=" text-red-500"
+                              onClick={() => handleStationRemove(item)}
+                            />
+                          </p>
+                        ))}
+                      </div>
                     </div>
                   )}
+
                   {/* Contract Period From */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
