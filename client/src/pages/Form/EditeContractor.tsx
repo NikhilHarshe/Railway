@@ -15,7 +15,7 @@ export default function EditeContractor() {
     agency: '',
     typeofcontract: '',
     ContractperiodFrom: '',
-    ContractperiodTo: '',
+    ContractperiodTo: null,
     LicenseFeesPaidUptoDate: '',
     Licenseename: '',
     // LicenseeAadharNo: '',
@@ -29,6 +29,7 @@ export default function EditeContractor() {
   const location = useLocation();
   const { invigilator } = location.state || {};
   console.log('invigilator data ', invigilator);
+
   useEffect(() => {
     if (invigilator) {
       setFormData({
@@ -47,10 +48,11 @@ export default function EditeContractor() {
         Licenseecontactdetails: invigilator.Licensee_Contact_details || '',
         VendorsPermitted: invigilator.vendors_permitted || '',
         nameofstation: invigilator.nameofstation || [],
-        AutherityDoc: null, // Assuming authorityDocument is handled separately (not in invigilator)
+        sectionname: invigilator.sectionname || [],
+        AutherityDoc: invigilator.authorityDocument || null, // Assuming authorityDocument is handled separately (not in invigilator)
         // Add other fields as needed
       });
-      setSelectedTrains(invigilator.trainList || []);
+      setSelectedTrains(invigilator.selectedTrains || []);
     }
   }, [invigilator]);
 
@@ -73,7 +75,7 @@ export default function EditeContractor() {
     if (name === 'AutherityDoc') {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [name]: files[0] || null, 
+        [name]: files[0] || null,
       }));
     } else {
       setFormData((prevFormData) => ({
@@ -91,14 +93,14 @@ export default function EditeContractor() {
     try {
       if (formData) {
         formData['contractorId'] = invigilator.contractorId;
-         
-      let updatedFormData = {...formData}
+
+        let updatedFormData = { ...formData }
 
         console.log('updatedFormData: ', updatedFormData);
         const response = await axios.put(
           baseUrl + '/contractor/update',
           updatedFormData,
-          
+
           {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -149,7 +151,7 @@ export default function EditeContractor() {
         ...prevFormData,
         sectionname: [],
       }));
-      console.log('pppppppppppp', formData);
+      console.log('handleDynamicInput form data: ', formData);
     }
   };
 
@@ -237,10 +239,19 @@ export default function EditeContractor() {
 
   console.log('form data train :', formData);
 
+  const [imageToShow, setImageToShow] = useState(null);
+  const handleViewImage = (image) => {
+    if (image && typeof image !== 'string') {
+      setImageToShow(URL.createObjectURL(image));
+    } else {
+      setImageToShow(image);
+    }
+  };
+
   const handleDashboard = () => {
     navigate('/contractortables');
   };
-  
+
   return (
     <div>
       <DefaultLayout>
@@ -353,7 +364,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
                         </label>
                         <select
                           name="sectionname"
-                          value={formData.sectionname}
+                          value={formData.sectionname[0]}
                           onChange={handleChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         >
@@ -550,18 +561,18 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
                     />
                   </div>
 
-                  <div className=" flex flex-col pb-5 gap-2">
-                    <label
-                      htmlFor="AutherityDoc"
-                      className="mb-2.5 block text-black dark:text-white"
-                    >
-                      Uploade Autherity Document
+                  <div className='flex flex-col pb-5 gap-2'>
+                    <label htmlFor="AutherityDoc" className="mb-2.5 block text-black dark:text-white">
+                    Uploade Autherity Document <span className='text-red-600 text-lg'>*</span>
                     </label>
-                    <input
-                      type="file"
-                      name="AutherityDoc"
-                      onChange={handleChange}
-                    />
+                    <input type="file" name='AutherityDoc' onChange={handleChange} />
+                    <button
+                      type="button"
+                      onClick={() => handleViewImage(formData.AutherityDoc)}
+                      className="text-blue-500 inline-flex"
+                    >
+                      View
+                    </button>
                   </div>
 
                   {/* Vendors Permitted */}
@@ -594,6 +605,30 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
             </div>
           </div>
         </div>
+        {/* Modal for viewing images */}
+        {imageToShow && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-4 rounded ">
+              {/* <img
+                            src={imageToShow}
+
+                            alt="Document"
+                            className="max-w-full max-h-full"
+                        /> */}
+              <iframe
+                src={imageToShow}
+                style={{ width: '60vw', height: '69vh' }}
+                title="PDF Viewer"
+              />
+              <button
+                onClick={() => setImageToShow(null)}
+                className="mt-2 bg-red-500 text-white py-1 px-4 rounded"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
       </DefaultLayout>
     </div>
   );
