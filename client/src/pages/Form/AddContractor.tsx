@@ -125,20 +125,23 @@ export default function AddContractor() {
   const [isInputVisible, setInputVisible] = useState(false);
   const [filter, setFilter] = useState('');
   const [trainsName] = useState([
-    'Maharashtra_Exp',
-    'Puri_Surat_Weekly_SF_Express',
-    'Surat_Puri_Weekly_SF_Express',
-    'Hapa_Bilaspur_SF_Express',
-    'Prerana_Express',
-    'Hatia_Pune_SF_Express',
-    'Pune_Hatia_SF_Express',
-    'Shalimar_Mumbai_LTT_(Kurla)_Express.',
-    'Mumbai_LTT_Shalimar_(Kurla)_Express.',
-    'Malda_Town_Surat_Express.',
-    'Surat_Malda_Town_Express.',
-    'Bilaspur_Hapa_S_Express.',
-    'Vidarbha_SF_Express',
-    'Vidarbha_SF_Express',
+    '11039 Maharashtra Exp',
+    '2282 Puri Surat Weekly SF Express',
+    '22828 Surat Puri Weekly SF Express',
+    '22939 Hapa Bilaspur SF Express',
+    '22137 Prerana Express',
+    '22846 Hatia Pune SF Express',
+    '2245 Pune Hatia SF Express',
+    '18030 Shalimar Mumbai LTT (Kurla) Express.',
+    '18029 Mumbai LTT Shalimar (Kurla) Express.',
+    '13425 Malda Town Surat Express.',
+    '13426 Surat Malda Town Express.',
+    '22940 Bilaspur Hapa S Express.',
+    '12106 Vidarbha SF Express',
+    '12105 Vidarbha SF Express',
+    '12136 Nagpur-Pune SF Express',
+    '12135 Pune-Nagpur SF Express',
+    '12849 Bilaspur Pune Sf Express'
   ]);
   const [selectedTrains, setSelectedTrains] = useState([]);
 
@@ -186,6 +189,101 @@ export default function AddContractor() {
   }, [selectedTrains]);
 
   // console.log('form data train :', formData);
+
+  const [sectionName] = useState([
+    'Nagpur to Ballarshah',
+    'Nagpur to Wardha',
+    'Nagpur to Betul',
+    'Nagpur to Chandrapur',
+    'Nagpur to Sewagram',
+    'Nagpur to Ajni',
+    'Nagpur to Amla',
+    'Nagpur to Bhandak',
+    'Nagpur to Bhugaon',
+    'Nagpur to Chandur',
+    'Nagpur to Dhamangaon',
+    'Nagpur to Ghoradongri',
+    'Nagpur to Hinganghat',
+    'Nagpur to Junnardeo',
+    'Nagpur to Katol',
+    'Nagpur to Multai',
+    'Nagpur to Narkhed',
+    'Nagpur to Pandhurna',
+    'Nagpur to Parasia',
+    'Nagpur to Pulgaon',
+    'Nagpur to Warora',
+    'Nagpur to Babupeth',
+    'Nagpur to Barbatpur',
+    'Nagpur to Barsali',
+    'Nagpur to Bharatwada',
+    'Nagpur to Bordhai',
+    'Nagpur to Borkhedi',
+    'Nagpur to Butibori',
+    'Nagpur to Chichonda',
+    'Nagpur to Chikni Road',
+    'Nagpur to Dahegaon',
+    'Nagpur to Dharakhoh',
+    'Nagpur to Dhodramohor',
+    'Nagpur to Godhni',
+    'Nagpur to Gumgaon',
+    'Nagpur to Hirdagarh',
+    'Nagpur to Iklehra',
+    'Nagpur to Jambhara',
+    'Nagpur to Jaulkheda',
+    'Nagpur to Kalaakhar',
+    'Nagpur to Kalambha',
+    'Nagpur to Kalmeshwar',
+    'Nagpur to Kaotha',
+    'Nagpur to Kayar',
+    'Nagpur to Khapri',
+    'Nagpur to Kirathgarh',
+    'Nagpur to Kohli',
+    'Nagpur to Lingti',
+    'Nagpur to Majri',
+    'Nagpur to Majri Khadan',
+    'Nagpur to Malkhed',
+    'Nagpur to Maramjhiri',
+    'Nagpur to Metpanjra',
+    'Nagpur to Morshi',
+    'Nagpur to Nagri',
+    'Nagpur to Navegaon',
+    'Nagpur to Palachauri',
+    'Nagpur to Pimpalkhuti',
+    'Nagpur to Pusla',
+    'Nagpur to Saheli',
+    'Nagpur to Seloo Road',
+    'Nagpur to Sindi',
+    'Nagpur to Sonegaon',
+    'Nagpur to Sonkhamb',
+    'Nagpur to Tadali',
+    'Nagpur to Taku',
+    'Nagpur to Talni',
+    'Nagpur to Teegaon',
+    'Nagpur to Timtala',
+    'Nagpur to Tuljapur',
+    'Nagpur to Wagholi',
+    'Nagpur to Wani',
+    'Nagpur to Warud Orange City',
+    'Nagpur to Kalamb',
+    'Nagpur to Deoli',
+    'Nagpur to Barchi Road',
+    'Nagpur to Barelipar',
+    'Nagpur to Benoda',
+    'Nagpur to Gangiwara',
+    'Nagpur to Markadhana',
+    'Nagpur to Mowad',
+    'Nagpur to Varud',
+    'Nagpur to Darimeta',
+    'Nagpur to Ghudankhapa',
+    'Nagpur to Gondwana Visapur',
+    'Nagpur to Hatnapur',
+    'Nagpur to Lalawadi',
+    'Nagpur to Magrdoh',
+    'Nagpur to Malkapur  Road',
+    'Nagpur to Tinkheda',
+    'Nagpur to Bhidi',
+    'Nagpur to Riddhapur',
+  ]);
 
   return (
     <div>
@@ -285,19 +383,10 @@ export default function AddContractor() {
                           onChange={handleChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         >
-                          <option value="" disabled>
-                            Select section
-                          </option>
-                          <option value="Nagpur to Betul">
-                            Nagpur to Betul
-                          </option>
-                          <option value="Nagpur to Vardha">
-                            Nagpur to Vardha
-                          </option>
-                          <option value="Nagpur to Pune">Nagpur to Pune</option>
-                          <option value="Nagpur to Mumbai">
-                            Nagpur to Mumbai
-                          </option>
+                          {sectionName.map((item) => (
+                            <option>{item}</option>
+                          ))}
+                          
                         </select>
                       </div>
 
@@ -320,7 +409,7 @@ export default function AddContractor() {
                               // value={formData.trainList}
                               onChange={handleFilterChange}
                               //  onChange={handleChange}
-                              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                              className="w-[300px] rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                               style={{
                                 display: true ? 'inline-block' : 'none',
                               }}

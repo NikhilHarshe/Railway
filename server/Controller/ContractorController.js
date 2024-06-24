@@ -130,6 +130,17 @@ const updateUser = async (req, res) => {
       return res.status(404).json({ message: 'Contractor not found' });
     }
 
+    let imgUrl = "";
+    if (req.files) {
+      const file = req.files.AutherityDoc;
+      const fileName = process.env.FOLDER_NAME;
+      const response = await uploadImageToCloudinary(file, fileName);
+      console.log("response ", response);
+      imgUrl = response?.secure_url;
+
+      contractor.AutherityDoc = imgUrl;
+    }
+
     // Update contractor fields
     contractor.agency = agency;
     contractor.category = typeofcontract;
@@ -151,7 +162,6 @@ const updateUser = async (req, res) => {
     res.status(500).json({ message: "Internal server error", error });
   }
 };
-
 
 
 const deleteUser = async (req, res) => {
