@@ -18,7 +18,7 @@ const registerContractor = async (req, res) => {
   } = req.body;
 
   const selectedTrains = req.body["selectedTrains[]"];
-console.log("selectedTrains", req.body["selectedTrains[]"]);
+  console.log("selectedTrains", req.body["selectedTrains[]"]);
   try {
     console.log("Received request body:", req.body);
 
@@ -35,7 +35,7 @@ console.log("selectedTrains", req.body["selectedTrains[]"]);
         !Licenseecontactdetails ||
         !VendorsPermitted ||
         !LicenseFeesPaidUptoDate ||
-        !selectedTrains || 
+        !selectedTrains ||
         !sectionname
       ) {
         console.log("Missing fields for Dynamic contract");
@@ -104,52 +104,53 @@ console.log("selectedTrains", req.body["selectedTrains[]"]);
 
 const updateUser = async (req, res) => {
   const {
-    contractorId, ...newData
+    agency,
+    typeofcontract,
+    ContractperiodFrom,
+    ContractperiodTo,
+    LicenseFeesPaidUptoDate,
+    Licenseename,
+    Licenseecontactdetails,
+    VendorsPermitted,
+    // selectedTrains,
+    contractorId
   } = req.body;
 
   const selectedTrains = req.body["selectedTrains[]"];
-  // console.log("Request body received1:", req.body.selectedTrains);
-  console.log("Request body received2:", req.body);
-console.log('id',contractorId)
-console.log('data',newData)
+  console.log("selectedTrains[] ", selectedTrains);
+
   try {
-    const user = await Contractor.updateOne({ contractorId },newData);
+    // Find the contractor by ID
+    console.log("req.body : ", req.body);
+    const contractor = await Contractor.findOne({ contractorId });
 
-    // if (!user) {
-    //   return res.status(404).json({ message: "User not found" });
-    // }
-    // console.log('ooooo',user)
-    // // Update user object properties
-    // user.agency = req.body.agency;
-    // user.typeofcontract = req.body.typeofcontract;
-    // user.ContractperiodFrom = req.body.ContractperiodFrom;
-    // user.ContractperiodTo = req.body.ContractperiodTo;
-    // user.Licenseename = req.body.Licenseename;
-    // user.Licenseecontactdetails = req.body.Licenseecontactdetails;
-    // user.VendorsPermitted = req.body.VendorsPermitted;
-    // user.LicenseFeesPaidUptoDate = req.body.LicenseFeesPaidUptoDate;
-    // user.sectionname = req.body.sectionname;
-    // user.stationName = req.body.nameofstation;
-    // user.selectedTrains = req.body.selectedTrains;
+    console.log("Contractor data : ", contractor);
 
-    // Mark arrays as modified
-    // if (Array.isArray(user.selectedTrains)) {
-    //   user.markModified("selectedTrains");
-    // }
+    if (!contractor) {
+      return res.status(404).json({ message: 'Contractor not found' });
+    }
 
-    // const updatedUser= await user.save();
+    // Update contractor fields
+    contractor.agency = agency;
+    contractor.category = typeofcontract;
+    contractor.fromDate = new Date(ContractperiodFrom);
+    contractor.toDate = new Date(ContractperiodTo);
+    contractor.licence_fees_paid_upto = new Date(LicenseFeesPaidUptoDate);
+    contractor.licensee = Licenseename;
+    contractor.Licensee_Contact_details = Licenseecontactdetails;
+    contractor.vendors_permitted = VendorsPermitted;
+    contractor.selectedTrains = selectedTrains;
 
-    console.log("Updated user:", user);
+    // Save the updated contractor
+    const updatedUser = await contractor.save();
+    console.log("updated Contractor : ", updatedUser);
 
-
-
-    res.status(200).json({ message: "User updated successfully" });
+    res.status(200).json({ message: "User updated successfully", user: updatedUser });
   } catch (error) {
     console.error(`Error updating user: ${error}`);
     res.status(500).json({ message: "Internal server error", error });
   }
 };
-
 
 
 

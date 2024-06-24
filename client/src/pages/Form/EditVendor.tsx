@@ -358,6 +358,16 @@ const EditVendor = () => {
                                     {/* Generate QR Code */}
                                     <div className="">
                                         <button
+                                            className="inline-flex items-center justify-center rounded-md bg-red-500 py-2 px-4 text-center text-base font-medium text-white hover:bg-opacity-90 lg:px-5 xl:px-6"
+                                            // onClick={generateQRCode}
+                                            onClick={() => navigate(-1)}
+                                        >
+                                            Cancel Edit
+                                        </button>
+                                    </div>
+                                    {/* Generate QR Code */}
+                                    <div className="">
+                                        <button
                                             className="inline-flex items-center justify-center rounded-md border border-primary py-2 px-4 text-center text-base font-medium text-primary hover:bg-opacity-90 lg:px-5 xl:px-6"
                                             // onClick={generateQRCode}
                                             onClick={showQRcode}
