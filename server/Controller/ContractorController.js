@@ -118,9 +118,11 @@ const updateUser = async (req, res) => {
     stationName,
     "selectedTrains[]": selectedTrains,
   } = req.body;
-
+  console.log('Frontend Data', req.body)
+  
   try {
     let user = await Contractor.findOne({ contractorId });
+    console.log("Backend Date",user);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -137,8 +139,6 @@ const updateUser = async (req, res) => {
     user.sectionname = sectionname;
     user.stationName = stationName;
     user.selectedTrains = selectedTrains;
-
-    console.log("Updated user data:", user);
 
     await user.save();
     res.status(200).json({ message: "User updated successfully" });
