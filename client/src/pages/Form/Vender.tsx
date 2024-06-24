@@ -7,7 +7,7 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import { UploadButton } from "@bytescale/upload-widget-react";
 import { LiaCheckDoubleSolid } from "react-icons/lia";
 import toast from 'react-hot-toast';
-import {setVendorsData} from "../../redux/slices/VendorSlice"
+import { setVendorsData } from "../../redux/slices/VendorSlice"
 
 const FormLayout = () => {
   // const baseUrl = "https://railway-qbx4.onrender.com";
@@ -51,14 +51,14 @@ const FormLayout = () => {
     }
 
   };
-  console.log("Form data in Vendor ", generatedData)
+  // console.log("Form data in Vendor ", generatedData)
 
   const handleSubmit = (e) => {
     e.preventDefault();
   };
 
-  const generateQRCode = (e) => {
-    e.preventDefault();
+  const generateQRCode = () => {
+    // e.preventDefault();
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let result = '';
     const charactersLength = characters.length;
@@ -72,7 +72,7 @@ const FormLayout = () => {
 
     setQRCodeValue(result);
     setGeneratedData(updatedFormData);
-    setSuccess(true);
+    // setSuccess(true);
 
     // setProfilePic(profilePic);
     // setAadharCard(aadharCard);
@@ -83,6 +83,7 @@ const FormLayout = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+    await generateQRCode();
     if (Object.values(generatedData).some(value => value === '')) {
       console.log("generatedData : ", generatedData);
       toast.error('All fields are required');
@@ -100,6 +101,7 @@ const FormLayout = () => {
         );
         // alert('Data saved successfully');
         toast.success("Vendor Registered")
+        setSuccess(true);
         setVendorsData(response.data.vendors);
         localStorage.setItem("vendors", JSON.stringify(response?.data.vendors))
         console.log("response ", response);
@@ -118,10 +120,10 @@ const FormLayout = () => {
     documentTitle: "Invoice",
   });
 
-  const options = {
-    apiKey: "public_kW15c7QDZR7i1vmbhh26HXrTfHvb",
-    maxFileCount: 1
-  };
+  // const options = {
+  //   apiKey: "public_kW15c7QDZR7i1vmbhh26HXrTfHvb",
+  //   maxFileCount: 1
+  // };
 
   // formData.profilePic = profilePic;
   // formData.aadharCard = aadharCard;
@@ -185,41 +187,9 @@ const FormLayout = () => {
                     </div>
                   </div>
 
-                  <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                    {/* Mobile Number */}
-                    <div className="w-full xl:w-1/2">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Mobile Number{' '}
-                        <span className="text-red-600 text-lg">*</span>
-                      </label>
-                      <input
-                        type="number"
-                        name="mobile"
-                        // Corrected name attribute
-                        value={formData.mobile}
-                        onChange={handleChange}
-                        placeholder="Enter your mobile number"
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      />
-                    </div>
-
-                    {/* Aadhar number */}
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Aadhar number <span className="text-meta-1">*</span>
-                      </label>
-                      <input
-                        type="number"
-                        name="aadhar"
-                        inputMode="numeric"
-                        pattern="\d*"
-                        value={formData.aadhar}
-                        onChange={handleChange}
-                        placeholder="Enter your Aadhar number"
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      />
-                    </div>
-                    <div className=" flex flex-col pb-5 gap-2">
+                  <div className="mb-4.5 flex flex-col gap-6 xl:flex-row xl:justify-between w-full">
+                    {/* Upload Profile Photo */}
+                    <div className=" flex flex-col gap-2 w-full xl:w-1/2">
                       <label
                         htmlFor="profilePic"
                         className="mb-2.5 block text-black dark:text-white"
@@ -233,41 +203,77 @@ const FormLayout = () => {
                         onChange={handleChange}
                       />
                     </div>
+
+                    {/* Mobile Number */}
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white" htmlFor='mobile'>
+                        Mobile Number{' '}
+                        <span className="text-red-600 text-lg">*</span>
+                      </label>
+                      <input
+                        type="number"
+                        name="mobile"
+                        // Corrected name attribute
+                        value={formData.mobile}
+                        onChange={handleChange}
+                        placeholder="Enter your mobile number"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      />
+                    </div>
                   </div>
 
-                  {/* Upload Aadhar Pic */}
-                  <div className="flex flex-col pb-5 gap-2">
-                    <label
-                      htmlFor="aadharCardImg"
-                      className="mb-2.5 block text-black dark:text-white"
-                    >
-                      Upload Aadhar Card{' '}
-                      <span className="text-red-600 text-lg">*</span>
-                    </label>
-                    <input
-                      type="file"
-                      name="aadharCardImg"
-                      onChange={handleChange}
-                    />
+                  <div className=' flex'>
+                    {/* Upload Aadhar Pic */}
+                    <div className="flex flex-col pb-5 gap-2">
+                      <label
+                        htmlFor="aadharCardImg"
+                        className="mb-2.5 block text-black dark:text-white"
+                      >
+                        Upload Aadhar Card{' '}
+                        <span className="text-red-600 text-lg">*</span>
+                      </label>
+                      <input
+                        type="file"
+                        name="aadharCardImg"
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    {/* Aadhar number */}
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white" htmlFor='aadhar'>
+                        Aadhar number <span className="text-red-600 text-lg">*</span>
+                      </label>
+                      <input
+                        type="number"
+                        name="aadhar"
+                        inputMode="numeric"
+                        pattern="\d*"
+                        value={formData.aadhar}
+                        onChange={handleChange}
+                        placeholder="Enter your Aadhar number"
+                        className="w-[15rem] rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      />
+                    </div>
                   </div>
+
                 </div>
-                <h3 className="font-medium mb-[20px] text-black dark:text-white">
+
+                <h3 className="font-medium my-[20px] text-black dark:text-white ">
                   Police Varification Information
                 </h3>
                 <div className="border border-gray-300 shadow-md rounded-lg p-6">
-                  <div className=" flex flex-col pb-5 gap-2">
-                    <label
-                      htmlFor="policeVarificationDocument"
-                      className="mb-2.5 block text-black dark:text-white"
-                    >
-                      Upload PoliceVarification Document{' '}
-                      <span className=" text-red-600 text-lg">*</span>
-                    </label>
-                    <input
-                      type="file"
-                      name="policeVarificationDocument"
-                      onChange={handleChange}
-                    />
+                  <div className=" flex  pb-5 gap-2">
+                    {/* Upload PoliceVarification Document */}
+                    <div>
+                      <label htmlFor="policeVarificationDocument" className="mb-2.5 block text-black dark:text-white" >
+                        Upload PoliceVarification Document{' '}
+                        <span className=" text-red-600 text-lg">*</span>
+                      </label>
+                      <input type="file" name="policeVarificationDocument" onChange={handleChange} />
+                    </div>
+
+                    {/* PoliceVarification */}
                     <div className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
                         PoliceVarification Date{' '}
@@ -282,12 +288,14 @@ const FormLayout = () => {
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
                     </div>
+
                   </div>
                 </div>
-                <h3 className="font-medium mb-[20px] text-black dark:text-white">
+                <h3 className="font-medium my-[20px] text-black dark:text-white">
                   Medical Varification Information
                 </h3>
-                <div className="border border-gray-300 shadow-md rounded-lg p-6">
+                <div className="border border-gray-300 xl:flex shadow-md rounded-lg p-6">
+                  {/* Upload MadicalValidity Document */}
                   <div className=" flex flex-col pb-5 gap-2">
                     <label
                       htmlFor="madicalValidityDocument"
@@ -302,6 +310,8 @@ const FormLayout = () => {
                       onChange={handleChange}
                     />
                   </div>
+
+                  {/* MedicalValidity Date */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
                       MedicalValidity Date{' '}
@@ -317,12 +327,9 @@ const FormLayout = () => {
                     />
                   </div>
                 </div>
-                {/* Upload MadicalValidity Document */}
-
-                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row"></div>
 
                 {/* validityAuthority */}
-                <div className="mb-4.5">
+                <div className="my-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">
                     ValidityAuthority{' '}
                     <span className=" text-red-600 text-lg">*</span>
@@ -355,28 +362,40 @@ const FormLayout = () => {
                   </div>
                 </div>
 
-                {/* Upload Profile Pic */}
-
-                <button
+                {/* <button
                   onClick={generateQRCode}
                   className="inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10 mr-5"
                 >
                   Generate QR Code
-                </button>
+                </button> */}
 
-                <button
-                  onClick={generatePDF}
-                  className="mt-4 inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10 mr-5"
-                >
-                  Generate PDF
-                </button>
+                {
+                  success && <button
+                    onClick={generatePDF}
+                    className="mt-4 inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10 mr-5"
+                  >
+                    Print Qr Code PDF
+                  </button>
+                }
 
-                <button
+                {
+                  !success && <button
+                    onClick={handleSave}
+                    className="mt-4 inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10"
+                  >
+                    Save
+                  </button>
+                }
+{/* 
+                {
+                  success && <button
                   onClick={handleSave}
                   className="mt-4 inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10"
+
                 >
-                  Save
+                  Register New Vendor
                 </button>
+                } */}
               </div>
             </form>
           </div>

@@ -28,6 +28,7 @@ import TableOne from './components/Tables/TableOne';
 import ImgUpload from './pages/Dashboard/ImgUpload';
 import EditVendor from './pages/Form/EditVendor';
 
+
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();

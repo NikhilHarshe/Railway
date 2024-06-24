@@ -15,7 +15,9 @@ const TableTwo = () => {
   const navigate = useNavigate();
   const baseUrl = "http://localhost:3000";
   // const baseUrl = "https://railway-qbx4.onrender.com";
-  const [venders, setVenders] = useState([]);
+  const [newVenders, setVenders] = useState([]);
+
+  const venders = newVenders.reverse();
 
   const getVendersData = async () => {
     const toastid = toast.loading("Loading...")

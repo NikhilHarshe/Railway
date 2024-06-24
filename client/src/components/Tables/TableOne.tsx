@@ -6,6 +6,7 @@ import { RiDeleteBin5Fill } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { setIsEditContractor } from '../../redux/slices/ContractorSlice';
 import DefaultLayout from '../../layout/DefaultLayout';
+import toast from 'react-hot-toast';
 
 let Length = createContext();
 
@@ -16,16 +17,20 @@ const TableOne = () => {
   const clientUrl = 'http://crease-railway-8njx.vercel.app';
 
   let navigate = useNavigate();
-  const [filteredInvigilators, setFilteredInvigilators] = useState([]);
+  const [newfilteredInvigilators, setFilteredInvigilators] = useState([]);
   const [initialDate, setInitialDate] = useState('');
   const [finalDate, setFinalDate] = useState('');
   const [invigilators, setInvigilators] = useState([]);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [invigilatorToDelete, setInvigilatorToDelete] = useState(null);
 
+  const filteredInvigilators = newfilteredInvigilators.reverse();
+
   const handleDelete = async (_id) => {
+    const toastId = toast.loading("Loading...")
     try {
       setShowDeleteConfirmation(false);
+      
       await axios.delete(baseUrl + `/contractor/delete/${_id}`);
       setInvigilators(
         invigilators.filter((invigilator) => invigilator._id !== _id),
@@ -33,6 +38,7 @@ const TableOne = () => {
     } catch (error) {
       console.error('Error deleting user:', error);
     }
+    toast
   };
 
   useEffect(() => {
