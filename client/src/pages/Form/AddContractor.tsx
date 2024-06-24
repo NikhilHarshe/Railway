@@ -111,10 +111,10 @@ export default function AddContractor() {
     ) {
       setStaticFieldInput(true);
       setFieldInput(false);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        nameofstation: [],
-      }));
+      // setFormData((prevFormData) => ({
+      //   ...prevFormData,
+      //   nameofstation: [],
+      // }));
     }
   };
 
@@ -191,9 +191,21 @@ export default function AddContractor() {
     }));
   };
 
+  // useEffect(() => {
+  //   addTrains();
+  // }, [selectedTrains]);
+
+  const addStation = () => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      selectedStations,
+    }));
+  };
+
   useEffect(() => {
     addTrains();
-  }, [selectedTrains]);
+    addStation()
+  }, [selectedTrains,selectedStations]);
 
   const handleStationNameChange = (e) => {
     setFilterStationName(e.target.value)
@@ -545,10 +557,10 @@ export default function AddContractor() {
                                 className="dropdown-content"
                                 style={{
                                   display: 'block',
-                                  color:'black',
+                                  color: 'black',
                                   position: 'absolute',
                                   backgroundColor: '#f9f9f9',
-                                  minWidth: '250px',
+                                  minWidth: '350px',
                                   boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)',
                                   zIndex: 1,
                                 }}
@@ -565,7 +577,7 @@ export default function AddContractor() {
                                       cursor: 'pointer',
                                     }}
                                   >
-                                    {/* {option} */}
+                                    {option}
                                   </div>
                                 ))}
                               </div>
@@ -592,14 +604,14 @@ export default function AddContractor() {
                     </div>
                   )}
                   {staticfieldInput && (
-                    <div className='flex'>
+                    <div className="flex">
                       <div className="w-full xl:w-1/2">
                         <label className="mb-2.5 block text-black dark:text-white">
                           Names of Station
                           <span className=" text-red-600 text-lg">*</span>
                         </label>
                         <input
-                          name="nameofstation"
+                          name="selectedStations"
                           value={filterStationName}
                           onChange={handleStationNameChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -641,11 +653,11 @@ export default function AddContractor() {
                         )}
                       </div>
 
-                      <div className='ml-[50px] mt-[-10px]'>
+                      <div className="ml-[50px] mt-[-10px]">
                         <p className="mb-1 block text-black dark:text-white pt-3">
-                      Selected Station{' '}
-                      <span className=" text-red-600 text-lg">*</span>
-                    </p>
+                          Selected Station{' '}
+                          <span className=" text-red-600 text-lg">*</span>
+                        </p>
                         {selectedStations.map((item) => (
                           <p className="flex align-middle items-center justify-between gap-3 ">
                             {item}{' '}
