@@ -56,6 +56,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     }
   }, [sidebarExpanded]);
 
+  const updateList = [
+    'Update Agency',
+    'Update Contract Type',
+    'Update Train List',
+    'Update Section Names',
+    "Update Station Names"
+  ];
+
+  const [masterSideDrop,setMasterSideDrop] = useState(false)
+
+  const handleSideDrop =() => {
+    setMasterSideDrop(true);
+  }
+
   return (
     <aside
       ref={sidebar}
@@ -118,7 +132,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
               {/*Master*/}
-              <li>
+              <li
+                onMouseEnter={() => handleSideDrop()}
+              >
                 <NavLink
                   to="/master"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-graydark dark:text-bodydark1 duration-300 ease-in-out hover:bg-[#F1F5F9] dark:hover:bg-meta-4 ${
@@ -157,6 +173,25 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Master
                 </NavLink>
               </li>
+              {/* <li>
+                <select
+                  style={{
+                    // position: 'absolute',
+                    // zIndex: '1000',
+                    // margin: '0 0 0 150px',
+                    width: '100%',
+                    overflow: 'visible',
+                    height:'50px'
+                  }}
+                >
+                  {updateList.map((item) => (
+                    <option style={{
+                      fontSize:"20px"
+                    }}>{item}</option>
+                  ))}
+                </select>
+              </li> */}
+              
               {/* Admin */}
               {user?.Role === 'SuperAdmin' && (
                 <li>

@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import DefaultLayout from '../../layout/DefaultLayout';
 import axios from 'axios';
-import { UploadButton } from '@bytescale/upload-widget-react';
-import { LiaCheckDoubleSolid } from 'react-icons/lia';
 import { MdOutlineCancel } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { trainsName } from './TrainNames';
+import { sectionName } from './SectionNames';
+import { stationNames } from './StationNames'
 
 export default function AddContractor() {
   const { isEditContractor } = useSelector((state) => state.contractor);
@@ -111,44 +112,14 @@ export default function AddContractor() {
     ) {
       setStaticFieldInput(true);
       setFieldInput(false);
-      // setFormData((prevFormData) => ({
-      //   ...prevFormData,
-      //   nameofstation: [],
-      // }));
     }
-  };
-
-  const handleTypeClick = () => {
-    console.log('lllllllllllllll', formData.typeofcontract);
   };
 
   const [isInputVisible, setInputVisible] = useState(false);
   const [filter, setFilter] = useState('');
-  const [trainsName] = useState([
-    '11039 Maharashtra Exp',
-    '2282 Puri Surat Weekly SF Express',
-    '22828 Surat Puri Weekly SF Express',
-    '22939 Hapa Bilaspur SF Express',
-    '22137 Prerana Express',
-    '22846 Hatia Pune SF Express',
-    '2245 Pune Hatia SF Express',
-    '18030 Shalimar Mumbai LTT (Kurla) Express.',
-    '18029 Mumbai LTT Shalimar (Kurla) Express.',
-    '13425 Malda Town Surat Express.',
-    '13426 Surat Malda Town Express.',
-    '22940 Bilaspur Hapa S Express.',
-    '12106 Vidarbha SF Express',
-    '12105 Vidarbha SF Express',
-    '12136 Nagpur-Pune SF Express',
-    '12135 Pune-Nagpur SF Express',
-    '12849 Bilaspur Pune Sf Express'
-  ]);
+  
   const [selectedTrains, setSelectedTrains] = useState([]);
   const [selectedStations, setSelectedStations] = useState([]);
-
-  useEffect(() => {
-    console.log('ggggggggggggggggg', typeof selectedTrains);
-  }, [selectedTrains]);
 
   const toggleDropdown = () => {
     setInputVisible(true);
@@ -191,10 +162,6 @@ export default function AddContractor() {
     }));
   };
 
-  // useEffect(() => {
-  //   addTrains();
-  // }, [selectedTrains]);
-
   const addStation = () => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -213,200 +180,7 @@ export default function AddContractor() {
   const toggleStationNameDropdown = () => {
     setInputVisible(true)
   }
- 
-
-  // console.log('form data train :', formData);
-
-  const [sectionName] = useState([
-    'Nagpur to Ballarshah',
-    'Nagpur to Wardha',
-    'Nagpur to Betul',
-    'Nagpur to Chandrapur',
-    'Nagpur to Sewagram', 
-    'Nagpur to Ajni',
-    'Nagpur to Amla',
-    'Nagpur to Bhandak',
-    'Nagpur to Bhugaon',
-    'Nagpur to Chandur',
-    'Nagpur to Dhamangaon',
-    'Nagpur to Ghoradongri',
-    'Nagpur to Hinganghat',
-    'Nagpur to Junnardeo',
-    'Nagpur to Katol',
-    'Nagpur to Multai',
-    'Nagpur to Narkhed',
-    'Nagpur to Pandhurna',
-    'Nagpur to Parasia',
-    'Nagpur to Pulgaon',
-    'Nagpur to Warora',
-    'Nagpur to Babupeth',
-    'Nagpur to Barbatpur',
-    'Nagpur to Barsali',
-    'Nagpur to Bharatwada',
-    'Nagpur to Bordhai',
-    'Nagpur to Borkhedi',
-    'Nagpur to Butibori',
-    'Nagpur to Chichonda',
-    'Nagpur to Chikni Road',
-    'Nagpur to Dahegaon',
-    'Nagpur to Dharakhoh',
-    'Nagpur to Dhodramohor',
-    'Nagpur to Godhni',
-    'Nagpur to Gumgaon',
-    'Nagpur to Hirdagarh',
-    'Nagpur to Iklehra',
-    'Nagpur to Jambhara',
-    'Nagpur to Jaulkheda',
-    'Nagpur to Kalaakhar',
-    'Nagpur to Kalambha',
-    'Nagpur to Kalmeshwar',
-    'Nagpur to Kaotha',
-    'Nagpur to Kayar',
-    'Nagpur to Khapri',
-    'Nagpur to Kirathgarh',
-    'Nagpur to Kohli',
-    'Nagpur to Lingti',
-    'Nagpur to Majri',
-    'Nagpur to Majri Khadan',
-    'Nagpur to Malkhed',
-    'Nagpur to Maramjhiri',
-    'Nagpur to Metpanjra',
-    'Nagpur to Morshi',
-    'Nagpur to Nagri',
-    'Nagpur to Navegaon',
-    'Nagpur to Palachauri',
-    'Nagpur to Pimpalkhuti',
-    'Nagpur to Pusla',
-    'Nagpur to Saheli',
-    'Nagpur to Seloo Road',
-    'Nagpur to Sindi',
-    'Nagpur to Sonegaon',
-    'Nagpur to Sonkhamb',
-    'Nagpur to Tadali',
-    'Nagpur to Taku',
-    'Nagpur to Talni',
-    'Nagpur to Teegaon',
-    'Nagpur to Timtala',
-    'Nagpur to Tuljapur',
-    'Nagpur to Wagholi',
-    'Nagpur to Wani',
-    'Nagpur to Warud Orange City',
-    'Nagpur to Kalamb',
-    'Nagpur to Deoli',
-    'Nagpur to Barchi Road',
-    'Nagpur to Barelipar',
-    'Nagpur to Benoda',
-    'Nagpur to Gangiwara',
-    'Nagpur to Markadhana',
-    'Nagpur to Mowad',
-    'Nagpur to Varud',
-    'Nagpur to Darimeta',
-    'Nagpur to Ghudankhapa',
-    'Nagpur to Gondwana Visapur',
-    'Nagpur to Hatnapur',
-    'Nagpur to Lalawadi',
-    'Nagpur to Magrdoh',
-    'Nagpur to Malkapur  Road',
-    'Nagpur to Tinkheda',
-    'Nagpur to Bhidi',
-    'Nagpur to Riddhapur',
-  ]);
-
-  const [stationNames] = useState([
-    'Nagpur',
-    'Ballarshah',
-    'Wardha',
-    'Betul',
-    'Chandrapur',
-    'Sewagram',
-    'Ajni',
-    'Amla',
-    'Bhandak',
-    'Bhugaon',
-    'Chandur',
-    'Dhamangaon',
-    'Ghoradongri',
-    'Hinganghat',
-    'Junnardeo',
-    'Katol',
-    'Multai',
-    'Narkhed',
-    'Pandhurna',
-    'Parasia',
-    'Pulgaon',
-    'Warora',
-    'Babupeth',
-    'Barbatpur',
-    'Barsali',
-    'Bharatwada',
-    'Bordhai',
-    'Borkhedi',
-    'Butibori',
-    'Chichonda',
-    'Chikni Road',
-    'Dahegaon',
-    'Dharakhoh',
-    'Dhodramohor',
-    'Godhni',
-    'Gumgaon',
-    'Hirdagarh',
-    'Iklehra',
-    'Jambhara',
-    'Jaulkheda',
-    'Kalaakhar',
-    'Kalambha',
-    'Kalmeshwar',
-    'Kaotha',
-    'Kayar',
-    'Khapri',
-    'Kirathgarh',
-    'Kohli',
-    'Lingti',
-    'Majri',
-    'Majri Khadan',
-    'Malkhed',
-    'Maramjhiri',
-    'Metpanjra',
-    'Morshi',
-    'Nagri',
-    'Navegaon',
-    'Palachauri',
-    'Pimpalkhuti',
-    'Pusla',
-    'Saheli',
-    'Seloo Road',
-    'Sindi',
-    'Sonegaon',
-    'Sonkhamb',
-    'Tadali',
-    'Taku',
-    'Talni',
-    'Teegaon',
-    'Timtala',
-    'Tuljapur',
-    'Wagholi',
-    'Wani',
-    'Warud Orange City',
-    'Kalamb',
-    'Deoli',
-    'Barchi Road',
-    'Barelipar',
-    'Benoda',
-    'Gangiwara',
-    'Markadhana',
-    'Mowad',
-    'Varud',
-    'Darimeta',
-    'Ghudankhapa',
-    'Gondwana Visapur',
-    'Hatnapur',
-    'Lalawadi',
-    'Magrdoh',
-    'Malkapur  Road',
-    'Tinkheda',
-    'Bhidi',
-    'Riddhapur',
-  ]);
+  
 
    const filteredStationNamesOptions = stationNames
      .filter((option) =>
@@ -462,7 +236,7 @@ export default function AddContractor() {
                         <option value="IRCTC">IRCTC</option>
                       </select>
                     </div>
-                    <div onClick={handleTypeClick} className="w-full xl:w-1/2">
+                    <div className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
                         Type of Contract{' '}
                         <span className=" text-red-600 text-lg">*</span>
