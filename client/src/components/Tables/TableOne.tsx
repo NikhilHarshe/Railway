@@ -27,10 +27,9 @@ const TableOne = () => {
   const filteredInvigilators = newfilteredInvigilators.reverse();
 
   const handleDelete = async (_id) => {
-    const toastId = toast.loading("Loading...")
+    const toastId = toast.loading('Loading...');
     try {
       setShowDeleteConfirmation(false);
-      
       await axios.delete(baseUrl + `/contractor/delete/${_id}`);
       setInvigilators(
         invigilators.filter((invigilator) => invigilator._id !== _id),
@@ -82,7 +81,7 @@ const TableOne = () => {
   function isWithinFifteenDays(date) {
     const currentDate = new Date();
     const futureDate = new Date(currentDate); // Create a copy of the current date
-    futureDate.setDate(currentDate.getDate() + 15); // Set the future date to 15 days from now
+    futureDate.setDate(currentDate.getDate() + 5); // Set the future date to 15 days from now
     const givenDate = new Date(date); // Convert the input date to a Date object
 
     console.log('futureDate:', futureDate);
@@ -149,12 +148,12 @@ const TableOne = () => {
 
   const handleDashboard = () => {
     navigate('/dashboard');
-  }
+  };
 
   return (
     <DefaultLayout>
       <div
-        style={{ overflowX: 'auto', width: '1100px' }}
+        style={{ overflowX: 'auto', width: '1200px' }}
         className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1"
       >
         <div
@@ -172,10 +171,7 @@ const TableOne = () => {
           <div>
             <button
               onClick={() => handleDashboard()}
-              className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
-border-blue-600
-border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
-active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+              className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
             >
               Back
             </button>
@@ -216,13 +212,13 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
                 <option value="Station Cleaning">Station Cleaning</option>
               </select>
             </div>
-            <div className="mt-[20px] ml-[130px]">From</div>
+            <div className="mt-[20px] ml-[50px]">From</div>
             <input
               type="date"
               onChange={handleInitialDateChange}
               value={initialDate}
               name="ContractperiodFrom"
-              className="w-[40px] mt-[10px] rounded border-[1.5px] ml-[25px] h-[50px] border-stroke bg-transparent py-3 px-2.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              className="w-[150px] mt-[10px] rounded border-[1.5px] ml-[-60px] h-[50px] border-stroke bg-transparent py-3 px-2.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             />
             <div className="mt-[20px] ml-[-5px]">To</div>
             <input
@@ -230,9 +226,9 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
               onChange={handleFinalDateChange}
               value={finalDate}
               name="ContractperiodTo"
-              className="w-[40px] mt-[10px] rounded border-[1.5px] ml-[-125px] h-[50px] border-stroke bg-transparent py-3 px-2.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              className="w-[150px] mt-[10px] rounded border-[1.5px] ml-[-125px] h-[50px] border-stroke bg-transparent py-3 px-2.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             />
-            <div className="mt-[-60px] ml-[900px] p-2.5 text-center sm:block xl:p-5">
+            <div className="mt-[-60px] ml-[1030px] p-2.5 text-center sm:block xl:p-5">
               <h5 className="text-sm font-medium uppercase xsm:text-base">
                 Action
               </h5>
@@ -272,7 +268,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
                   {formatDate(invigilator.fromDate)}
                 </p>
               </div>
-              <div className="ml-[150px] items-center justify-center p-2.5 sm:flex xl:p-5">
+              <div className="ml-[200px] items-center justify-center p-2.5 sm:flex xl:p-5">
                 <p
                   className={`ml-[10px] ${
                     isWithinFifteenDays(invigilator.toDate)
@@ -283,7 +279,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
                   {formatDate(invigilator.toDate)}
                 </p>
               </div>
-              <div className="ml-[180px] flex items-center justify-center p-2.5 sm:flex xl:p-5 gap-2">
+              <div className="ml-[250px] flex items-center justify-center p-2.5 sm:flex xl:p-5 gap-2">
                 <button
                   title="Edit"
                   onClick={() => {
