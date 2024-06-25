@@ -12,8 +12,8 @@ let Length = createContext();
 
 const TableOne = () => {
   const dispatch = useDispatch();
-  const baseUrl = 'http://localhost:3000';
-  // const baseUrl = "https://railway-qbx4.onrender.com";
+  // const baseUrl = 'http://localhost:3000';
+  const baseUrl = "https://railway-qbx4.onrender.com";
   const clientUrl = 'http://crease-railway-8njx.vercel.app';
 
   let navigate = useNavigate();
@@ -35,10 +35,11 @@ const TableOne = () => {
       setInvigilators(
         invigilators.filter((invigilator) => invigilator._id !== _id),
       );
+      toast.success("Data Deleted Successfully");
     } catch (error) {
       console.error('Error deleting user:', error);
     }
-    toast
+    toast.dismiss(toastId);
   };
 
   useEffect(() => {
@@ -81,7 +82,7 @@ const TableOne = () => {
   function isWithinFifteenDays(date) {
     const currentDate = new Date();
     const futureDate = new Date(currentDate); // Create a copy of the current date
-    futureDate.setDate(currentDate.getDate() + 5); // Set the future date to 15 days from now
+    futureDate.setDate(currentDate.getDate() + 15); // Set the future date to 15 days from now
     const givenDate = new Date(date); // Convert the input date to a Date object
 
     console.log('futureDate:', futureDate);

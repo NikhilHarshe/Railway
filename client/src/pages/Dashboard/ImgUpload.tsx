@@ -46,12 +46,13 @@ function ImgUpload() {
   };
 
   const handleSubmit = async (event) => {
+    const baseUrl = "https://railway-qbx4.onrender.com";
     event.preventDefault();
     const formData = new FormData();
     formData.append('file', selectedFile);
 
     try {
-      const response = await axios.post('http://localhost:3000/vendor/imgUploade', formData, {
+      const response = await axios.post(baseUrl +'/vendor/imgUploade', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

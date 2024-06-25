@@ -37,12 +37,14 @@ function App() {
   const navigate = useNavigate();
   const { user, Token } = useSelector((state) => state.auth)
 
+  // const baseUrl = "http://localhost:3000";
+  const baseUrl = "https://railway-qbx4.onrender.com";
   console.log("User in side dashbord ", user);
 
   const getUserData = async () => {
     try {
       if (Token) {
-        let res = await axios.post("http://localhost:3000/user/getUserDetails", {}, {
+        let res = await axios.post(baseUrl + "/user/getUserDetails", {}, {
           headers: {
             Authorization: `Bearer ${Token}`,
           }

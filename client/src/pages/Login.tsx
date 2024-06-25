@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 
 
 export default function Login() {
+  const baseUrl = "https://railway-qbx4.onrender.com";
 
   const dispatch = useDispatch();
   const [formdata, setFormData] = useState({
@@ -30,7 +31,7 @@ export default function Login() {
     e.preventDefault();
     const {Email, Password} = formdata;
     console.log("Form data : ", formdata);
-    const user = await axios.post("http://localhost:3000/user/Login", {Email, Password});
+    const user = await axios.post(baseUrl +"/user/Login", {Email, Password});
     console.log("user : ", user?.data);
     dispatch(setUser(user?.data?.user));
     dispatch(setToken(user?.data.token));

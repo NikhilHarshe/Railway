@@ -58,8 +58,8 @@ export default function EditeContractor() {
 
 
   console.log('isEdite contrcator ', isEditContractor);
-  const baseUrl = 'http://localhost:3000';
-  // const baseUrl = "https://railway-qbx4.onrender.com";
+  // const baseUrl = 'http://localhost:3000';
+  const baseUrl = "https://railway-qbx4.onrender.com";
   const clientUrl = 'http://crease-railway-8njx.vercel.app';
 
   // const [Authority, setAuthority] = useState('');

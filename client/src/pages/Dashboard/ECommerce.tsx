@@ -12,8 +12,8 @@ import axios from 'axios';
 import { Length } from '../../components/Tables/TableOne';
 
 const ECommerce: React.FC = () => {
-  const baseUrl = 'http://localhost:3000';
-  // const baseUrl = "https://railway-qbx4.onrender.com";
+  // const baseUrl = 'http://localhost:3000';
+  const baseUrl = "https://railway-qbx4.onrender.com";
   const clientUrl = 'http://crease-railway-8njx.vercel.app';
   console.log('length', typeof length);
 
