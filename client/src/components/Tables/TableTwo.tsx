@@ -13,8 +13,8 @@ import {setVendorsData} from "../../redux/slices/VendorSlice"
 const TableTwo = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const baseUrl = "http://localhost:3000";
-  // const baseUrl = "https://railway-qbx4.onrender.com";
+  // const baseUrl = "http://localhost:3000";
+  const baseUrl = "https://railway-qbx4.onrender.com";
   const [newVenders, setVenders] = useState([]);
 
   const venders = newVenders.reverse();

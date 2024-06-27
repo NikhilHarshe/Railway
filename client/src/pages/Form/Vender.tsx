@@ -10,8 +10,8 @@ import toast from 'react-hot-toast';
 import { setVendorsData } from "../../redux/slices/VendorSlice"
 
 const FormLayout = () => {
-  // const baseUrl = "https://railway-qbx4.onrender.com";
-  const baseUrl = "http://localhost:3000";
+  const baseUrl = "https://railway-qbx4.onrender.com";
+  // const baseUrl = "http://localhost:3000";
   const clientUrl = "https://railway-kappa.vercel.app/";
 
   const [profilePic, setProfilePic] = useState("");
@@ -386,16 +386,16 @@ const FormLayout = () => {
                     Save
                   </button>
                 }
-{/* 
+
                 {
                   success && <button
-                  onClick={handleSave}
+                  onClick={() => { setSuccess(false); window.location.reload()}}
                   className="mt-4 inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10"
 
                 >
                   Register New Vendor
                 </button>
-                } */}
+                }
               </div>
             </form>
           </div>

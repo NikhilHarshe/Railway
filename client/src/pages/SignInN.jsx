@@ -11,6 +11,7 @@ import img from "../images/Login Railway Logo.png"
 import { setVendorsData} from '../redux/slices/VendorSlice';
 
 const SignInN = () => {
+  const baseUrl = "https://railway-qbx4.onrender.com";
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -35,7 +36,7 @@ const SignInN = () => {
     const formdata = getValues();
     const { Email, Password } = formdata;
     console.log("Form data : ", formdata);
-    const user = await axios.post("http://localhost:3000/user/Login", { Email, Password });
+    const user = await axios.post(baseUrl + "/user/Login", { Email, Password });
     console.log("user : ", user?.data);
     dispatch(setUser(user?.data?.user));
     dispatch(setToken(user?.data.token));

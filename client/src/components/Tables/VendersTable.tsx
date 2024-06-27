@@ -7,7 +7,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const VendersTable = () => {
-  const baseUrl = "http://localhost:3000";
+  // const baseUrl = "http://localhost:3000";
+  const baseUrl = "https://railway-qbx4.onrender.com";
   const location = useLocation();
   const navigate = useNavigate();
   const [venders, setVenders] = useState([]);

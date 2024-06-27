@@ -74,9 +74,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-60 flex-col overflow-y-hidden border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark  lg:static lg:translate-x-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-60 flex-col overflow-y-hidden border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark  lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
@@ -99,10 +98,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/dashboard"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-graydark dark:text-bodydark1 duration-300 ease-in-out hover:bg-[#F1F5F9] dark:hover:bg-meta-4 ${
-                    pathname.includes('/dashboard') &&
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-graydark dark:text-bodydark1 duration-300 ease-in-out hover:bg-[#F1F5F9] dark:hover:bg-meta-4 ${pathname.includes('/dashboard') &&
                     'bg-graydark dark:bg-meta-4'
-                  }`}
+                    }`}
                 >
                   <svg
                     className="fill-current"
@@ -133,9 +131,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
               {/*Master*/}
-              <li
-                onMouseEnter={() => handleSideDrop()}
-              >
+              {user?.Role === 'SuperAdmin' && (<li>
                 <NavLink
                   to="/master"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-graydark dark:text-bodydark1 duration-300 ease-in-out hover:bg-[#F1F5F9] dark:hover:bg-meta-4 ${
@@ -173,35 +169,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </svg>
                   Master
                 </NavLink>
-              </li>
-              {/* <li>
-                <select
-                  style={{
-                    // position: 'absolute',
-                    // zIndex: '1000',
-                    // margin: '0 0 0 150px',
-                    width: '100%',
-                    overflow: 'visible',
-                    height:'50px'
-                  }}
-                >
-                  {updateList.map((item) => (
-                    <option style={{
-                      fontSize:"20px"
-                    }}>{item}</option>
-                  ))}
-                </select>
-              </li> */}
-              
+              </li>)}
               {/* Admin */}
               {user?.Role === 'SuperAdmin' && (
                 <li>
                   <NavLink
                     to="/admin"
-                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-graydark dark:text-bodydark1 duration-300 ease-in-out hover:bg-[#F1F5F9] dark:hover:bg-meta-4 ${
-                      pathname.includes('/admin') &&
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-graydark dark:text-bodydark1 duration-300 ease-in-out hover:bg-[#F1F5F9] dark:hover:bg-meta-4 ${pathname.includes('/admin') &&
                       'bg-graydark dark:bg-meta-4'
-                    }`}
+                      }`}
                   >
                     <svg
                       className="fill-current"
@@ -241,10 +217,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/AddContractors"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-graydark dark:text-bodydark1 duration-300 ease-in-out hover:bg-[#F1F5F9] dark:hover:bg-meta-4 ${
-                    pathname.includes('/AddContractors') &&
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-graydark dark:text-bodydark1 duration-300 ease-in-out hover:bg-[#F1F5F9] dark:hover:bg-meta-4 ${pathname.includes('/AddContractors') &&
                     'bg-graydark dark:bg-meta-4'
-                  }`}
+                    }`}
                 >
                   <svg
                     className="fill-current"
@@ -283,10 +258,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/AddInvigilator"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-graydark dark:text-bodydark1 duration-300 ease-in-out hover:bg-[#F1F5F9] dark:hover:bg-meta-4 ${
-                    pathname.includes('/AddInvigilator') &&
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-graydark dark:text-bodydark1 duration-300 ease-in-out hover:bg-[#F1F5F9] dark:hover:bg-meta-4 ${pathname.includes('/AddInvigilator') &&
                     'bg-graydark dark:bg-meta-4'
-                  }`}
+                    }`}
                 >
                   <svg
                     className="fill-current"

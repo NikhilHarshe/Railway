@@ -13,7 +13,8 @@ const EditVendor = () => {
 
     const navigate = useNavigate();
 
-    const baseUrl = "http://localhost:3000";
+    // const baseUrl = "http://localhost:3000";
+    const baseUrl = "https://railway-qbx4.onrender.com";
     const clientUrl = "https://railway-kappa.vercel.app/";
 
     const location = useLocation();
