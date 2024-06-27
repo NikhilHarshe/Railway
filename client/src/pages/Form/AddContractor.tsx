@@ -187,6 +187,7 @@ export default function AddContractor() {
        option.toLowerCase().includes(filterStationName.toLowerCase()),
      )
      .slice(0, 5);
+     
    const handleStationNameClick = (stationNames) => {
      setSelectedStations((prevSelectedTrains) => [
        ...prevSelectedTrains,

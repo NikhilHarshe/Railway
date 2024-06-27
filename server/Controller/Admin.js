@@ -101,13 +101,13 @@ const Login = async (req, res) => {
         else {
             return res.status(401).json({
                 success: false,
-                messgae: "Password Invalid",
+                message: "Password Invalid",
             })
         }
     }
     catch (error) {
         console.error(error);
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: "Internal Server Error in Login"
         })
