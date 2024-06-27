@@ -34,7 +34,13 @@ const contractorSchema = new mongoose.Schema({
   Licensee_Contact_details: {
     type: Number,
   },
-  vendors_permitted: {
+  total_vendors_permitted: {
+    type: Number,
+  },
+  vendors_permitted_at_platform: {
+    type: Number,
+  },
+  vendors_permitted_at_stole: {
     type: Number,
   },
   // IsStationService: {

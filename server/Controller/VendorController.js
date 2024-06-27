@@ -61,15 +61,18 @@ const fetchVendorDataByQRCode = async (req, res) => {
 };
 
 const registerVendor = async (req, res) => {
+  console.log('hi')
   const {
     fname,
+    mname,
+    lname,
     dob,
     mobile,
     aadhar,
     policeVarificationDate,
     medicalValidityDate,
     validityAuthority,
-    LicenseeId,
+    LicenseeId, 
     qrcode,
   } = req.body;
   console.log('Body', req.body);
@@ -109,6 +112,8 @@ const registerVendor = async (req, res) => {
     // Create a new vendor
     const newVendor = new Vendor({
       fname,
+      mname,
+      lname,
       dob,
       mobile,
       profilePic: imgUrls.profilePic,
@@ -120,7 +125,7 @@ const registerVendor = async (req, res) => {
       madicalValidityDocument: imgUrls.madicalValidityDocument,
       validityAuthority,
       Contractor: contractor._id,
-      qrcode
+      qrcode,
     });
 
     // Save the new vendor

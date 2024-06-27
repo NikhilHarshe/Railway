@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const MasterDataSchema = mongoose.Schema({
-    agency: [{
-        type: String,
-      }],
+    agency: {
+        type: [String],
+      },
     contractType : [{
         type: String,
     }],

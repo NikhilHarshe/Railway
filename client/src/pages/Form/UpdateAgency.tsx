@@ -17,8 +17,15 @@ export default function UpdateAgency() {
   useEffect(() => {
     const fetchAgency = async () => {
       try {
-        const response = await axios.get(baseUrl + '/master/fetchAgency');
-        setExistingAgency(response.data);
+        const response = await axios.get(
+          baseUrl + '/masterData/fetchmasteragencydata',
+        );
+        // Assuming the response structure is { success: true, data: [...] }
+        if (response.data.success) {
+          setExistingAgency(response.data.data);
+        } else {
+          console.error('Error fetching agencies', response.data);
+        }
       } catch (error) {
         console.log(`Occurred error while fetching agency ${error}`);
       }
@@ -33,6 +40,7 @@ export default function UpdateAgency() {
       await axios.post(baseUrl + '/masterData/addMasterData', { name: agency });
       toast.success('Agency added successfully');
       setAgency(''); // Clear the input field after adding the agency
+      fetchAgency(); // Refetch the updated list of agencies
     } catch (error) {
       console.log(`Occurred error while adding agency: ${error}`);
       toast.error('Error adding agency');
@@ -74,9 +82,13 @@ export default function UpdateAgency() {
                       }}
                     >
                       <div className="ml-[130px] items-center justify-center p-2.5 sm:flex xl:p-5">
-                        <p className="text-meta-5 ml-[10px]">
-                          {existingAgency.join(', ')}
-                        </p>
+                        <ul>
+                          {existingAgency.map((agency, index) => (
+                            <li key={index} className="text-meta-5 ml-[10px]">
+                              {agency.name}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                       <button
                         title="Edit"

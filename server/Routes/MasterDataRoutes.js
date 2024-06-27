@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { CreateMasterData } = require("../Controller/MasterData");
+const { CreateMasterData, fetchAgency } = require("../Controller/MasterData");
 
-// router.get("/fetchmasteragencydata", fetchAgency);
+router.get("/fetchmasteragencydata", fetchAgency);
 router.post("/addMasterData", CreateMasterData);
 // router.put("/updateagency", updateAgency);
 // router.delete("/delete/:id", deleteAgency);
