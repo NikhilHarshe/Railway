@@ -1,7 +1,15 @@
 const mongoose = require("mongoose");
 
 const model = new mongoose.Schema({
-  Name: {
+  FirstName: {
+    type: String,
+    required: true,
+  },
+  MiddleName: {
+    type: String,
+    required: true,
+  },
+  LastName: {
     type: String,
     required: true,
   },

@@ -17,11 +17,8 @@ export default function AddContractor() {
 
   console.log('isEdite contrcator ', isEditContractor);
   // const baseUrl = 'http://localhost:3000';
-<<<<<<< HEAD
   const baseUrl = 'https://railway-qbx4.onrender.com';
-=======
-  const baseUrl = "https://railway-qbx4.onrender.com";
->>>>>>> 8ac514896fad6f04157b4c9c29349be91d3130b1
+
   const clientUrl = 'http://crease-railway-8njx.vercel.app';
 
   // const [Authority, setAuthority] = useState('');
@@ -185,7 +182,6 @@ export default function AddContractor() {
     setInputVisible(true);
   };
 
-<<<<<<< HEAD
    const filteredStationNamesOptions = stationNames
      .filter((option) =>
        option.toLowerCase().includes(filterStationName.toLowerCase()),
@@ -199,21 +195,6 @@ export default function AddContractor() {
       ]);
      console.log('dddddddddddd', selectedStations);
    };
-=======
-  const filteredStationNamesOptions = stationNames
-    .filter((option) =>
-      option.toLowerCase().includes(filterStationName.toLowerCase()),
-    )
-    .slice(0, 5);
-  const handleStationNameClick = (stationNames) => {
-    setSelectedStations((prevSelectedTrains) => [
-      ...prevSelectedTrains,
-      stationNames,
-    ]);
-    console.log('dddddddddddd', selectedStations);
-  };
->>>>>>> e330263e5f64152bc25c1a3250084547ca147eb3
-
   return (
     <div>
       <DefaultLayout>
