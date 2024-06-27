@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { trainsName } from './TrainNames';
 import { sectionName } from './SectionNames';
-import { stationNames } from './StationNames'
+import { stationNames } from './StationNames';
 
 export default function AddContractor() {
   const { isEditContractor } = useSelector((state) => state.contractor);
@@ -17,7 +17,11 @@ export default function AddContractor() {
 
   console.log('isEdite contrcator ', isEditContractor);
   // const baseUrl = 'http://localhost:3000';
+<<<<<<< HEAD
+  const baseUrl = 'https://railway-qbx4.onrender.com';
+=======
   const baseUrl = "https://railway-qbx4.onrender.com";
+>>>>>>> 8ac514896fad6f04157b4c9c29349be91d3130b1
   const clientUrl = 'http://crease-railway-8njx.vercel.app';
 
   // const [Authority, setAuthority] = useState('');
@@ -32,9 +36,9 @@ export default function AddContractor() {
     ContractperiodTo: '',
     LicenseFeesPaidUptoDate: '',
     Licenseename: '',
-    // LicenseeAadharNo: '',
+    // LicenseeAadharNo: '',  
     Licenseecontactdetails: '',
-    VendorsPermitted: '',
+    TotalVendorsPermitted: '',
     // IsStationService: false,
     AutherityDoc: null,
     // PFPermitted: [],
@@ -117,7 +121,7 @@ export default function AddContractor() {
 
   const [isInputVisible, setInputVisible] = useState(false);
   const [filter, setFilter] = useState('');
-  
+
   const [selectedTrains, setSelectedTrains] = useState([]);
   const [selectedStations, setSelectedStations] = useState([]);
 
@@ -171,17 +175,17 @@ export default function AddContractor() {
 
   useEffect(() => {
     addTrains();
-    addStation()
-  }, [selectedTrains,selectedStations]);
+    addStation();
+  }, [selectedTrains, selectedStations]);
 
   const handleStationNameChange = (e) => {
-    setFilterStationName(e.target.value)
-  }
+    setFilterStationName(e.target.value);
+  };
   const toggleStationNameDropdown = () => {
-    setInputVisible(true)
-  }
-  
+    setInputVisible(true);
+  };
 
+<<<<<<< HEAD
    const filteredStationNamesOptions = stationNames
      .filter((option) =>
        option.toLowerCase().includes(filterStationName.toLowerCase()),
@@ -195,6 +199,20 @@ export default function AddContractor() {
       ]);
      console.log('dddddddddddd', selectedStations);
    };
+=======
+  const filteredStationNamesOptions = stationNames
+    .filter((option) =>
+      option.toLowerCase().includes(filterStationName.toLowerCase()),
+    )
+    .slice(0, 5);
+  const handleStationNameClick = (stationNames) => {
+    setSelectedStations((prevSelectedTrains) => [
+      ...prevSelectedTrains,
+      stationNames,
+    ]);
+    console.log('dddddddddddd', selectedStations);
+  };
+>>>>>>> e330263e5f64152bc25c1a3250084547ca147eb3
 
   return (
     <div>
@@ -537,13 +555,13 @@ export default function AddContractor() {
                   {/* Vendors Permitted */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Vendors Permitted{' '}
+                     Total Vendors Permitted{' '}
                       <span className=" text-red-600 text-lg">*</span>
                     </label>
                     <input
                       type="number"
-                      name="VendorsPermitted"
-                      value={formData.VendorsPermitted}
+                      name="TotalVendorsPermitted"
+                      value={formData.TotalVendorsPermitted}
                       onChange={handleChange}
                       placeholder="Enter Vendors Permitted"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"

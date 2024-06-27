@@ -2,17 +2,20 @@ const MasterData = require("../Schema/MasterData");
 const Admin = require("../Schema/Admin");
 
 exports.CreateMasterData = async (req, res) => {
+    
     try {
         const { agency, contractType, sectionName, selectedTrains, nameOfStation, admin } = req.body;
-
+        console.log('ggggggggg', req.body);
         const user = await Admin.findById(admin);
-        if(!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User Not Registerd",
-            })
-        }
-
+        
+        // if (!user) {
+            
+        //     return res.status(404).json({
+        //         success: false,
+        //         message: "User Not Registerd",
+        //     })
+        // }
+console.log("hi");
         const newMasterData = await MasterData.create({
             agency,
             contractType,
