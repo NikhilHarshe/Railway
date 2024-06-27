@@ -6,6 +6,14 @@ const model = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  mname: {
+    type: String,
+    trim: true,
+  },
+  lname: {
+    type: String,
+    trim: true,
+  },
   dob: {
     type: Date,
   },

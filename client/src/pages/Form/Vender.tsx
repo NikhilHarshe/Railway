@@ -10,8 +10,8 @@ import toast from 'react-hot-toast';
 import { setVendorsData } from "../../redux/slices/VendorSlice"
 
 const FormLayout = () => {
-  const baseUrl = "https://railway-qbx4.onrender.com";
-  // const baseUrl = "http://localhost:3000";
+  // const baseUrl = "https://railway-qbx4.onrender.com";
+  const baseUrl = "http://localhost:3000";
   const clientUrl = "https://railway-kappa.vercel.app/";
 
   const [profilePic, setProfilePic] = useState("");
@@ -20,8 +20,11 @@ const FormLayout = () => {
   const [madicalValidityDocument, setMadicalValidityDocument] = useState("");
   const [success, setSuccess] = useState(false);
   const [qrCodeValue, setQRCodeValue] = useState('');
+  
   const [formData, setFormData] = useState({
     fname: '',
+    lname: '',
+    mname: '',
     dob: '',
     mobile: '',
     profilePic: null,
@@ -158,7 +161,7 @@ const FormLayout = () => {
                     {/* name */}
                     <div className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Full Name{' '}
+                        First Name{' '}
                         <span className="text-red-600 text-lg">*</span>
                       </label>
                       <input
@@ -167,6 +170,40 @@ const FormLayout = () => {
                         value={formData.fname}
                         onChange={handleChange}
                         placeholder="Enter your name"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      />
+                    </div>
+                    {/* mname */}
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Middle Name{' '}
+                        <span className="text-red-600 text-lg">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="mname"
+                        value={formData.mname}
+                        onChange={handleChange}
+                        placeholder="Enter your middile name"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      />
+                    </div>
+
+                  </div>
+
+                  <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                    {/* lname */}
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Last Name{' '}
+                        <span className="text-red-600 text-lg">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="lname"
+                        value={formData.lname}
+                        onChange={handleChange}
+                        placeholder="Enter your last name"
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
                     </div>
@@ -389,12 +426,12 @@ const FormLayout = () => {
 
                 {
                   success && <button
-                  onClick={() => { setSuccess(false); window.location.reload()}}
-                  className="mt-4 inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10"
+                    onClick={() => { setSuccess(false); window.location.reload() }}
+                    className="mt-4 inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10"
 
-                >
-                  Register New Vendor
-                </button>
+                  >
+                    Register New Vendor
+                  </button>
                 }
               </div>
             </form>

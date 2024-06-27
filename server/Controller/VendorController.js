@@ -63,6 +63,8 @@ const fetchVendorDataByQRCode = async (req, res) => {
 const registerVendor = async (req, res) => {
   const {
     fname,
+    mname,
+    lname,
     dob,
     mobile,
     aadhar,
@@ -109,6 +111,8 @@ const registerVendor = async (req, res) => {
     // Create a new vendor
     const newVendor = new Vendor({
       fname,
+      mname,
+      lname,
       dob,
       mobile,
       profilePic: imgUrls.profilePic,
