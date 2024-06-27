@@ -1,7 +1,16 @@
-import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import DefaultLayout from '../../layout/DefaultLayout';
 
+
 export default function Master() {
+
+let navigate = useNavigate();
+
+const agencyUpdate = () => {
+  console.log('hi');
+  navigate('/updateAgency');
+};
+
   return (
     <DefaultLayout>
       <div
@@ -29,7 +38,7 @@ export default function Master() {
                 alignContent: 'center',
                 alignItems:'center'
               }}>
-                <button className="w-[200px] mt-[25px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]">
+                <button onClick={()=>agencyUpdate()} className="w-[200px] mt-[25px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]">
                   Update Agencies
                 </button>
                 <button className="w-[200px] mt-[25px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r  before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]">

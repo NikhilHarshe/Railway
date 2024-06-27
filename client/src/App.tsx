@@ -28,6 +28,7 @@ import TableOne from './components/Tables/TableOne';
 import ImgUpload from './pages/Dashboard/ImgUpload';
 import EditVendor from './pages/Form/EditVendor';
 import Master from './pages/Form/Master';
+import UpdateAgency from './pages/Form/UpdateAgency';
 
 
 function App() {
@@ -206,6 +207,14 @@ function App() {
             <>
               <PageTitle title="VendersData" />
               <TableTwo />
+            </>
+          }
+        />
+        <Route
+          path="/updateAgency"
+          element={
+            <>
+              <UpdateAgency />
             </>
           }
         />

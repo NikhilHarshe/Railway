@@ -51,8 +51,7 @@ const TableOne = () => {
         console.error('Error fetching invigilator data:', error);
       }
     };
-
-    fetchInvigilators();
+      fetchInvigilators();
   }, []);
 
   const handleContractorList = (invigilator) => {
@@ -140,6 +139,9 @@ const TableOne = () => {
   const handleDashboard = () => {
     navigate('/dashboard');
   };
+  const navigateToAddContractor = () => {
+    navigate('/AddContractors');
+  };
 
   return (
     <DefaultLayout>
@@ -161,7 +163,18 @@ const TableOne = () => {
           </div>
           <div>
             <button
+              style={{
+                margin: '0 0 0 650px',
+              }}
               onClick={() => handleDashboard()}
+              className="cursor-pointer transition-all bg-blue-500 text-white px-5 py-2 rounded-lg border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+            >
+              Add Contractor
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={() => navigateToAddContractor()}
               className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
             >
               Back

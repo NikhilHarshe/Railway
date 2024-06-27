@@ -24,11 +24,11 @@ export const AuthSlice = createSlice({
             setUser(null),
             setToken(null)
             localStorage.removeItem("Token");
-            console.log("logOut in slice");
+            console.log("LogOut in slice");
         },
     })
 
 })
 
-export const { setUser, setToken, logOut, setContractors } = AuthSlice.actions;
+export const { setUser, setToken, logOut } = AuthSlice.actions;
 export default AuthSlice.reducer
