@@ -3,62 +3,86 @@ const bcrypt = require("bcryptjs");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 const registerContractor = async (req, res) => {
+  console.log("hi");
   const {
     agency,
     typeofcontract,
     ContractperiodFrom,
     ContractperiodTo,
+    FireAuditDate,
     Licenseename,
     Licenseecontactdetails,
-    VendorsPermitted,
     LicenseFeesPaidUptoDate,
     sectionname,
     nameofstation,
   } = req.body;
-
-  const selectedTrains = req.body["selectedTrains[]"];
-  console.log("selectedTrains", req.body["selectedTrains[]"]);
+  let selectedTrains = req.body["selectedTrains[]"];
+console.log("sssssss", req.body.FireAuditDate);
+  const totalVendorsPermitted =
+    req.body.totalVendorsPermitted || req.body.TotalVendorsPermitted;
+  const vendorsPermitedatPlatform =
+    req.body.vendorsPermitedatPlatform || req.body.platformVendorsPermitted;
+  const vendorsPermitedatStole =
+    req.body.vendorsPermitedatStole || req.body.stoleVendorsPermitted;
+  
   try {
-    console.log("Received request body:", req.body);
 
+    let missingFields = [];
+console.log('aaaaaaaaaaa',typeofcontract);
     if (
       typeofcontract === "On board Catering" ||
       typeofcontract === "On board Non–Catering"
     ) {
-      if (
-        !agency ||
-        !typeofcontract ||
-        !ContractperiodFrom ||
-        !ContractperiodTo ||
-        !Licenseename ||
-        !Licenseecontactdetails ||
-        !VendorsPermitted ||
-        !LicenseFeesPaidUptoDate ||
-        !selectedTrains ||
-        !sectionname
-      ) {
-        console.log("Missing fields for Dynamic contract");
+      if (!agency) missingFields.push("agency");
+      if (!typeofcontract) missingFields.push("typeofcontract");
+      if (!ContractperiodFrom) missingFields.push("ContractperiodFrom");
+      if (!ContractperiodTo) missingFields.push("ContractperiodTo");
+      if (!FireAuditDate) missingFields.push("FireAuditdate");
+      if (!Licenseename) missingFields.push("Licenseename");
+      if (!Licenseecontactdetails) missingFields.push("Licenseecontactdetails");
+      if (!totalVendorsPermitted) missingFields.push("totalVendorsPermitted");
+      if (!LicenseFeesPaidUptoDate)
+        missingFields.push("LicenseFeesPaidUptoDate");
+      if (!selectedTrains) missingFields.push("selectedTrains");
+      if (!sectionname) missingFields.push("sectionname");
+
+      if (missingFields.length > 0) {
+        console.log(
+          "Missing fields for Dynamic contract:",
+          missingFields.join(", ")
+        );
         return res.status(400).json({
           success: false,
-          message: "All Fields are Mandatory for Dynamic",
+          message: `All Fields are Mandatory for Dynamic: ${missingFields.join(
+            ", "
+          )}`,
         });
       }
     } else {
-      if (
-        !agency ||
-        !typeofcontract ||
-        !ContractperiodFrom ||
-        !ContractperiodTo ||
-        !Licenseename ||
-        !Licenseecontactdetails ||
-        !VendorsPermitted ||
-        !LicenseFeesPaidUptoDate ||
-        !nameofstation
-      ) {
-        console.log("Missing fields for Static contract");
+      if (!agency) missingFields.push("agency");
+      if (!typeofcontract) missingFields.push("typeofcontract");
+      if (!ContractperiodFrom) missingFields.push("ContractperiodFrom");
+      if (!FireAuditDate) missingFields.push("FireAuditdate");
+      if (!Licenseename) missingFields.push("Licenseename");
+      if (!Licenseecontactdetails) missingFields.push("Licenseecontactdetails");
+      // if (!totalVendorsPermitted) missingFields.push("totalVendorsPermitted");
+      if (!vendorsPermitedatPlatform)
+        missingFields.push("vendorsPermitedatPlatform");
+      if (!vendorsPermitedatStole) missingFields.push("vendorsPermitedatStole");
+      if (!LicenseFeesPaidUptoDate)
+        missingFields.push("LicenseFeesPaidUptoDate");
+      // if (!selectedTrains) missingFields.push("selectedTrains");
+
+      if (missingFields.length > 0) {
+        console.log(
+          "Missing fields for Static contract:",
+          missingFields.join(", ")
+        );
         return res.status(400).json({
           success: false,
-          message: "All Fields are Mandatory for Static",
+          message: `All Fields are Mandatory for Static: ${missingFields.join(
+            ", "
+          )}`,
         });
       }
     }
@@ -77,14 +101,25 @@ const registerContractor = async (req, res) => {
       category: typeofcontract,
       fromDate: ContractperiodFrom,
       toDate: ContractperiodTo,
+      fireAuditdate: FireAuditDate,
       licensee: Licenseename,
       licence_fees_paid_upto: LicenseFeesPaidUptoDate,
       Licensee_Contact_details: Licenseecontactdetails,
-      vendors_permitted: VendorsPermitted,
-      stationName: nameofstation,
+      ...(totalVendorsPermitted && {
+        total_vendors_permitted: totalVendorsPermitted,
+      }),
+      ...(vendorsPermitedatPlatform && {
+        vendors_permitted_at_platform: vendorsPermitedatPlatform,
+      }),
+      ...(vendorsPermitedatStole && {
+        vendors_permitted_at_stole: vendorsPermitedatStole,
+      }),
+      ...(nameofstation && { stationName: nameofstation }),
+      ...(sectionname && { sectionname }),
+      ...(req.body.selectedTrains && {
+        selectedTrains: req.body.selectedTrains,
+      }),
       authorityDocument: imgUrl,
-      sectionname,
-      selectedTrains, // Ensure selectedTrains is included
     });
 
     const data = await newContractor.save();
@@ -107,10 +142,13 @@ const updateUser = async (req, res) => {
     typeofcontract,
     ContractperiodFrom,
     ContractperiodTo,
+    FireAuditdate,
     LicenseFeesPaidUptoDate,
     Licenseename,
     Licenseecontactdetails,
-    VendorsPermitted,
+    totalVendorsPermitted,
+    vendorsPermitedatPlatform,
+    vendorsPermitedatStole,
     contractorId,
   } = req.body;
   console.log("Frontend Data", req.body);
@@ -151,10 +189,13 @@ const updateUser = async (req, res) => {
       contractor.category = typeofcontract;
       contractor.fromDate = new Date(ContractperiodFrom);
       contractor.toDate = new Date(ContractperiodTo);
+      contractor.fireAuditdate = new Date(FireAuditdate);
       contractor.licence_fees_paid_upto = new Date(LicenseFeesPaidUptoDate);
       contractor.licensee = Licenseename;
       contractor.Licensee_Contact_details = Licenseecontactdetails;
-      contractor.vendors_permitted = VendorsPermitted;
+      contractor.total_vendors_permitted= totalVendorsPermitted;
+      contractor.vendors_permitted_at_platform = vendorsPermitedatPlatform;
+      contractor.vendors_permitted_at_stole = vendorsPermitedatStole;
       contractor.selectedTrains = selectedTrains;
 
       // Save the updated contractor

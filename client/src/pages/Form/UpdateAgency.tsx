@@ -5,8 +5,12 @@ import { RiDeleteBin5Fill } from 'react-icons/ri';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 export default function UpdateAgency() {
+
+  const { masterData } = useSelector((state) => state.master);
+
   const [agency, setAgency] = useState('');
   const [existingAgency, setExistingAgency] = useState([]);
 
@@ -16,9 +20,19 @@ export default function UpdateAgency() {
 
   useEffect(() => {
     const fetchAgency = async () => {
+
+      console.log('Master Data', masterData);
+
       try {
-        const response = await axios.get(baseUrl + '/master/fetchAgency');
-        setExistingAgency(response.data);
+        const response = await axios.get(
+          baseUrl + '/masterData/fetchmasteragencydata',
+        );
+        // Assuming the response structure is { success: true, data: [...] }
+        if (response.data.success) {
+          setExistingAgency(response.data.data);
+        } else {
+          console.error('Error fetching agencies', response.data);
+        }
       } catch (error) {
         console.log(`Occurred error while fetching agency ${error}`);
       }
@@ -33,6 +47,7 @@ export default function UpdateAgency() {
       await axios.post(baseUrl + '/masterData/addMasterData', { name: agency });
       toast.success('Agency added successfully');
       setAgency(''); // Clear the input field after adding the agency
+      fetchAgency(); // Refetch the updated list of agencies
     } catch (error) {
       console.log(`Occurred error while adding agency: ${error}`);
       toast.error('Error adding agency');
@@ -63,9 +78,6 @@ export default function UpdateAgency() {
               <div className="p-6.5">
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Add Agency <span className="text-red-600 text-lg">*</span>
-                    </label>
                     <div
                       style={{
                         display: 'flex',
@@ -74,9 +86,13 @@ export default function UpdateAgency() {
                       }}
                     >
                       <div className="ml-[130px] items-center justify-center p-2.5 sm:flex xl:p-5">
-                        <p className="text-meta-5 ml-[10px]">
-                          {existingAgency.join(', ')}
-                        </p>
+                        <ul>
+                          {existingAgency.map((agency, index) => (
+                            <li key={index} className="text-meta-5 ml-[10px]">
+                              {agency.name}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                       <button
                         title="Edit"
@@ -93,6 +109,9 @@ export default function UpdateAgency() {
                         <RiDeleteBin5Fill />
                       </button>
                     </div>
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      Add Agency <span className="text-red-600 text-lg">*</span>
+                    </label>
                     <div
                       style={{
                         display: 'flex',

@@ -23,9 +23,15 @@ export default function AddContractor() {
   // const { invigilator } = location.state || {};
   // console.log('invigilator data ', invigilator);
 
+<<<<<<< HEAD
   // console.log('isEdite contrcator ', isEditContractor);
   // const baseUrl = 'http://localhost:3000';
   const baseUrl = 'https://railway-qbx4.onrender.com';
+=======
+  console.log('isEdite contrcator ', isEditContractor);
+  const baseUrl = 'http://localhost:3000';
+  // const baseUrl = 'https://railway-qbx4.onrender.com';
+>>>>>>> 0a8e21f40f7961f635a63266d4723872b360361f
 
   const clientUrl = 'http://crease-railway-8njx.vercel.app';
 
@@ -73,11 +79,12 @@ export default function AddContractor() {
     typeofcontract: '',
     ContractperiodFrom: '',
     ContractperiodTo: '',
+    FireAuditDate: '',
     LicenseFeesPaidUptoDate: '',
     Licenseename: '',
-    // LicenseeAadharNo: '',  
+    // LicenseeAadharNo: '',
     Licenseecontactdetails: '',
-    TotalVendorsPermitted: '',
+    // TotalVendorsPermitted: '',
     // IsStationService: false,
     AutherityDoc: null,
     // PFPermitted: [],
@@ -235,8 +242,43 @@ export default function AddContractor() {
       ...prevSelectedTrains,
       stationNames,
     ]);
+<<<<<<< HEAD
     // console.log('dddddddddddd', selectedStations);
   };
+=======
+    console.log('dddddddddddd', selectedStations);
+  };
+
+  const [TotalVendorsPermitted, setTotalVendorsPermitted] = useState();
+  const [stoleVendorsPermitted, setstoleVendorsPermitted] = useState();
+  const [platformVendorsPermitted, setplatformVendorsPermitted] = useState();
+  const handleVendorChange = (e) => {
+    const value = e.target.value;
+    setTotalVendorsPermitted(value);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      TotalVendorsPermitted: value,
+    }));
+  };
+  const handleStoleVendorChange = (e) => {
+    const value = e.target.value;
+    setstoleVendorsPermitted(value);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      stoleVendorsPermitted: value,
+    }));
+  };
+  const handlePlatformVendorChange = (e) => {
+    const value = e.target.value;
+    setplatformVendorsPermitted(value);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      platformVendorsPermitted: value,
+    }));
+  };
+
+
+>>>>>>> 0a8e21f40f7961f635a63266d4723872b360361f
   return (
     <div>
       <DefaultLayout>
@@ -341,6 +383,21 @@ export default function AddContractor() {
                   </div>
                   {fieldInput && (
                     <div>
+                      {/* Vendors Permitted */}
+                      <div className="mb-4.5">
+                        <label className="mb-2.5 block text-black dark:text-white">
+                          Total Vendors Permitted{' '}
+                          <span className=" text-red-600 text-lg">*</span>
+                        </label>
+                        <input
+                          type="number"
+                          // name="TotalVendorsPermitted"
+                          // value={formData.TotalVendorsPermitted}
+                          onChange={handleVendorChange}
+                          placeholder="Enter Vendors Permitted"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        />
+                      </div>
                       <div className="w-full xl:w-1/2">
                         <label className="mb-2.5 block text-black dark:text-white">
                           Section Names{' '}
@@ -437,69 +494,103 @@ export default function AddContractor() {
                     </div>
                   )}
                   {staticfieldInput && (
-                    <div className="flex">
-                      <div className="w-full xl:w-1/2">
-                        <label className="mb-2.5 block text-black dark:text-white">
-                          Names of Station
-                          <span className=" text-red-600 text-lg">*</span>
-                        </label>
-                        <input
-                          name="selectedStations"
-                          value={filterStationName}
-                          onChange={handleStationNameChange}
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                          onFocus={toggleStationNameDropdown}
-                        />
-                        {isInputVisible && (
-                          <div
-                            onMouseEnter={toggleDropdown}
-                            onMouseLeave={toggleDropdown2}
-                            className="dropdown-content"
-                            style={{
-                              display: 'block',
-                              position: 'absolute',
-                              backgroundColor: '#f9f9f9',
-                              minWidth: '160px',
-                              minHeight: '100px',
-                              boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)',
-                              zIndex: 1,
-                            }}
-                          >
-                            {filteredStationNamesOptions.map(
-                              (option, index) => (
-                                <div
-                                  key={index}
-                                  onClick={() => handleStationNameClick(option)}
-                                  style={{
-                                    color: 'black',
-                                    padding: '12px 16px',
-                                    textDecoration: 'none',
-                                    display: 'block',
-                                    cursor: 'pointer',
-                                  }}
-                                >
-                                  {option}
-                                </div>
-                              ),
-                            )}
-                          </div>
-                        )}
-                      </div>
+                    <div className="flex flex-col">
+                      <div className="flex flex-row">
+                        <div className="w-full xl:w-1/2">
+                          <label className="mb-2.5 block text-black dark:text-white">
+                            Names of Station
+                            <span className=" text-red-600 text-lg">*</span>
+                          </label>
+                          <input
+                            name="selectedStations"
+                            value={filterStationName}
+                            onChange={handleStationNameChange}
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                            onFocus={toggleStationNameDropdown}
+                          />
+                          {isInputVisible && (
+                            <div
+                              onMouseEnter={toggleDropdown}
+                              onMouseLeave={toggleDropdown2}
+                              className="dropdown-content"
+                              style={{
+                                display: 'block',
+                                position: 'absolute',
+                                backgroundColor: '#f9f9f9',
+                                minWidth: '160px',
+                                minHeight: '100px',
+                                boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)',
+                                zIndex: 1,
+                              }}
+                            >
+                              {filteredStationNamesOptions.map(
+                                (option, index) => (
+                                  <div
+                                    key={index}
+                                    onClick={() =>
+                                      handleStationNameClick(option)
+                                    }
+                                    style={{
+                                      color: 'black',
+                                      padding: '12px 16px',
+                                      textDecoration: 'none',
+                                      display: 'block',
+                                      cursor: 'pointer',
+                                    }}
+                                  >
+                                    {option}
+                                  </div>
+                                ),
+                              )}
+                            </div>
+                          )}
+                        </div>
 
-                      <div className="ml-[50px] mt-[-10px]">
-                        <p className="mb-1 block text-black dark:text-white pt-3">
-                          Selected Station{' '}
-                          <span className=" text-red-600 text-lg">*</span>
-                        </p>
-                        {selectedStations.map((item) => (
-                          <p className="flex align-middle items-center justify-between gap-3 ">
-                            {item}{' '}
-                            <MdOutlineCancel
-                              className=" text-red-500"
-                              onClick={() => handleStationRemove(item)}
-                            />
+                        <div className="ml-[50px] mt-[-10px]">
+                          <p className="mb-1 block text-black dark:text-white pt-3">
+                            Selected Station{' '}
+                            <span className=" text-red-600 text-lg">*</span>
                           </p>
-                        ))}
+                          {selectedStations.map((item) => (
+                            <p className="flex align-middle items-center justify-between gap-3 ">
+                              {item}{' '}
+                              <MdOutlineCancel
+                                className=" text-red-500"
+                                onClick={() => handleStationRemove(item)}
+                              />
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex flex-row justify-between">
+                        <div className="mb-4.5">
+                          <label className="mb-2.5 block text-black dark:text-white">
+                            Vendors Permitted at stole{' '}
+                            <span className=" text-red-600 text-lg">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            // name="TotalVendorsPermitted"
+                            // value={formData.TotalVendorsPermitted}
+                            onChange={handleStoleVendorChange}
+                            placeholder="Enter Vendors Permitted"
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          />
+                        </div>
+                        <div className="mb-4.5">
+                          <label className="mb-2.5 block text-black dark:text-white">
+                            Vendors Permitted at Platform{' '}
+                            <span className=" text-red-600 text-lg">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            // name="TotalVendorsPermitted"
+                            // value={formData.TotalVendorsPermitted}
+                            onChange={handlePlatformVendorChange}
+                            placeholder="Enter Vendors Permitted"
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          />
+                        </div>
                       </div>
                     </div>
                   )}
@@ -528,6 +619,19 @@ export default function AddContractor() {
                       type="date"
                       name="ContractperiodTo"
                       value={formData.ContractperiodTo}
+                      onChange={handleChange}
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div className="w-full xl:w-1/2">
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      Fire Audit Date{' '}
+                      <span className=" text-red-600 text-lg">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      name="FireAuditDate"
+                      value={formData.FireAuditDate}
                       onChange={handleChange}
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -591,6 +695,7 @@ export default function AddContractor() {
                       onChange={handleChange}
                     />
                   </div>
+<<<<<<< HEAD
 
                   {/* Vendors Permitted */}
                   <div className="mb-4.5">
@@ -607,6 +712,8 @@ export default function AddContractor() {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
+=======
+>>>>>>> 0a8e21f40f7961f635a63266d4723872b360361f
                 </div>
               </form>
             </div>

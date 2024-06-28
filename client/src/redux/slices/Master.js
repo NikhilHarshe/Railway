@@ -9,7 +9,11 @@ export const MasterDataSlice = createSlice({
   initialState: initialState,
   reducers: {
     setMasterData(state, action) {
+<<<<<<< HEAD
       state.masterData  = action.payload;
+=======
+      state.masterData = action.payload;
+>>>>>>> 0a8e21f40f7961f635a63266d4723872b360361f
     },
   },
 });

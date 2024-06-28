@@ -61,6 +61,7 @@ const fetchVendorDataByQRCode = async (req, res) => {
 };
 
 const registerVendor = async (req, res) => {
+  console.log('hi')
   const {
     fname,
     mname,
@@ -71,7 +72,7 @@ const registerVendor = async (req, res) => {
     policeVarificationDate,
     medicalValidityDate,
     validityAuthority,
-    LicenseeId,
+    LicenseeId, 
     qrcode,
   } = req.body;
   console.log('Body', req.body);

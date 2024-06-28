@@ -25,6 +25,9 @@ const contractorSchema = new mongoose.Schema({
   toDate: {
     type: Date,
   },
+  fireAuditdate: {
+    type: Date,
+  },
   licence_fees_paid_upto: {
     type: Date,
   },
@@ -34,7 +37,13 @@ const contractorSchema = new mongoose.Schema({
   Licensee_Contact_details: {
     type: Number,
   },
-  vendors_permitted: {
+  total_vendors_permitted: {
+    type: Number,
+  },
+  vendors_permitted_at_platform: {
+    type: Number,
+  },
+  vendors_permitted_at_stole: {
     type: Number,
   },
   // IsStationService: {

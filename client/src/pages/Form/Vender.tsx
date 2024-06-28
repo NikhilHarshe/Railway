@@ -4,23 +4,24 @@ import { useReactToPrint } from 'react-to-print';
 import axios from 'axios';
 import QRCode from 'qrcode.react';
 import DefaultLayout from '../../layout/DefaultLayout';
-import { UploadButton } from "@bytescale/upload-widget-react";
-import { LiaCheckDoubleSolid } from "react-icons/lia";
+import { UploadButton } from '@bytescale/upload-widget-react';
+import { LiaCheckDoubleSolid } from 'react-icons/lia';
 import toast from 'react-hot-toast';
-import { setVendorsData } from "../../redux/slices/VendorSlice"
+import { setVendorsData } from '../../redux/slices/VendorSlice';
 
 const FormLayout = () => {
   // const baseUrl = "https://railway-qbx4.onrender.com";
-  const baseUrl = "http://localhost:3000";
-  const clientUrl = "https://railway-kappa.vercel.app/";
+  const baseUrl = 'http://localhost:3000';
+  const clientUrl = 'https://railway-kappa.vercel.app/';
 
-  const [profilePic, setProfilePic] = useState("");
-  const [aadharCard, setAadharCard] = useState("");
-  const [policeVarificationDocument, setPoliceVarificationDocument] = useState("");
-  const [madicalValidityDocument, setMadicalValidityDocument] = useState("");
+  const [profilePic, setProfilePic] = useState('');
+  const [aadharCard, setAadharCard] = useState('');
+  const [policeVarificationDocument, setPoliceVarificationDocument] =
+    useState('');
+  const [madicalValidityDocument, setMadicalValidityDocument] = useState('');
   const [success, setSuccess] = useState(false);
   const [qrCodeValue, setQRCodeValue] = useState('');
-  
+
   const [formData, setFormData] = useState({
     fname: '',
     lname: '',
@@ -43,16 +44,14 @@ const FormLayout = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    console.log("name : ", name, "  value: ", value);
+    console.log('name : ', name, '  value: ', value);
 
     if (files) {
-      console.log("In side function ")
+      console.log('In side function ');
       setFormData({ ...formData, [name]: files[0] });
-    }
-    else {
+    } else {
       setFormData({ ...formData, [name]: value });
     }
-
   };
   // console.log("Form data in Vendor ", generatedData)
 
@@ -87,30 +86,32 @@ const FormLayout = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     await generateQRCode();
-    if (Object.values(generatedData).some(value => value === '')) {
-      console.log("generatedData : ", generatedData);
+    if (Object.values(generatedData).some((value) => value === '')) {
+      console.log('generatedData : ', generatedData);
       toast.error('All fields are required');
       return;
     } else {
-      const toastId = toast.loading("Loading...");
+      const toastId = toast.loading('Loading...');
       try {
         console.log('Submitting formData:', generatedData);
-        const response = await axios.post(baseUrl + '/vendor/registerVendor', generatedData,
+        const response = await axios.post(
+          baseUrl + '/vendor/registerVendor',
+          generatedData,
           {
             headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          }
+              'Content-Type': 'multipart/form-data',
+            },
+          },
         );
         // alert('Data saved successfully');
-        toast.success("Vendor Registered")
+        toast.success('Vendor Registered');
         setSuccess(true);
         setVendorsData(response.data.vendors);
-        localStorage.setItem("vendors", JSON.stringify(response?.data.vendors))
-        console.log("response ", response);
+        localStorage.setItem('vendors', JSON.stringify(response?.data.vendors));
+        console.log('response ', response);
       } catch (error) {
         console.error('Error:', error);
-        toast.error(error.response.data.message)
+        toast.error(error.response.data.message);
       }
       toast.dismiss(toastId);
     }
@@ -120,7 +121,7 @@ const FormLayout = () => {
 
   const generatePDF = useReactToPrint({
     content: () => componentPDF.current,
-    documentTitle: "Invoice",
+    documentTitle: 'Invoice',
   });
 
   // const options = {
@@ -188,7 +189,6 @@ const FormLayout = () => {
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
                     </div>
-
                   </div>
 
                   <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -243,7 +243,10 @@ const FormLayout = () => {
 
                     {/* Mobile Number */}
                     <div className="w-full xl:w-1/2">
-                      <label className="mb-2.5 block text-black dark:text-white" htmlFor='mobile'>
+                      <label
+                        className="mb-2.5 block text-black dark:text-white"
+                        htmlFor="mobile"
+                      >
                         Mobile Number{' '}
                         <span className="text-red-600 text-lg">*</span>
                       </label>
@@ -259,7 +262,7 @@ const FormLayout = () => {
                     </div>
                   </div>
 
-                  <div className=' flex'>
+                  <div className=" flex">
                     {/* Upload Aadhar Pic */}
                     <div className="flex flex-col pb-5 gap-2 w-[18.1rem]">
                       <label
@@ -278,9 +281,13 @@ const FormLayout = () => {
 
                     {/* Aadhar number */}
                     <div className="w-full xl:w-1/2">
-                      <label className="mb-2.5 block text-black dark:text-white" htmlFor='aadhar'>
+                      <label
+                        className="mb-2.5 block text-black dark:text-white"
+                        htmlFor="aadhar"
+                      >
                         Aadhar number{' '}
-                         <span className="text-red-600 text-lg">*</span>
+                        <span className="text-red-600 text-lg">*</span>
+
                       </label>
                       <input
                         type="number"
@@ -303,11 +310,18 @@ const FormLayout = () => {
                   <div className=" flex  pb-5 gap-2">
                     {/* Upload PoliceVarification Document */}
                     <div>
-                      <label htmlFor="policeVarificationDocument" className="mb-2.5 block text-black dark:text-white" >
+                      <label
+                        htmlFor="policeVarificationDocument"
+                        className="mb-2.5 block text-black dark:text-white"
+                      >
                         Upload PoliceVarification Document{' '}
                         <span className=" text-red-600 text-lg">*</span>
                       </label>
-                      <input type="file" name="policeVarificationDocument" onChange={handleChange} />
+                      <input
+                        type="file"
+                        name="policeVarificationDocument"
+                        onChange={handleChange}
+                      />
                     </div>
 
                     {/* PoliceVarification */}
@@ -325,7 +339,6 @@ const FormLayout = () => {
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
                     </div>
-
                   </div>
                 </div>
                 <h3 className="font-medium my-[20px] text-black dark:text-white">
@@ -406,33 +419,35 @@ const FormLayout = () => {
                   Generate QR Code
                 </button> */}
 
-                {
-                  success && <button
+                {success && (
+                  <button
                     onClick={generatePDF}
                     className="mt-4 inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10 mr-5"
                   >
                     Print Qr Code PDF
                   </button>
-                }
+                )}
 
-                {
-                  !success && <button
+                {!success && (
+                  <button
                     onClick={handleSave}
                     className="mt-4 inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10"
                   >
                     Save
                   </button>
-                }
+                )}
 
-                {
-                  success && <button
-                    onClick={() => { setSuccess(false); window.location.reload() }}
+                {success && (
+                  <button
+                    onClick={() => {
+                      setSuccess(false);
+                      window.location.reload();
+                    }}
                     className="mt-4 inline-flex items-center justify-center rounded-md border border-primary py-4 px-8 text-center font-medium text-primary transition hover:bg-opacity-90 lg:px-8 xl:px-10"
-
                   >
                     Register New Vendor
                   </button>
-                }
+                )}
               </div>
             </form>
           </div>
