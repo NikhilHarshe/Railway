@@ -2,15 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { setVendorsData } from "../../redux/slices/VendorSlice";
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import DefaultLayout from '../../layout/DefaultLayout';
 import QRCode from 'qrcode.react';
 
 const EditVendor = () => {
-
-    const naviagte = useNavigate()
-
     const navigate = useNavigate();
 
     // const baseUrl = "http://localhost:3000";
@@ -23,6 +20,8 @@ const EditVendor = () => {
 
     const [formData, setFormData] = useState({
         fname: '',
+        mname: '',
+        lname: '',
         dob: '',
         mobile: '',
         profilePic: null,
@@ -41,6 +40,8 @@ const EditVendor = () => {
     useEffect(() => {
         setFormData({
             fname: vender.fname || '',
+            mname: vender?.mname || '',
+            lname: vender.lname || '',
             dob: vender.dob || '',
             mobile: vender.mobile || '',
             profilePic: vender.profilePic || null,
@@ -53,15 +54,12 @@ const EditVendor = () => {
             validityAuthority: vender.validityAuthority || '',
             LicenseeId: vender.Contractor?.contractorId || '',
             qrcode: vender.qrcode || '',
-            _id : vender._id,
+            _id: vender._id,
         });
     }, [vender]);
 
     const [success, setSuccess] = useState(false);
-    const [qrCodeValue, setQRCodeValue] = useState('');
-    const [generatedData, setGeneratedData] = useState(null);
     const [imageToShow, setImageToShow] = useState(null);
-
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
@@ -121,7 +119,7 @@ const EditVendor = () => {
                 localStorage.setItem("vendors", JSON.stringify(response?.data.vendors));
                 console.log("response ", response);
                 navigate("/vendorsData")
-                
+
             } catch (error) {
                 console.error('Error:', error);
                 toast.error(error.response.data.message);
@@ -130,23 +128,23 @@ const EditVendor = () => {
         }
     };
 
-    const componentPDF = useRef();
+    // const componentPDF = useRef();
 
-    const generatePDF = useReactToPrint({
-        content: () => componentPDF.current,
-        documentTitle: "Vendor Details",
-    });
+    // const generatePDF = useReactToPrint({
+    //     content: () => componentPDF.current,
+    //     documentTitle: "Vendor Details",
+    // });
 
     const handleViewImage = (image) => {
         if (image && typeof image !== 'string') {
             setImageToShow(URL.createObjectURL(image));
-            console.log("ImageToShow1 : ", imageToShow);
+            // console.log("ImageToShow1 : ", imageToShow);
         } else {
             setImageToShow(image);
             console.log("ImageToShow2 : ", imageToShow);
         }
     };
-    console.log("ImageToShow : ", imageToShow);
+    // console.log("ImageToShow : ", imageToShow);
 
     return (
         <DefaultLayout>
@@ -156,7 +154,7 @@ const EditVendor = () => {
                 alignContent: 'center',
                 alignItems: 'center'
             }} className="grid grid-cols-1 gap-9 sm:grid-cols-2">
-                <div className="flex flex-col gap-9">
+                <div className="flex flex-col gap-9 w-[42rem] ">
                     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
                             <h3 className="font-medium text-black dark:text-white">
@@ -165,145 +163,155 @@ const EditVendor = () => {
                         </div>
                         <form onSubmit={handleSubmit} style={{}} action="#">
                             <div className="p-6.5">
-                                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-
-                                    {/* Name */}
-                                    <div className="w-full xl:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            Full Name <span className='text-red-600 text-lg'>*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="fname"
-                                            value={formData.fname}
-                                            onChange={handleChange}
-                                            placeholder="Enter your name"
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        />
+                                <h3 className="font-medium mb-[20px] text-black dark:text-white">
+                                    Personal Information
+                                </h3>
+                                <div className="border border-gray-300 shadow-md rounded-lg p-6">
+                                    <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                                        {/* Name */}
+                                        <div className="w-full xl:w-1/2">
+                                            <label className="mb-2.5 block text-black dark:text-white">
+                                                First Name <span className='text-red-600 text-lg'>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="fname"
+                                                value={formData.fname}
+                                                onChange={handleChange}
+                                                placeholder="Enter your First Name"
+                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            />
+                                        </div>
+                                        {/* middle Name */}
+                                        <div className="w-full xl:w-1/2">
+                                            <label className="mb-2.5 block text-black dark:text-white">
+                                                Middle Name <span className='text-red-600 text-lg'>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="mname"
+                                                value={formData.mname}
+                                                onChange={handleChange}
+                                                placeholder="Enter your Middle Name"
+                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            />
+                                        </div>
                                     </div>
 
-                                    {/* Date of Birth */}
-                                    <div className="w-full xl:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            Date of Birth <span className='text-red-600 text-lg'>*</span>
-                                        </label>
-                                        <input
-                                            type="date"
-                                            name="dob"
-                                            value={formData.dob.split('T')[0]} // Ensure correct format
-                                            onChange={handleChange}
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        />
+                                    <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                                        {/* Last Name */}
+                                        <div className="w-full xl:w-1/2">
+                                            <label className="mb-2.5 block text-black dark:text-white">
+                                                Last Name <span className='text-red-600 text-lg'>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="lname"
+                                                value={formData.lname}
+                                                onChange={handleChange}
+                                                placeholder="Enter your Last Name"
+                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            />
+                                        </div>
+
+                                        {/* Date of Birth */}
+                                        <div className="w-full xl:w-1/2">
+                                            <label className="mb-2.5 block text-black dark:text-white">
+                                                Date of Birth <span className='text-red-600 text-lg'>*</span>
+                                            </label>
+                                            <input
+                                                type="date"
+                                                name="dob"
+                                                value={formData.dob.split('T')[0]} // Ensure correct format
+                                                onChange={handleChange}
+                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                                        {/* Upload Profile Pic */}
+                                        <div className='flex flex-col gap-2 w-[17rem] '>
+                                            <label htmlFor="profilePic" className="mb-2.5 block text-black dark:text-white">
+                                                Upload Profile Pic <span className='text-red-600 text-lg'>*</span>
+                                            </label>
+                                            <input type="file" name='profilePic' onChange={handleChange} />
+                                            <button
+                                                type="button"
+                                                onClick={() => handleViewImage(formData.profilePic)}
+                                                className="text-blue-500 inline-flex"
+                                            >
+                                                View
+                                            </button>
+                                        </div>
+
+                                        {/* Mobile Number */}
+                                        <div className="w-full xl:w-1/2">
+                                            <label className="mb-2.5 block text-black dark:text-white">
+                                                Mobile Number <span className='text-red-600 text-lg'>*</span>
+                                            </label>
+                                            <input
+                                                type="number"
+                                                name="mobile"
+                                                value={formData.mobile}
+                                                onChange={handleChange}
+                                                placeholder="Enter your mobile number"
+                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                                        {/* Upload Aadhar Pic */}
+                                        <div className='flex flex-col gap-2 w-[17rem] '>
+                                            <label htmlFor="aadharCardImg" className="mb-2.5 block text-black dark:text-white">
+                                                Upload Aadhar Card <span className='text-red-600 text-lg'>*</span>
+                                            </label>
+                                            <input type="file" name='aadharCardImg' onChange={handleChange} />
+                                            <button
+                                                type="button"
+                                                onClick={() => handleViewImage(formData.aadharCardImg)}
+                                                className="text-blue-500 inline-flex"
+                                            >
+                                                View
+                                            </button>
+                                        </div>
+                                        {/* Aadhar Number */}
+                                        <div className="w-full xl:w-1/2">
+                                            <label className="mb-2 block text-black dark:text-white">
+                                                Aadhar Number <span className="text-meta-1">*</span>
+                                            </label>
+                                            <input
+                                                type="number"
+                                                name="aadhar"
+                                                inputMode="numeric"
+                                                pattern="\d*"
+                                                value={formData.aadhar}
+                                                onChange={handleChange}
+                                                placeholder="Enter your Aadhar number"
+                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                                    {/* Mobile Number */}
-                                    <div className="w-full xl:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            Mobile Number <span className='text-red-600 text-lg'>*</span>
+                                <h3 className="font-medium my-[20px] text-black dark:text-white ">
+                                    Police Varification Information
+                                </h3>
+                                <div className="border flex border-gray-300 shadow-md rounded-lg p-6">
+                                    {/* Upload Police Verification Document */}
+                                    <div className='flex flex-col gap-2 w-[18.5rem] '>
+                                        <label htmlFor="policeVarificationDocument" className="mb-2.5 block text-black dark:text-white">
+                                            Upload Police Verification Document <span className='text-red-600 text-lg'>*</span>
                                         </label>
-                                        <input
-                                            type="number"
-                                            name="mobile"
-                                            value={formData.mobile}
-                                            onChange={handleChange}
-                                            placeholder="Enter your mobile number"
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        />
-                                    </div>
-
-                                    {/* Aadhar Number */}
-                                    <div className="mb-4.5">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            Aadhar Number <span className="text-meta-1">*</span>
-                                        </label>
-                                        <input
-                                            type="number"
-                                            name="aadhar"
-                                            inputMode="numeric"
-                                            pattern="\d*"
-                                            value={formData.aadhar}
-                                            onChange={handleChange}
-                                            placeholder="Enter your Aadhar number"
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Upload Aadhar Pic */}
-                                <div className='flex flex-col pb-5 gap-2'>
-                                    <label htmlFor="aadharCardImg" className="mb-2.5 block text-black dark:text-white">
-                                        Upload Aadhar Card <span className='text-red-600 text-lg'>*</span>
-                                    </label>
-                                    <input type="file" name='aadharCardImg' onChange={handleChange} />
-                                    <button
-                                        type="button"
-                                        onClick={() => handleViewImage(formData.aadharCardImg)}
-                                        className="text-blue-500 inline-flex"
-                                    >
-                                        View
-                                    </button>
-                                </div>
-
-                                {/* Upload Profile Pic */}
-                                <div className='flex flex-col pb-5 gap-2'>
-                                    <label htmlFor="profilePic" className="mb-2.5 block text-black dark:text-white">
-                                        Upload Profile Pic <span className='text-red-600 text-lg'>*</span>
-                                    </label>
-                                    <input type="file" name='profilePic' onChange={handleChange} />
-                                    <button
-                                        type="button"
-                                        onClick={() => handleViewImage(formData.profilePic)}
-                                        className="text-blue-500 inline-flex"
-                                    >
-                                        View
-                                    </button>
-                                </div>
-
-                                {/* Upload Police Verification Document */}
-                                <div className='flex flex-col pb-5 gap-2'>
-                                    <label htmlFor="policeVarificationDocument" className="mb-2.5 block text-black dark:text-white">
-                                        Upload Police Verification Document <span className='text-red-600 text-lg'>*</span>
-                                    </label>
-                                    <input type="file" name='policeVarificationDocument' onChange={handleChange} />
-                                    <button
-                                        type="button"
-                                        onClick={() => handleViewImage(formData.policeVarificationDocument)}
-                                        className="text-blue-500 inline-flex"
-                                    >
-                                        View
-                                    </button>
-                                </div>
-
-                                {/* Upload Medical Validity Document */}
-                                <div className='flex flex-col pb-5 gap-2'>
-                                    <label htmlFor="madicalValidityDocument" className="mb-2.5 block text-black dark:text-white">
-                                        Upload Medical Validity Document <span className='text-red-600 text-lg'>*</span>
-                                    </label>
-                                    <input type="file" name='madicalValidityDocument' onChange={handleChange} />
-                                    <button
-                                        type="button"
-                                        onClick={() => handleViewImage(formData.madicalValidityDocument)}
-                                        className="text-blue-500 inline-flex"
-                                    >
-                                        View
-                                    </button>
-                                </div>
-
-                                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                                    {/* Medical Validity Date */}
-                                    <div className="w-full xl:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            Medical Validity Date <span className='text-red-600 text-lg'>*</span>
-                                        </label>
-                                        <input
-                                            type="date"
-                                            name="medicalValidityDate"
-                                            value={formData.medicalValidityDate.split('T')[0]} // Ensure correct format
-                                            onChange={handleChange}
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        />
+                                        <input type="file" name='policeVarificationDocument' onChange={handleChange} />
+                                        <button
+                                            type="button"
+                                            onClick={() => handleViewImage(formData.policeVarificationDocument)}
+                                            className="text-blue-500 inline-flex"
+                                        >
+                                            View
+                                        </button>
                                     </div>
 
                                     {/* Police Verification Date */}
@@ -320,8 +328,44 @@ const EditVendor = () => {
                                         />
                                     </div>
                                 </div>
+                                <h3 className="font-medium my-[20px] text-black dark:text-white">
+                                    Medical Varification Information
+                                </h3>
+                                <div className="border border-gray-300 xl:flex shadow-md rounded-lg p-6 gap-3">
+                                    {/* Upload Medical Validity Document */}
+                                    <div className='flex flex-col gap-2 w-[17.4rem] '>
+                                        <label htmlFor="madicalValidityDocument" className="mb-2.5 block text-black dark:text-white">
+                                            Upload Medical Validity Document <span className='text-red-600 text-lg'>*</span>
+                                        </label>
+                                        <input type="file" name='madicalValidityDocument' onChange={handleChange} />
+                                        <button
+                                            type="button"
+                                            onClick={() => handleViewImage(formData.madicalValidityDocument)}
+                                            className="text-blue-500 inline-flex"
+                                        >
+                                            View
+                                        </button>
+                                    </div>
 
-                                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                                    {/* Medical Validity Date */}
+                                    <div className="w-full xl:w-1/2">
+                                        <label className="mb-2.5 block text-black dark:text-white">
+                                            Medical Validity Date <span className='text-red-600 text-lg'>*</span>
+                                        </label>
+                                        <input
+                                            type="date"
+                                            name="medicalValidityDate"
+                                            value={formData.medicalValidityDate.split('T')[0]} // Ensure correct format
+                                            onChange={handleChange}
+                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                        />
+                                    </div>
+                                </div>
+
+                                <h3 className="font-medium my-[20px] text-black dark:text-white">
+                                    Validation Information
+                                </h3>
+                                <div className="border border-gray-300 xl:flex shadow-md rounded-lg p-6 gap-6">
                                     {/* LicenseeId */}
                                     <div className="w-full xl:w-1/2">
                                         <label className="mb-2.5 block text-black dark:text-white">
@@ -352,8 +396,6 @@ const EditVendor = () => {
                                         />
                                     </div>
                                 </div>
-
-
 
                                 {/* Display QR Code */}
                                 {success && (
@@ -417,7 +459,7 @@ const EditVendor = () => {
                         />
                         <button
                             onClick={() => setImageToShow(null)}
-                            className="mt-2 bg-red-500 text-white py-1 px-4 rounded" 
+                            className="mt-2 bg-red-500 text-white py-1 px-4 rounded"
                         >
                             Cancel
                         </button>

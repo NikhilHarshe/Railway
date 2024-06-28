@@ -124,7 +124,8 @@ const registerVendor = async (req, res) => {
       madicalValidityDocument: imgUrls.madicalValidityDocument,
       validityAuthority,
       Contractor: contractor._id,
-      qrcode
+      qrcode,
+      LicenseeId,
     });
 
     // Save the new vendor

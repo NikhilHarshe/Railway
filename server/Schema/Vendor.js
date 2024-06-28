@@ -50,6 +50,10 @@ const model = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  LicenseeId: {
+    type: String,
+    trim: true,
+  },
   Contractor: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Contractor",

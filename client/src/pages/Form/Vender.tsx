@@ -226,7 +226,7 @@ const FormLayout = () => {
 
                   <div className="mb-4.5 flex flex-col gap-6 xl:flex-row xl:justify-between w-full">
                     {/* Upload Profile Photo */}
-                    <div className=" flex flex-col gap-2 w-full xl:w-1/2">
+                    <div className=" flex flex-col gap-2 w-[16.7rem]">
                       <label
                         htmlFor="profilePic"
                         className="mb-2.5 block text-black dark:text-white"
@@ -261,7 +261,7 @@ const FormLayout = () => {
 
                   <div className=' flex'>
                     {/* Upload Aadhar Pic */}
-                    <div className="flex flex-col pb-5 gap-2">
+                    <div className="flex flex-col pb-5 gap-2 w-[18.1rem]">
                       <label
                         htmlFor="aadharCardImg"
                         className="mb-2.5 block text-black dark:text-white"
@@ -279,21 +279,21 @@ const FormLayout = () => {
                     {/* Aadhar number */}
                     <div className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white" htmlFor='aadhar'>
-                        Aadhar number <span className="text-red-600 text-lg">*</span>
+                        Aadhar number{' '}
+                         <span className="text-red-600 text-lg">*</span>
                       </label>
                       <input
                         type="number"
                         name="aadhar"
-                        inputMode="numeric"
-                        pattern="\d*"
+                        // inputMode="numeric"
+                        // pattern="\d*"
                         value={formData.aadhar}
                         onChange={handleChange}
                         placeholder="Enter your Aadhar number"
-                        className="w-[15rem] rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
                     </div>
                   </div>
-
                 </div>
 
                 <h3 className="font-medium my-[20px] text-black dark:text-white ">
@@ -393,7 +393,7 @@ const FormLayout = () => {
                       name="LicenseeId" // Corrected name attribute
                       value={formData.LicenseeId}
                       onChange={handleChange}
-                      placeholder="Enter your Licensee Aadhar No"
+                      placeholder="Enter your Licensee ID No"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
