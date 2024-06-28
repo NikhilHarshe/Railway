@@ -12,7 +12,7 @@ const CreateMasterData = async (req, res) => {
         admin,
       id
       } = req.body;
-      console.log('ffffffffff',req.body.name)
+      console.log('ffffffffff',req.body.user)
     const user = await MasterData.findById(admin);
 
     if (!user) {
@@ -71,37 +71,39 @@ const fetchAgency = async (req, res) => {
   }
 };
 
-module.exports = {
-  CreateMasterData,
-    fetchAgency,
+const GetMasterData = async (req, res) => {
+  try {
+    const masterData = await MasterData.find();
+
+    if (!masterData) {
+      return res.status(404).json({
+        success: false,
+        message: "Data Not Present",
+      });
+    }
+
+    return res.status(200).json({
+      masterData,
+      success: true,
+      message: "Data Fetch Successfully",
+    });
+  } catch (error) {
+    console.log("Error : ", error);
+    return res.status(500).json({
+      success: true,
+      message: "Internal Server Error",
+    });
+  }
 };
 
 
 
-exports.GetMasterData = async (req, res) => {
-    try{
-        const masterData = await MasterData.find();
 
-        if(!masterData){
-            return res.status(404).json({
-                success: false,
-                message: "Data Not Present",
-            })
-        }
+module.exports = {
+  CreateMasterData,
+  fetchAgency,
+  GetMasterData,
+};
 
-        return res.status(200).json({
-            masterData,
-            success: true,
-            message: "Data Fetch Successfully",
-        })
-    }
-    catch(error){
-        console.log("Error : ", error);
-        return res.status(500).json({
-            success: true,
-            message: "Internal Server Error"
-        })
-    }
-}
 
 

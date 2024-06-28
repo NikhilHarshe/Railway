@@ -8,7 +8,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import QRCode from "qrcode.react";
 import { useReactToPrint } from "react-to-print";
-import {setVendorsData} from "../../redux/slices/VendorSlice"
+import { setVendorsData } from "../../redux/slices/VendorSlice"
 
 const TableTwo = () => {
   const location = useLocation();
@@ -16,6 +16,9 @@ const TableTwo = () => {
   // const baseUrl = "http://localhost:3000";
   const baseUrl = "https://railway-qbx4.onrender.com";
   const [newVenders, setVenders] = useState([]);
+  const [invigilator, setInvigilator] = useState(null);
+
+  console.log("invidilator in vendor table : ", invigilator);
 
   const venders = newVenders.reverse();
 
@@ -42,6 +45,7 @@ const TableTwo = () => {
     else {
       const { invigilator } = location.state;
       console.log('invigilator:', invigilator);
+      setInvigilator(invigilator);
       setVenders(invigilator?.vendors)
     }
   }, [])
@@ -58,25 +62,48 @@ const TableTwo = () => {
     documentTitle: "QR_Code",
   });
 
-  const handleDelete = async(vendor) => {
+  const handleDelete = async (vendor) => {
     const toastId = toast.loading("Loading...");
-    try{
-        const id = vendor._id;
-        const res = await axios.delete(baseUrl + `/vendor//deleteVender/${id}`);
-        console.log("result offter delete : ", res)
-        setShowDeleteConf(false);
-        setVenders(res?.data.vendors);
-        setVendorsData(res.data.vendors);
-        localStorage.setItem("vendors", JSON.stringify(res?.data.contractors))
-        toast.success("Vendor Deleted")
+    try {
+      const id = vendor._id;
+      const res = await axios.delete(baseUrl + `/vendor//deleteVender/${id}`);
+      console.log("result offter delete : ", res)
+      setShowDeleteConf(false);
+      setVenders(res?.data.vendors);
+      setVendorsData(res.data.vendors);
+      localStorage.setItem("vendors", JSON.stringify(res?.data.contractors))
+      toast.success("Vendor Deleted")
     }
-    catch(error) {
+    catch (error) {
       console.log(error)
     }
     toast.dismiss(toastId);
   }
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date)) {
+      return 'Invalid Date';
+    }
+    return date.toLocaleDateString();
+  }
 
+
+  function isWithinFifteenDays(date) {
+    const currentDate = new Date();
+    const futureDate = new Date(currentDate); // Create a copy of the current date
+    futureDate.setDate(currentDate.getDate() + 15); // Set the future date to 15 days from now
+    const givenDate = new Date(date); // Convert the input date to a Date object
+
+    console.log('futureDate:', futureDate);
+    console.log('givenDate:', givenDate);
+
+    if (futureDate >= givenDate) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
 
 
@@ -99,7 +126,106 @@ const TableTwo = () => {
   return (
     <DefaultLayout>
       <div style={{ overflowX: 'auto', width: '1189px' }} className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-        <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
+
+        {
+          invigilator &&
+          <>
+            <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
+              Contractor
+            </h4>
+
+            <div className="grid grid-cols-6 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-6">
+              <div className="p-2.5 text-center xl:p-5">
+                <h5 className="text-sm font-medium uppercase xsm:text-base">
+                  Name
+                </h5>
+              </div>
+              <div className="p-2.5 text-center sm:block xl:p-5">
+                <h5 className="text-sm font-medium uppercase xsm:text-base">
+                  Agency
+                </h5>
+              </div>
+              <div className="p-2.5 text-center sm:block xl:p-5">
+                <h5 className="text-sm font-medium uppercase xsm:text-base">
+                  Category
+                </h5>
+              </div>
+              <div className="p-2.5 text-center sm:block xl:p-5">
+                <h5 className="text-sm font-medium uppercase xsm:text-base">
+                  From
+                </h5>
+              </div>
+              <div className="p-2.5 text-center sm:block xl:p-5">
+                <h5 className="text-sm font-medium uppercase xsm:text-base">
+                  To
+                </h5>
+              </div>
+              <div className="p-2.5 text-center sm:block xl:p-5">
+                <h5 className="text-sm font-medium uppercase xsm:text-base">
+                  Action
+                </h5>
+              </div>
+            </div>
+
+            <div className={`grid grid-cols-6 sm:grid-cols-6 border-b border-stroke dark:border-strokedark' }`}>
+              <div className="flex items-center gap-3 p-2.5 xl:p-5">
+                <p className="text-black dark:text-white">
+                  {invigilator.licensee}
+                </p>
+              </div>
+              <div className="flex items-center justify-center ">
+                {invigilator.agency}
+              </div>
+              <div className="flex items-center gap-3 p-2.5 xl:p-5">
+                <div className="h-[50px] w-[180px] flex-shrink-0 ">
+                  <p className="mt-[15px]">{invigilator.category}</p>
+                </div>
+              </div>
+              <div className=" items-center justify-center p-2.5 sm:flex xl:p-5">
+                <p className="text-meta-5 ml-[10px]">
+                  {formatDate(invigilator.fromDate)}
+                </p>
+              </div>
+              <div className=" items-center justify-center p-2.5 sm:flex xl:p-5">
+                <p
+                  className={`ml-[10px] ${isWithinFifteenDays(invigilator.toDate)
+                    ? 'text-red-500'
+                    : 'text-meta-5'
+                    }`}
+                >
+                  {formatDate(invigilator.toDate)}
+                </p>
+              </div>
+              <div className=" flex items-center justify-center p-2.5 sm:flex xl:p-5 gap-2">
+                <button
+                  title="Edit"
+                  onClick={() => {
+                    navigate('/EditeContractors', { state: { invigilator } });
+                    dispatch(setIsEditContractor(true));
+                  }}
+                  type="button"
+                  className="px-6 py-2.5 rounded text-white text-sm tracking-wider font-semibold border-none outline-none bg-green-600 hover:bg-green-700 active:bg-green-600"
+                >
+                  <ImWrench />
+                </button>
+                <button
+                  title="Delete"
+                  id="user"
+                  onClick={() => handleDeleteClick(invigilator._id)}
+                  type="button"
+                  className="px-6 py-2.5 rounded text-white text-sm tracking-wider font-semibold border-none outline-none bg-red-600 hover:bg-red-700 active:bg-red-600"
+                >
+                  <RiDeleteBin5Fill />
+                </button>
+              </div>
+            </div>
+          </>
+        }
+
+
+
+
+        <h4 className="my-6 text-xl font-semibold text-black dark:text-white">
           Vendors
         </h4>
         <div className="flex flex-col">
@@ -195,7 +321,7 @@ const TableTwo = () => {
                       <button
                         title="Delete"
                         id='user'
-                        onClick={() => {setvendor(vender); setShowDeleteConf(true)}}
+                        onClick={() => { setvendor(vender); setShowDeleteConf(true) }}
                         type="button"
                         className="px-6 py-2.5 rounded text-white text-sm tracking-wider font-semibold border-none outline-none bg-red-600 hover:bg-red-700 active:bg-red-600"
                       >
@@ -250,7 +376,7 @@ const TableTwo = () => {
                 OK
               </button>
               <button
-                onClick={() => {setvendor(null); setShowDeleteConf(false)}}
+                onClick={() => { setvendor(null); setShowDeleteConf(false) }}
                 className="px-6 py-2.5 rounded text-white text-sm tracking-wider font-semibold border-none outline-none bg-red-600 hover:bg-red-700 active:bg-red-600"
               >
                 Cancel

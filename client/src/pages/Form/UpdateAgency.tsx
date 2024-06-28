@@ -5,8 +5,12 @@ import { RiDeleteBin5Fill } from 'react-icons/ri';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 export default function UpdateAgency() {
+
+  const { masterData } = useSelector((state) => state.master);
+
   const [agency, setAgency] = useState('');
   const [existingAgency, setExistingAgency] = useState([]);
 
@@ -16,6 +20,9 @@ export default function UpdateAgency() {
 
   useEffect(() => {
     const fetchAgency = async () => {
+
+      console.log('Master Data', masterData);
+
       try {
         const response = await axios.get(
           baseUrl + '/masterData/fetchmasteragencydata',
@@ -71,9 +78,6 @@ export default function UpdateAgency() {
               <div className="p-6.5">
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Add Agency <span className="text-red-600 text-lg">*</span>
-                    </label>
                     <div
                       style={{
                         display: 'flex',
@@ -105,6 +109,9 @@ export default function UpdateAgency() {
                         <RiDeleteBin5Fill />
                       </button>
                     </div>
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      Add Agency <span className="text-red-600 text-lg">*</span>
+                    </label>
                     <div
                       style={{
                         display: 'flex',

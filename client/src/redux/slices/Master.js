@@ -5,11 +5,11 @@ const initialState = {
 };
 
 export const MasterDataSlice = createSlice({
-  name: 'MasterData',
+  name: 'master',
   initialState: initialState,
   reducers: {
     setMasterData(state, action) {
-      state.user = action.payload;
+      state.masterData = action.payload;
     },
   },
 });

@@ -126,6 +126,7 @@ const registerVendor = async (req, res) => {
       validityAuthority,
       Contractor: contractor._id,
       qrcode,
+      LicenseeId,
     });
 
     // Save the new vendor
