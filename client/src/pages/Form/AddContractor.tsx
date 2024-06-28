@@ -2,20 +2,28 @@ import { useEffect, useState } from 'react';
 import DefaultLayout from '../../layout/DefaultLayout';
 import axios from 'axios';
 import { MdOutlineCancel } from 'react-icons/md';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { trainsName } from './TrainNames';
-import { sectionName } from './SectionNames';
-import { stationNames } from './StationNames';
+// import { trainsName } from './TrainNames';
+// import { sectionName } from './SectionNames';
+// import { stationNames } from './StationNames';
+import { setMasterData } from "../../redux/slices/Master"
 
 export default function AddContractor() {
   const { isEditContractor } = useSelector((state) => state.contractor);
-  const location = useLocation();
-  const { invigilator } = location.state || {};
-  console.log('invigilator data ', invigilator);
+  const { masterData } = useSelector((state) => state.master);
+  // const location = useLocation();
+  const dispatch = useDispatch();
+  const [stationNames, setStationNames] = useState([]);
+  const [trainsName, setTrainsName] = useState([]);
+  const [sectionName, setSectionName] = useState([]);
+  const [contractType, setcontractType] = useState([]);
+  const [agency, setAgency] = useState([]);
+  // const { invigilator } = location.state || {};
+  // console.log('invigilator data ', invigilator);
 
-  console.log('isEdite contrcator ', isEditContractor);
+  // console.log('isEdite contrcator ', isEditContractor);
   // const baseUrl = 'http://localhost:3000';
   const baseUrl = 'https://railway-qbx4.onrender.com';
 
@@ -25,6 +33,40 @@ export default function AddContractor() {
   const [fieldInput, setFieldInput] = useState(false);
   const [staticfieldInput, setStaticFieldInput] = useState(false);
   const [filterStationName, setFilterStationName] = useState('');
+
+
+  const getMasterData = async () => {
+    try {
+      const data = await axios.get(baseUrl + "/masterData/getMasterData");
+      // console.log("Master Data in add contractor page : ", data.data.masterData[0].nameOfStation);
+      setStationNames(data.data.masterData[0].nameOfStation);
+      setTrainsName(data.data.masterData[0].selectedTrains)
+      setSectionName(data.data.masterData[0].sectionName)
+      setcontractType(data.data.masterData[0].contractType)
+      setAgency(data.data.masterData[0].agency);
+      dispatch(setMasterData(data.data.masterData[0]))
+    }
+    catch (error) {
+      console.log("Error in mastetData in Contractor page : ", error);
+    }
+  }
+
+  // console.log("MasterData in Slice ", masterData)
+  // console.log("trainsName in Slice ", trainsName)
+
+  useEffect(() => {
+    if (!masterData) {
+      getMasterData();
+    }
+    else {
+      setStationNames(masterData.nameOfStation);
+      setTrainsName(masterData.selectedTrains)
+      setSectionName(masterData.sectionName);
+      setcontractType(masterData.contractType);
+      setAgency(masterData.agency);
+    }
+  }, [])
+
 
   const [formData, setFormData] = useState({
     agency: '',
@@ -42,8 +84,6 @@ export default function AddContractor() {
     // nameofstation: [],
   });
 
-  const [generatedData, setGeneratedData] = useState(null);
-
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     // console.log("name : ", name, "  value: ", value);
@@ -55,6 +95,8 @@ export default function AddContractor() {
       setFormData({ ...formData, [name]: value });
     }
   };
+
+  console.log('generatedData ', formData);
 
   const handleSave = async () => {
     const toastId = toast.loading('Loading...');
@@ -182,19 +224,19 @@ export default function AddContractor() {
     setInputVisible(true);
   };
 
-   const filteredStationNamesOptions = stationNames
-     .filter((option) =>
-       option.toLowerCase().includes(filterStationName.toLowerCase()),
-     )
-     .slice(0, 5);
-     
-   const handleStationNameClick = (stationNames) => {
-     setSelectedStations((prevSelectedTrains) => [
-       ...prevSelectedTrains,
-       stationNames,
-      ]);
-     console.log('dddddddddddd', selectedStations);
-   };
+  const filteredStationNamesOptions = stationNames
+    .filter((option) =>
+      option.toLowerCase().includes(filterStationName.toLowerCase()),
+    )
+    .slice(0, 5);
+
+  const handleStationNameClick = (stationNames) => {
+    setSelectedStations((prevSelectedTrains) => [
+      ...prevSelectedTrains,
+      stationNames,
+    ]);
+    // console.log('dddddddddddd', selectedStations);
+  };
   return (
     <div>
       <DefaultLayout>
@@ -232,8 +274,13 @@ export default function AddContractor() {
                         <option value="" disabled>
                           Contract Allocating Agency
                         </option>
-                        <option value="Railway">Railway</option>
-                        <option value="IRCTC">IRCTC</option>
+                        {
+                          agency.map((data, index) => (
+                            <option key={index} value={data} >{data} </option>
+                          ))
+                        }
+                        {/* <option value="Railway">Railway</option>
+                        <option value="IRCTC">IRCTC</option> */}
                       </select>
                     </div>
                     <div className="w-full xl:w-1/2">
@@ -250,7 +297,19 @@ export default function AddContractor() {
                         <option value="" disabled>
                           Type of Contract
                         </option>
-                        <option
+                        {
+                          contractType.map((data, index) =>
+                          (
+                            <option
+                            key={index}
+                              onClick={handleDynamicInput}
+                              value={data}
+                            >
+                              {data}
+                            </option>
+                          ))
+                        }
+                        {/* <option
                           onClick={handleDynamicInput}
                           value="On board Catering"
                         >
@@ -276,7 +335,7 @@ export default function AddContractor() {
                         </option>
                         <option onClick={handleStaticInput} value="Static Unit">
                           Station Cleaning
-                        </option>
+                        </option> */}
                       </select>
                     </div>
                   </div>
@@ -536,7 +595,7 @@ export default function AddContractor() {
                   {/* Vendors Permitted */}
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                     Total Vendors Permitted{' '}
+                      Total Vendors Permitted{' '}
                       <span className=" text-red-600 text-lg">*</span>
                     </label>
                     <input

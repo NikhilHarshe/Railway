@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import AuthSlice from "./slices/AuthSlice";
 import ContractorSlice from "./slices/ContractorSlice";
 import VendorSlice from "./slices/VendorSlice";
-import { MasterDataSlice } from "./slices/Master";
+import  MasterDataSlice  from "./slices/Master";
 
 
 export const store = configureStore({
@@ -10,7 +10,7 @@ export const store = configureStore({
         auth: AuthSlice,
         contractor : ContractorSlice,
         vendor: VendorSlice,
-        MasterData: MasterDataSlice
+        master: MasterDataSlice
     }
 })
 
