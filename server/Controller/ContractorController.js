@@ -9,27 +9,26 @@ const registerContractor = async (req, res) => {
     typeofcontract,
     ContractperiodFrom,
     ContractperiodTo,
+    FireAuditDate,
     Licenseename,
     Licenseecontactdetails,
     LicenseFeesPaidUptoDate,
     sectionname,
     nameofstation,
   } = req.body;
-
+  let selectedTrains = req.body["selectedTrains[]"];
+console.log("sssssss", req.body.FireAuditDate);
   const totalVendorsPermitted =
     req.body.totalVendorsPermitted || req.body.TotalVendorsPermitted;
   const vendorsPermitedatPlatform =
-    req.body.vendorsPermitedatPlatform || req.body.vendorPermitedatPlatform;
+    req.body.vendorsPermitedatPlatform || req.body.platformVendorsPermitted;
   const vendorsPermitedatStole =
-    req.body.vendorsPermitedatStole || req.body.vendorPermitedatStole;
-  const selectedTrains = req.body["selectedStations[]"];
-
+    req.body.vendorsPermitedatStole || req.body.stoleVendorsPermitted;
+  
   try {
-    console.log("Received request body:", req.body);
-    console.log("selectedTrains:", selectedTrains);
 
     let missingFields = [];
-
+console.log('aaaaaaaaaaa',typeofcontract);
     if (
       typeofcontract === "On board Catering" ||
       typeofcontract === "On board Non–Catering"
@@ -38,6 +37,7 @@ const registerContractor = async (req, res) => {
       if (!typeofcontract) missingFields.push("typeofcontract");
       if (!ContractperiodFrom) missingFields.push("ContractperiodFrom");
       if (!ContractperiodTo) missingFields.push("ContractperiodTo");
+      if (!FireAuditDate) missingFields.push("FireAuditdate");
       if (!Licenseename) missingFields.push("Licenseename");
       if (!Licenseecontactdetails) missingFields.push("Licenseecontactdetails");
       if (!totalVendorsPermitted) missingFields.push("totalVendorsPermitted");
@@ -62,16 +62,16 @@ const registerContractor = async (req, res) => {
       if (!agency) missingFields.push("agency");
       if (!typeofcontract) missingFields.push("typeofcontract");
       if (!ContractperiodFrom) missingFields.push("ContractperiodFrom");
-      if (!ContractperiodTo) missingFields.push("ContractperiodTo");
+      if (!FireAuditDate) missingFields.push("FireAuditdate");
       if (!Licenseename) missingFields.push("Licenseename");
       if (!Licenseecontactdetails) missingFields.push("Licenseecontactdetails");
-      if (!totalVendorsPermitted) missingFields.push("totalVendorsPermitted");
+      // if (!totalVendorsPermitted) missingFields.push("totalVendorsPermitted");
       if (!vendorsPermitedatPlatform)
         missingFields.push("vendorsPermitedatPlatform");
       if (!vendorsPermitedatStole) missingFields.push("vendorsPermitedatStole");
       if (!LicenseFeesPaidUptoDate)
         missingFields.push("LicenseFeesPaidUptoDate");
-      if (!selectedTrains) missingFields.push("selectedTrains");
+      // if (!selectedTrains) missingFields.push("selectedTrains");
 
       if (missingFields.length > 0) {
         console.log(
@@ -101,16 +101,25 @@ const registerContractor = async (req, res) => {
       category: typeofcontract,
       fromDate: ContractperiodFrom,
       toDate: ContractperiodTo,
+      fireAuditdate: FireAuditDate,
       licensee: Licenseename,
       licence_fees_paid_upto: LicenseFeesPaidUptoDate,
       Licensee_Contact_details: Licenseecontactdetails,
-      total_vendors_permitted: totalVendorsPermitted,
-      vendors_permitted_at_platform: vendorsPermitedatPlatform,
-      vendors_permitted_at_stole: vendorsPermitedatStole,
-      stationName: nameofstation,
+      ...(totalVendorsPermitted && {
+        total_vendors_permitted: totalVendorsPermitted,
+      }),
+      ...(vendorsPermitedatPlatform && {
+        vendors_permitted_at_platform: vendorsPermitedatPlatform,
+      }),
+      ...(vendorsPermitedatStole && {
+        vendors_permitted_at_stole: vendorsPermitedatStole,
+      }),
+      ...(nameofstation && { stationName: nameofstation }),
+      ...(sectionname && { sectionname }),
+      ...(req.body.selectedTrains && {
+        selectedTrains: req.body.selectedTrains,
+      }),
       authorityDocument: imgUrl,
-      sectionname,
-      selectedTrains, // Ensure selectedTrains is included
     });
 
     const data = await newContractor.save();
@@ -133,6 +142,7 @@ const updateUser = async (req, res) => {
     typeofcontract,
     ContractperiodFrom,
     ContractperiodTo,
+    FireAuditdate,
     LicenseFeesPaidUptoDate,
     Licenseename,
     Licenseecontactdetails,
@@ -179,6 +189,7 @@ const updateUser = async (req, res) => {
       contractor.category = typeofcontract;
       contractor.fromDate = new Date(ContractperiodFrom);
       contractor.toDate = new Date(ContractperiodTo);
+      contractor.fireAuditdate = new Date(FireAuditdate);
       contractor.licence_fees_paid_upto = new Date(LicenseFeesPaidUptoDate);
       contractor.licensee = Licenseename;
       contractor.Licensee_Contact_details = Licenseecontactdetails;

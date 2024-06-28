@@ -75,3 +75,33 @@ module.exports = {
   CreateMasterData,
     fetchAgency,
 };
+
+
+
+exports.GetMasterData = async (req, res) => {
+    try{
+        const masterData = await MasterData.find();
+
+        if(!masterData){
+            return res.status(404).json({
+                success: false,
+                message: "Data Not Present",
+            })
+        }
+
+        return res.status(200).json({
+            masterData,
+            success: true,
+            message: "Data Fetch Successfully",
+        })
+    }
+    catch(error){
+        console.log("Error : ", error);
+        return res.status(500).json({
+            success: true,
+            message: "Internal Server Error"
+        })
+    }
+}
+
+

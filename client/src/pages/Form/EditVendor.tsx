@@ -140,10 +140,13 @@ const EditVendor = () => {
     const handleViewImage = (image) => {
         if (image && typeof image !== 'string') {
             setImageToShow(URL.createObjectURL(image));
+            console.log("ImageToShow1 : ", imageToShow);
         } else {
             setImageToShow(image);
+            console.log("ImageToShow2 : ", imageToShow);
         }
     };
+    console.log("ImageToShow : ", imageToShow);
 
     return (
         <DefaultLayout>

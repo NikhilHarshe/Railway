@@ -3,12 +3,12 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom'
 // import { login } from '../services/opretions/userApi';
 import { useDispatch, useSelector } from 'react-redux'
-import {setUser, setToken} from "../redux/slices/AuthSlice"
-import {setContractors} from "../redux/slices/ContractorSlice"
+import { setUser, setToken } from "../redux/slices/AuthSlice"
+import { setContractors } from "../redux/slices/ContractorSlice"
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import img from "../images/Login Railway Logo.png"
-import { setVendorsData} from '../redux/slices/VendorSlice';
+import { setVendorsData } from '../redux/slices/VendorSlice';
 
 const SignInN = () => {
   const baseUrl = "https://railway-qbx4.onrender.com";
@@ -33,20 +33,28 @@ const SignInN = () => {
 
   const onSubmit = async (e) => {
     // e.preventDefault();
-    const formdata = getValues();
-    const { Email, Password } = formdata;
-    console.log("Form data : ", formdata);
-    const user = await axios.post(baseUrl + "/user/Login", { Email, Password });
-    console.log("user : ", user?.data);
-    dispatch(setUser(user?.data?.user));
-    dispatch(setToken(user?.data.token));
-    dispatch(setContractors(user?.data.contractors))
-    dispatch(setVendorsData(user?.data.vendors))
-    localStorage.setItem("Token", JSON.stringify(user?.data.token))
-    localStorage.setItem("contractors", JSON.stringify(user?.data.contractors))
-    localStorage.setItem("vendors", JSON.stringify(user?.data.vendors))
-    toast.success("Log in Successful");
-    navigate("/dashboard")
+    const toastId = toast.loading("Loading...");
+    try {
+      const formdata = getValues();
+      const { Email, Password } = formdata;
+      console.log("Form data : ", formdata);
+      const user = await axios.post(baseUrl + "/user/Login", { Email, Password });
+      console.log("user : ", user);
+      dispatch(setUser(user?.data?.user));
+      dispatch(setToken(user?.data.token));
+      dispatch(setContractors(user?.data.contractors))
+      dispatch(setVendorsData(user?.data.vendors))
+      localStorage.setItem("Token", JSON.stringify(user?.data.token))
+      localStorage.setItem("contractors", JSON.stringify(user?.data.contractors))
+      localStorage.setItem("vendors", JSON.stringify(user?.data.vendors))
+      toast.success("Log in Successful");
+      navigate("/dashboard")
+    }
+    catch (error) {
+      console.log("Error : ", error)
+      toast.error(error.response.data.message)
+    }
+    toast.dismiss(toastId);
   }
 
   return (

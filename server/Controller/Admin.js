@@ -101,13 +101,13 @@ const Login = async (req, res) => {
         else {
             return res.status(401).json({
                 success: false,
-                messgae: "Password Invalid",
+                message: "Password Invalid",
             })
         }
     }
     catch (error) {
         console.error(error);
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: "Internal Server Error in Login"
         })
@@ -117,9 +117,9 @@ const Login = async (req, res) => {
 const SignUp = async (req, res) => {
     try {
         console.log(req.body);
-        const { Email, Password, ConfirmPass, Name, Designation, Mobile, Role = "Admin" } = req.body
+        const { Email, Password, ConfirmPass, FirstName, MiddleName, LastName, Designation, Mobile, Role = "Admin" } = req.body
 
-        if (!Email || !Password || !Name || !Designation || !Mobile || !ConfirmPass) {
+        if (!Email || !Password || !FirstName || !MiddleName || !LastName || !Designation || !Mobile || !ConfirmPass) {
             return res.status(400).json({
                 success: false,
                 message: "All Fildes are required"
@@ -147,10 +147,12 @@ const SignUp = async (req, res) => {
             Email,
             Password: hashedPassword,
             Designation,
-            Name,
+            FirstName,
+            MiddleName,
+            LastName,
             Mobile,
             Role,
-            Image: `https://api.dicebear.com/5.x/initials/svg?seed=${Name}`,
+            Image: `https://api.dicebear.com/5.x/initials/svg?seed=${FirstName} ${LastName}`,
         })
 
         return res.status(200).json({

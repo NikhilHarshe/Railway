@@ -13,8 +13,12 @@ export default function AddContractor() {
   const { isEditContractor } = useSelector((state) => state.contractor);
   const location = useLocation();
   const { invigilator } = location.state || {};
+  console.log('invigilator data ', invigilator);
+
+  console.log('isEdite contrcator ', isEditContractor);
   const baseUrl = 'http://localhost:3000';
   // const baseUrl = 'https://railway-qbx4.onrender.com';
+
   const clientUrl = 'http://crease-railway-8njx.vercel.app';
 
   // const [Authority, setAuthority] = useState('');
@@ -27,11 +31,12 @@ export default function AddContractor() {
     typeofcontract: '',
     ContractperiodFrom: '',
     ContractperiodTo: '',
+    FireAuditDate: '',
     LicenseFeesPaidUptoDate: '',
     Licenseename: '',
-    // LicenseeAadharNo: '',  
+    // LicenseeAadharNo: '',
     Licenseecontactdetails: '',
-    TotalVendorsPermitted: '',
+    // TotalVendorsPermitted: '',
     // IsStationService: false,
     AutherityDoc: null,
     // PFPermitted: [],
@@ -42,8 +47,10 @@ export default function AddContractor() {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+    // console.log("name : ", name, "  value: ", value);
 
     if (name === 'AutherityDoc') {
+      // console.log("In side function ")
       setFormData({ ...formData, [name]: files[0] });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -95,6 +102,7 @@ export default function AddContractor() {
         ...prevFormData,
         sectionname: [],
       }));
+      console.log('pppppppppppp', formData);
     }
   };
 
@@ -111,8 +119,7 @@ export default function AddContractor() {
 
   const [isInputVisible, setInputVisible] = useState(false);
   const [filter, setFilter] = useState('');
-  const [vendorPermitedatStole, setStoleVendors] = useState();
-  const [vendorPermitedatPlatform, setPlatfomrVendors] = useState();
+
   const [selectedTrains, setSelectedTrains] = useState([]);
   const [selectedStations, setSelectedStations] = useState([]);
 
@@ -172,24 +179,6 @@ export default function AddContractor() {
   const handleStationNameChange = (e) => {
     setFilterStationName(e.target.value);
   };
-  const handleStoleVendorChange = (e) => {
-    const value = e.target.value;
-    setStoleVendors(value);
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      vendorPermitedatStole: value,
-    }));
-  };
-
-  const handlePlatformVendorChange = (e) => {
-    const value = e.target.value;
-    setPlatfomrVendors(value);
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      vendorPermitedatPlatform: value,
-    }));
-  };
-
   const toggleStationNameDropdown = () => {
     setInputVisible(true);
   };
@@ -199,12 +188,43 @@ export default function AddContractor() {
       option.toLowerCase().includes(filterStationName.toLowerCase()),
     )
     .slice(0, 5);
+
   const handleStationNameClick = (stationNames) => {
     setSelectedStations((prevSelectedTrains) => [
       ...prevSelectedTrains,
       stationNames,
     ]);
+    console.log('dddddddddddd', selectedStations);
   };
+
+  const [TotalVendorsPermitted, setTotalVendorsPermitted] = useState();
+  const [stoleVendorsPermitted, setstoleVendorsPermitted] = useState();
+  const [platformVendorsPermitted, setplatformVendorsPermitted] = useState();
+  const handleVendorChange = (e) => {
+    const value = e.target.value;
+    setTotalVendorsPermitted(value);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      TotalVendorsPermitted: value,
+    }));
+  };
+  const handleStoleVendorChange = (e) => {
+    const value = e.target.value;
+    setstoleVendorsPermitted(value);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      stoleVendorsPermitted: value,
+    }));
+  };
+  const handlePlatformVendorChange = (e) => {
+    const value = e.target.value;
+    setplatformVendorsPermitted(value);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      platformVendorsPermitted: value,
+    }));
+  };
+
 
   return (
     <div>
@@ -293,6 +313,21 @@ export default function AddContractor() {
                   </div>
                   {fieldInput && (
                     <div>
+                      {/* Vendors Permitted */}
+                      <div className="mb-4.5">
+                        <label className="mb-2.5 block text-black dark:text-white">
+                          Total Vendors Permitted{' '}
+                          <span className=" text-red-600 text-lg">*</span>
+                        </label>
+                        <input
+                          type="number"
+                          // name="TotalVendorsPermitted"
+                          // value={formData.TotalVendorsPermitted}
+                          onChange={handleVendorChange}
+                          placeholder="Enter Vendors Permitted"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        />
+                      </div>
                       <div className="w-full xl:w-1/2">
                         <label className="mb-2.5 block text-black dark:text-white">
                           Section Names{' '}
@@ -389,11 +424,8 @@ export default function AddContractor() {
                     </div>
                   )}
                   {staticfieldInput && (
-                    <div>
-                      <div style={{
-                        display: 'flex',
-                        flexDirection:'row'
-                      }}>
+                    <div className="flex flex-col">
+                      <div className="flex flex-row">
                         <div className="w-full xl:w-1/2">
                           <label className="mb-2.5 block text-black dark:text-white">
                             Names of Station
@@ -460,33 +492,35 @@ export default function AddContractor() {
                           ))}
                         </div>
                       </div>
-                      <div className="mb-4.5">
-                        <label className="mb-2.5 block text-black dark:text-white">
-                          Vendors Permitted at Stole{' '}
-                          <span className=" text-red-600 text-lg">*</span>
-                        </label>
-                        <input
-                          type="number"
-                          name="VendorsPermittedatStole"
-                          value={vendorPermitedatStole}
-                          onChange={handleStoleVendorChange}
-                          placeholder="Enter Vendors Permitted"
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        />
-                      </div>
-                      <div className="mb-4.5">
-                        <label className="mb-2.5 block text-black dark:text-white">
-                          Vendors Permitted at Platform{' '}
-                          <span className=" text-red-600 text-lg">*</span>
-                        </label>
-                        <input
-                          type="number"
-                          name="vendorsPermitedatPlatform"
-                          value={vendorPermitedatPlatform}
-                          onChange={handlePlatformVendorChange}
-                          placeholder="Enter Vendors Permitted"
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        />
+                      <div className="flex flex-row justify-between">
+                        <div className="mb-4.5">
+                          <label className="mb-2.5 block text-black dark:text-white">
+                            Vendors Permitted at stole{' '}
+                            <span className=" text-red-600 text-lg">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            // name="TotalVendorsPermitted"
+                            // value={formData.TotalVendorsPermitted}
+                            onChange={handleStoleVendorChange}
+                            placeholder="Enter Vendors Permitted"
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          />
+                        </div>
+                        <div className="mb-4.5">
+                          <label className="mb-2.5 block text-black dark:text-white">
+                            Vendors Permitted at Platform{' '}
+                            <span className=" text-red-600 text-lg">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            // name="TotalVendorsPermitted"
+                            // value={formData.TotalVendorsPermitted}
+                            onChange={handlePlatformVendorChange}
+                            placeholder="Enter Vendors Permitted"
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          />
+                        </div>
                       </div>
                     </div>
                   )}
@@ -515,6 +549,19 @@ export default function AddContractor() {
                       type="date"
                       name="ContractperiodTo"
                       value={formData.ContractperiodTo}
+                      onChange={handleChange}
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div className="w-full xl:w-1/2">
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      Fire Audit Date{' '}
+                      <span className=" text-red-600 text-lg">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      name="FireAuditDate"
+                      value={formData.FireAuditDate}
                       onChange={handleChange}
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -576,22 +623,6 @@ export default function AddContractor() {
                       type="file"
                       name="AutherityDoc"
                       onChange={handleChange}
-                    />
-                  </div>
-
-                  {/* Vendors Permitted */}
-                  <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Total Vendors Permitted{' '}
-                      <span className=" text-red-600 text-lg">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      name="TotalVendorsPermitted"
-                      value={formData.TotalVendorsPermitted}
-                      onChange={handleChange}
-                      placeholder="Enter Vendors Permitted"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
                 </div>

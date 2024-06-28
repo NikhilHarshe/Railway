@@ -25,6 +25,9 @@ const contractorSchema = new mongoose.Schema({
   toDate: {
     type: Date,
   },
+  fireAuditdate: {
+    type: Date,
+  },
   licence_fees_paid_upto: {
     type: Date,
   },
